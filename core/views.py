@@ -129,24 +129,25 @@ def dashboard_view(request):
     if not profile:
         return HttpResponseForbidden('Usuário sem vínculo com organização.')
     events = Event.objects.filter(tenant=profile.tenant).order_by('-created_at')
-    registrations = Registration.objects.filter(event__tenant=profile.tenant).select_related('participant', 'event').order_by('-created_at')[:20]
+    registrations = Registration.objects.filter(event__tenant=profile.tenant).select_related('participant', 'event').order_by('-created_at')
     active_event = events.first()
     event_id = request.GET.get('event')
     if event_id:
         active_event = events.filter(id=event_id).first() or active_event
-    active_registrations = registrations.filter(event=active_event) if active_event else registrations.none()
+    active_registrations = list(registrations.filter(event=active_event)[:20]) if active_event else []
     event_stats = {
-        'total': active_registrations.count() if active_event else 0,
-        'confirmados': active_registrations.filter(status='confirmado').count() if active_event else 0,
-        'pendentes': active_registrations.filter(status='pendente').count() if active_event else 0,
-        'cancelados': active_registrations.filter(status='cancelado').count() if active_event else 0,
+        'total': len(active_registrations) if active_event else 0,
+        'confirmados': sum(1 for r in active_registrations if r.status == 'confirmado'),
+        'pendentes': sum(1 for r in active_registrations if r.status == 'pendente'),
+        'cancelados': sum(1 for r in active_registrations if r.status == 'cancelado'),
     }
     sessions = [
         {'label': 'Abertura oficial', 'time': '09:00 - 09:30', 'place': active_event.location if active_event and active_event.location else 'Auditório principal'},
         {'label': 'Painel de conteúdo', 'time': '10:00 - 11:00', 'place': 'Sala 1'},
         {'label': 'Networking / Expo', 'time': '12:00 - 13:30', 'place': 'Foyer'},
     ] if active_event else []
-    return render(request, 'core/dashboard.html', {'profile': profile, 'events': events, 'registrations': registrations, 'active_event': active_event, 'active_registrations': active_registrations, 'event_stats': event_stats, 'sessions': sessions})
+    recent_registrations = list(registrations[:20])
+    return render(request, 'core/dashboard.html', {'profile': profile, 'events': events, 'registrations': recent_registrations, 'active_event': active_event, 'active_registrations': active_registrations, 'event_stats': event_stats, 'sessions': sessions})
 
 
 @login_required

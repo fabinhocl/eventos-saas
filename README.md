@@ -121,3 +121,7 @@ Foi corrigido explicitamente o erro de sintaxe em `core/views.py` na função `r
 - menu lateral do dashboard com espaçamento ajustado e sem botão `Visão do evento`;
 - check-in refeito em layout mobile-first;
 - branding refeito no layout novo com preview lateral inspirado no arquivo anexado.
+
+- correção do erro TypeError no dashboard após login, removendo filtro sobre queryset já fatiado.
+
+- correção definitiva em dashboard_view: o queryset base não é mais fatiado antes do filtro por evento.

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Badge Editor | Eventos Flex</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid #e2e8f0; }
+        .badge-preview-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full flex flex-col p-md docked left-0 h-screen w-64 bg-surface dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm z-50">
+<div class="flex items-center gap-3 mb-8 px-2">
+<span class="material-symbols-outlined text-primary text-3xl">palette</span>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-inverse-primary leading-tight">Eventos Flex</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Enterprise Planner</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">calendar_today</span> Events
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">groups</span> Attendees
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">how_to_reg</span> Check-in
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">badge</span> Badges
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">record_voice_over</span> Speakers
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">payments</span> Finance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">monitoring</span> Reports
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">palette</span> Branding
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-low rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+</nav>
+<div class="mt-auto p-4 bg-surface-container-low rounded-xl border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">JD</div>
+<div>
+<p class="text-label-md font-label-md">John Doe</p>
+<p class="text-[10px] text-on-surface-variant">Admin Access</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-40 flex justify-between items-center h-16 px-gutter ml-64 bg-surface-container-lowest dark:bg-on-surface border-b border-outline-variant dark:border-outline shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary">Global Tech Summit 2024</h2>
+<div class="h-6 w-px bg-outline-variant"></div>
+<nav class="flex gap-6 font-body-md text-body-md">
+<a class="text-primary font-bold border-b-2 border-primary py-1" href="#">Badge Editor</a>
+<a class="text-on-surface-variant hover:text-primary cursor-pointer transition-colors py-1" href="#">Print Queues</a>
+<a class="text-on-surface-variant hover:text-primary cursor-pointer transition-colors py-1" href="#">Layout Assets</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-px h-8 bg-outline-variant mx-2"></div>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female executive in a clean, minimalist studio setting with soft lighting. She is smiling warmly at the camera, wearing a neutral-colored blazer. The background is a soft, blurred corporate office space in shades of white and teal to match the B2B enterprise brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJcITwvAKNDi6llVPcZUv-bYtABD99eRnkgWPmWTPGYt_OuhV1PuFEA1__WCBSCkiExHTnVXeKwNnZke5CqCfx3MZS_xiymMDu81n-85byecS9GIFsUw1J6ZPw_STMeqVMZbFBNTpO3ic2dUndVqVdzfiiE1oFqbiOP0UPTBdzcIjyKXLMrwB3sHbC38zvvP9SuimKVmFKGodsV_fwd9sbJlcJ5DFLdc7bJxjfDXcL_vU2SEH4vMc-BZRCsXKwNhFrF0PiRORpMvnL"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 p-margin min-h-[calc(100vh-64px-60px)]">
+<!-- Breadcrumb & Header -->
+<div class="mb-8">
+<nav class="flex text-label-sm font-label-sm text-on-surface-variant mb-2 gap-2 items-center">
+<span>Operations</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary">Badge Editor</span>
+</nav>
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Badge Templates</h1>
+<p class="text-body-md text-on-surface-variant mt-1">Configure and manage physical credentials for attendees.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 rounded-lg border border-outline-variant font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">print</span> Batch Print
+                    </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-white font-label-md text-label-md hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center gap-2 shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined">add</span> Create New
+                    </button>
+</div>
+</div>
+</div>
+<!-- Editor Interface: 2-Column Bento Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Editor Controls (Left) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Category Color Config -->
+<section class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">palette</span>
+                        Category Colors
+                    </h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-error flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-md text-label-md">VIP</span>
+</div>
+<input class="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" type="color" value="#ba1a1a"/>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">record_voice_over</span>
+</div>
+<span class="font-label-md text-label-md">Speaker</span>
+</div>
+<input class="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" type="color" value="#00685f"/>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<span class="font-label-md text-label-md">Attendee</span>
+</div>
+<input class="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" type="color" value="#565e74"/>
+</div>
+</div>
+</section>
+<!-- Asset Management -->
+<section class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">image</span>
+                        Assets &amp; Branding
+                    </h3>
+<div class="space-y-6">
+<div>
+<label class="block text-label-sm font-label-sm text-on-surface-variant mb-2 uppercase tracking-wider">Event Logo</label>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-6 flex flex-col items-center justify-center gap-2 hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">cloud_upload</span>
+<p class="text-body-sm text-on-surface-variant">PNG or SVG, max 2MB</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md">Header Banner</span>
+<span class="text-body-sm text-on-surface-variant">Show color band on top</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Printing Options -->
+<section class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Print Presets</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center gap-2 p-4 rounded-lg border border-outline-variant hover:border-primary hover:bg-primary-container hover:text-on-primary-container transition-all">
+<span class="material-symbols-outlined">description</span>
+<span class="text-label-sm">Standard</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-4 rounded-lg border border-primary bg-primary-container text-on-primary-container shadow-sm">
+<span class="material-symbols-outlined">id_card</span>
+<span class="text-label-sm">PVC Card</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Preview Mode (Right) -->
+<div class="col-span-12 lg:col-span-8">
+<div class="sticky top-24 bg-surface-container-high rounded-2xl border border-outline-variant p-xl overflow-hidden min-h-[600px] flex flex-col items-center justify-center">
+<!-- Preview Label -->
+<div class="absolute top-6 left-6 flex items-center gap-2">
+<span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-widest">Live Preview</span>
+</div>
+<!-- Toggle View Mode -->
+<div class="absolute top-6 right-6 flex bg-surface-container-lowest p-1 rounded-lg border border-outline-variant shadow-sm">
+<button class="px-4 py-1.5 rounded-md bg-primary text-white text-label-sm font-label-sm">Front</button>
+<button class="px-4 py-1.5 rounded-md text-on-surface-variant hover:bg-surface-container-low text-label-sm font-label-sm transition-colors">Back</button>
+</div>
+<!-- The Actual Badge -->
+<div class="w-[500px] aspect-[1.6/1] bg-white rounded-xl badge-preview-shadow relative flex flex-col overflow-hidden transition-all duration-500 ease-in-out transform hover:scale-[1.02]">
+<!-- Dynamic Banner -->
+<div class="h-10 w-full bg-error flex items-center px-6" id="badge-banner">
+<span class="text-white text-[10px] font-bold tracking-[0.2em] uppercase">VIP ACCESS</span>
+</div>
+<div class="flex-grow flex p-8 gap-8">
+<!-- Left: Content -->
+<div class="flex-grow flex flex-col justify-between">
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">rocket_launch</span>
+</div>
+<span class="font-headline-sm text-primary">Global Tech Summit</span>
+</div>
+<div>
+<h4 class="text-4xl font-bold text-on-surface leading-tight">Alex Sterling</h4>
+<p class="text-body-lg text-on-surface-variant font-medium mt-1">Chief Technology Officer</p>
+<p class="text-body-md text-on-surface-variant/70">Quantum Dynamics Inc.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-3 py-1 rounded border border-outline-variant text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Level 1 Participant</div>
+<div class="px-3 py-1 rounded border border-outline-variant text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Day 1-3</div>
+</div>
+</div>
+<!-- Right: QR and Logo -->
+<div class="w-32 flex flex-col items-center justify-between py-2">
+<div class="p-2 border border-outline-variant rounded-lg bg-white">
+<img class="w-24 h-24" data-alt="A clean, high-contrast QR code generated on a white background, framed by a subtle gray border. The QR code represents digital registration data for a high-end corporate event, fitting perfectly into a professional badge layout." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvEZc9ZN9UDvGWh9KkR_Y8vlQw8ztTKb7PuVoXuToASyGCyXc7EVkq-75FOB9788tm4JThkEe2_TfN9FH6QR2FYMPa1AY8ENRTVjEDej8uZNs55ww9odwpdRV6XeYlILQGLBzWSCDV0YbZVMmEDyBFAyHA7-JUu12moScidGGalcPG2vj5yAydRVwFT6Zp1JiWndBGMFt_t3rBrhwG3Q-2UXxj9-rrveLgqHYY2joPNmbArUlZI0mEdWN-Kd4BHaUHGqaYa3FrMnoE"/>
+</div>
+<div class="text-center">
+<p class="text-[8px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">ID# 882910-G</p>
+<div class="w-full h-8 flex items-center justify-center opacity-50 grayscale">
+<span class="material-symbols-outlined text-3xl">token</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Lanyard Slot Emulation -->
+<div class="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-2 bg-slate-200 rounded-full"></div>
+</div>
+<!-- Control Actions -->
+<div class="absolute bottom-8 flex gap-4">
+<button class="flex items-center gap-2 px-6 py-3 bg-white border border-outline-variant rounded-full text-on-surface hover:border-primary transition-all shadow-sm font-label-md">
+<span class="material-symbols-outlined text-primary">print</span>
+                            Print Sample
+                        </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-white border border-outline-variant rounded-full text-on-surface hover:border-primary transition-all shadow-sm font-label-md">
+<span class="material-symbols-outlined text-primary">file_download</span>
+                            Export PDF
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex justify-between items-center py-md px-xl ml-64 bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim">
+<p>© 2024 Eventos Flex. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors opacity-100 hover:opacity-80" href="#">Support</a>
+<a class="hover:text-primary transition-colors opacity-100 hover:opacity-80" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors opacity-100 hover:opacity-80" href="#">Terms of Service</a>
+</div>
+</footer>
+<script>
+        // Simple Micro-interactions
+        const colorPickers = document.querySelectorAll('input[type="color"]');
+        const badgeBanner = document.getElementById('badge-banner');
+        
+        colorPickers.forEach(picker => {
+            picker.addEventListener('input', (e) => {
+                // Find if the picker clicked is the VIP one for demo purposes
+                if(e.target.parentElement.textContent.includes('VIP')) {
+                    badgeBanner.style.backgroundColor = e.target.value;
+                }
+            });
+        });
+
+        // Toggle logic for checkbox
+        const bannerToggle = document.querySelector('input[type="checkbox"]');
+        bannerToggle.addEventListener('change', (e) => {
+            badgeBanner.style.height = e.target.checked ? '40px' : '0px';
+            badgeBanner.style.opacity = e.target.checked ? '1' : '0';
+        });
+    </script>
+</body></html>

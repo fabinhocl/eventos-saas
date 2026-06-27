@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login organizador</title>
+  <style>
+    body{font-family:Inter,Arial,sans-serif;background:#f5f3ee;margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+    .card{width:min(100%,560px);background:#fff;border:1px solid #d9e2ea;border-radius:28px;box-shadow:0 18px 44px rgba(15,23,42,.08);overflow:hidden}
+    .hero{background:linear-gradient(135deg,#213145,#0d8b7e);padding:28px 32px;color:#fff}
+    .hero h1{margin:0;font-size:38px;letter-spacing:-.02em}
+    .hero p{margin:8px 0 0;color:#d3e8e7}
+    .body{padding:32px}
+    label{display:block;margin:0 0 8px;font-weight:700;color:#173046}
+    input{width:100%;padding:14px 16px;border:1px solid #cfd9e3;border-radius:14px;box-sizing:border-box;background:#eef3fb;font:inherit;margin-bottom:18px}
+    button{margin-top:8px;padding:15px 18px;border:none;border-radius:999px;background:#19767e;color:#fff;cursor:pointer;width:100%;font-weight:700;font-size:16px}
+    a{color:#19767e;text-decoration:none;font-weight:600}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:20px;color:#173046}
+    .mark{width:44px;height:44px;border-radius:12px;background:#dff7f2;color:#0d8b7e;display:grid;place-items:center;font-weight:800}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="hero"><h1>Eventos Flex</h1><p>Painel operacional do organizador</p></div>
+    <div class="body">
+      <div class="brand"><div class="mark">EF</div><div><strong>Login do organizador</strong><div style="color:#6a7e90;font-size:14px;">Acesse o novo painel administrativo</div></div></div>
+      <form method="post" action="{% url 'login' %}">{% csrf_token %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}{{ form.as_p }}<button type="submit">Entrar</button></form>
+      <p style="margin:18px 0 0;"><a href="{% url 'home' %}">Voltar para a página inicial</a></p>
+    </div>
+  </div>
+</body>
+</html>

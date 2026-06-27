@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Eventos SaaS{% endblock %}</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f5f3ee;color:#222;margin:0;padding:24px}
+    .wrap{max-width:1280px;margin:0 auto}
+    .msg{margin-bottom:12px;padding:12px;border-radius:10px;background:#eef7f7;color:#18474b}
+    .err{background:#fde8f1;color:#8a1148}
+    .public-topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .btn{display:inline-block;padding:12px 16px;border-radius:999px;background:#0d6c73;color:#fff;text-decoration:none;border:none;cursor:pointer}
+    .btn-secondary{background:#dcefed;color:#18474b}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    form.inline{margin:0}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  {% if not request.user.is_authenticated %}
+  <div class="public-topnav">
+    <a href="{% url 'home' %}" class="btn btn-secondary">Início</a>
+    <div class="actions"><a href="{% url 'login' %}" class="btn">Login organizador</a></div>
+  </div>
+  {% endif %}
+  {% if messages %}{% for message in messages %}<div class="msg{% if message.tags == 'error' %} err{% endif %}">{{ message }}</div>{% endfor %}{% endif %}
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

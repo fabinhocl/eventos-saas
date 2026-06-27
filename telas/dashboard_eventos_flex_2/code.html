@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eventos Flex - Enterprise Planner Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#6bd8cb",
+                      "secondary": "#565e74",
+                      "on-surface": "#191c1e",
+                      "on-background": "#191c1e",
+                      "surface": "#f7f9fb",
+                      "surface-container-low": "#f2f4f6",
+                      "tertiary-fixed": "#d3e4fe",
+                      "primary-fixed": "#89f5e7",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed-variant": "#005049",
+                      "inverse-on-surface": "#eff1f3",
+                      "secondary-container": "#dae2fd",
+                      "primary": "#00685f",
+                      "outline-variant": "#bcc9c6",
+                      "secondary-fixed": "#dae2fd",
+                      "on-primary-fixed": "#00201d",
+                      "surface-dim": "#d8dadc",
+                      "surface-tint": "#006a61",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed": "#0b1c30",
+                      "error": "#ba1a1a",
+                      "background": "#f7f9fb",
+                      "on-tertiary-container": "#fdfcff",
+                      "on-surface-variant": "#3d4947",
+                      "inverse-surface": "#2d3133",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#eceef0",
+                      "on-secondary-fixed": "#131b2e",
+                      "surface-container-highest": "#e0e3e5",
+                      "primary-container": "#008378",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-container": "#66768d",
+                      "surface-container-high": "#e6e8ea",
+                      "on-secondary-container": "#5c647a",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#f4fffc",
+                      "surface-bright": "#f7f9fb",
+                      "tertiary": "#4d5d73",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "on-tertiary-fixed-variant": "#38485d",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "surface-variant": "#e0e3e5",
+                      "outline": "#6d7a77",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "tertiary-fixed-dim": "#b7c8e1",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "base": "4px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "3xl": "64px",
+                      "max-width": "1440px",
+                      "xs": "4px",
+                      "2xl": "48px",
+                      "margin": "32px",
+                      "sm": "8px",
+                      "lg": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "body-lg": ["Inter"]
+              }
+            }
+          }
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen overflow-x-hidden">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm flex flex-col p-md z-50">
+<div class="mb-gutter flex flex-col gap-1 px-4">
+<span class="font-headline-sm text-headline-sm font-bold text-primary dark:text-inverse-primary tracking-tight">Eventos Flex</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant opacity-70">Enterprise Planner</span>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+<!-- Active: Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-label-md text-label-md transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span>Events</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span>Attendees</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="how_to_reg">how_to_reg</span>
+<span>Check-in</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+<span>Badges</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="record_voice_over">record_voice_over</span>
+<span>Speakers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<span>Branding</span>
+</a>
+</nav>
+<div class="pt-gutter mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-40 flex justify-between items-center h-16 px-gutter ml-64 bg-surface-container-lowest dark:bg-on-surface border-b border-outline-variant dark:border-outline shadow-sm">
+<div class="flex items-center gap-gutter w-full">
+<div class="relative w-1/3">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-body-md" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container border-none rounded-lg text-body-md focus:ring-2 focus:ring-primary transition-all duration-200" placeholder="Search events or attendees..." type="text"/>
+</div>
+<div class="flex items-center gap-gutter ml-auto">
+<span class="text-label-md font-bold text-primary tracking-wide">Global Tech Summit 2024</span>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded-full p-1">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded-full p-1">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up professional portrait of a tech conference administrator, sharp features, wearing modern business attire, against a soft blurred office background with cool teal lighting accents, high-end photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBneHHFsnJolKgZIIKOkNwFGHdUy7LiG9ZryTJ_W_XLKvL3Mcd2tkvl9ddIh6pDTjp86kvuC_2AJVcM2qYPFSSqPHyUBXEO6MUp29R2HSjiG1q2hkPaIRzrc21NAIgi5gzGz8mi3hg0DX6MTQGHGd-hTEXnZotLAmgjP1f6gbVSoPExHeCMIXca_GjEVUWq6AyitWJ8IBM6nFdaPIVdKHtYAlD7euSMWhrsNFgtHZziYp6UFk1aJSnhanQCIllpa3VQf8dXL4_wJhOJ"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="ml-64 p-gutter max-w-7xl mx-auto">
+<!-- Header & Breadcrumb -->
+<div class="mb-gutter">
+<nav class="flex text-label-sm text-on-surface-variant mb-2 gap-2 uppercase tracking-widest">
+<span class="opacity-60">Home</span>
+<span class="opacity-60">/</span>
+<span class="text-primary font-bold">Dashboard</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Event Overview</h1>
+</div>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-md mb-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant transition-all hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-on-surface-variant font-bold uppercase tracking-wider">Total Registered</span>
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="person_add">person_add</span>
+</div>
+<div class="font-display-lg text-[28px] font-bold text-on-surface">1,240</div>
+<div class="text-label-sm text-primary flex items-center gap-1 mt-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+<span>12% from last week</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant transition-all hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-on-surface-variant font-bold uppercase tracking-wider">Confirmed</span>
+<span class="material-symbols-outlined text-primary-container text-[20px]" data-icon="check_circle">check_circle</span>
+</div>
+<div class="font-display-lg text-[28px] font-bold text-on-surface">850</div>
+<div class="text-label-sm text-on-surface-variant opacity-60 mt-2">68.5% Conversion</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant transition-all hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-on-surface-variant font-bold uppercase tracking-wider">Pending</span>
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="pending">pending</span>
+</div>
+<div class="font-display-lg text-[28px] font-bold text-on-surface">390</div>
+<div class="text-label-sm text-on-surface-variant opacity-60 mt-2">Awaiting payment</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant transition-all hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-on-surface-variant font-bold uppercase tracking-wider">Cancelled</span>
+<span class="material-symbols-outlined text-error text-[20px]" data-icon="cancel">cancel</span>
+</div>
+<div class="font-display-lg text-[28px] font-bold text-on-surface">24</div>
+<div class="text-label-sm text-error opacity-80 mt-2">-2% vs goal</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant transition-all hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-on-surface-variant font-bold uppercase tracking-wider">Check-ins</span>
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="qr_code_scanner">qr_code_scanner</span>
+</div>
+<div class="font-display-lg text-[28px] font-bold text-on-surface">512</div>
+<div class="text-label-sm text-primary flex items-center gap-1 mt-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="update">update</span>
+<span>Live Tracking</span>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Bento Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left: Trends & Status (Column 1-8) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<!-- Main Chart Card -->
+<div class="bg-surface-container-lowest rounded-xl p-xl shadow-sm border border-outline-variant relative overflow-hidden">
+<div class="flex justify-between items-center mb-gutter">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Daily Registration Trends</h2>
+<p class="text-body-sm text-on-surface-variant">Monitoring registration velocity for the past 30 days.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-label-sm border border-outline-variant rounded hover:bg-surface-container-low transition-colors">Day</button>
+<button class="px-3 py-1 text-label-sm bg-primary text-on-primary rounded">Week</button>
+<button class="px-3 py-1 text-label-sm border border-outline-variant rounded hover:bg-surface-container-low transition-colors">Month</button>
+</div>
+</div>
+<div class="h-64 flex items-end justify-between gap-4 relative">
+<!-- Pseudo-Chart Bars for Visual Representation -->
+<div class="w-full h-full absolute inset-0 opacity-10 pointer-events-none">
+
+</div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[40%] transition-all hover:h-[50%] cursor-pointer group relative">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-on-surface text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">45 Reg</div>
+</div>
+<div class="flex-1 bg-primary/30 rounded-t-lg h-[60%] transition-all hover:h-[70%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[45%] transition-all hover:h-[55%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/40 rounded-t-lg h-[75%] transition-all hover:h-[85%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/30 rounded-t-lg h-[65%] transition-all hover:h-[75%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/50 rounded-t-lg h-[90%] transition-all hover:h-[100%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/40 rounded-t-lg h-[80%] transition-all hover:h-[90%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/30 rounded-t-lg h-[55%] transition-all hover:h-[65%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[40%] transition-all hover:h-[50%] cursor-pointer group relative"></div>
+<div class="flex-1 bg-primary/40 rounded-t-lg h-[70%] transition-all hover:h-[80%] cursor-pointer group relative"></div>
+</div>
+<div class="flex justify-between mt-4 text-label-sm text-on-surface-variant opacity-60">
+<span>May 01</span>
+<span>May 07</span>
+<span>May 14</span>
+<span>May 21</span>
+<span>May 28</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Operational Status Card -->
+<div class="bg-surface-container-lowest rounded-xl p-xl shadow-sm border border-outline-variant">
+<h3 class="font-headline-sm text-[18px] text-on-surface mb-gutter flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+                            Operational Status
+                        </h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-body-md">System Health</span>
+</div>
+<span class="text-label-sm font-bold text-primary">OPTIMAL</span>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-body-md">Printer Connection</span>
+</div>
+<span class="text-label-sm font-bold text-primary">CONNECTED (4)</span>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary opacity-40"></div>
+<span class="text-body-md">API Latency</span>
+</div>
+<span class="text-label-sm text-on-surface-variant font-medium">42ms</span>
+</div>
+</div>
+</div>
+<!-- Quick Actions Card -->
+<div class="bg-surface-container-lowest rounded-xl p-xl shadow-sm border border-outline-variant">
+<h3 class="font-headline-sm text-[18px] text-on-surface mb-gutter flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+                            Quick Actions
+                        </h3>
+<div class="grid grid-cols-2 gap-md">
+<button class="flex flex-col items-center justify-center p-md bg-surface-container-low rounded-xl border border-transparent hover:border-primary hover:text-primary transition-all gap-2 group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary" data-icon="person_add">person_add</span>
+<span class="text-label-sm text-center">Add Attendee</span>
+</button>
+<button class="flex flex-col items-center justify-center p-md bg-surface-container-low rounded-xl border border-transparent hover:border-primary hover:text-primary transition-all gap-2 group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary" data-icon="print">print</span>
+<span class="text-label-sm text-center">Print Labels</span>
+</button>
+<button class="flex flex-col items-center justify-center p-md bg-surface-container-low rounded-xl border border-transparent hover:border-primary hover:text-primary transition-all gap-2 group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary" data-icon="file_download">file_download</span>
+<span class="text-label-sm text-center">Export List</span>
+</button>
+<button class="flex flex-col items-center justify-center p-md bg-surface-container-low rounded-xl border border-transparent hover:border-primary hover:text-primary transition-all gap-2 group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary" data-icon="forward_to_inbox">forward_to_inbox</span>
+<span class="text-label-sm text-center">Resend Invite</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Event Summary (Column 9-12) -->
+<aside class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Event Identity Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+<div class="relative h-48 w-full group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Panoramic architectural shot of the São Paulo Expo convention center, modern glass facade reflecting a twilight sky, professional venue photography, clean lines, high-end corporate event setting, sophisticated teal and slate color grade." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw72H60oM-A_fCo1UIrSUy9xLZcyMuThQscCyr23sYH7DSdiYLC54I2ukZRuhfDzoh0DVNVWgR_EBRPT6rwbAVwI0NVGjqJvWQI7OSrEs9Svq0GNS9VoNEKCJI2GJu3r32-r_2ZGPtKrwkCHWL86h85OxQdLMSltbsOFwE-qyDk3vLsw-F0Q2fiydMbUqVxHYxNd-xbRAFK2vwRrwjXNLcS8TxJY-wt8EhRTmXXTIDVrMBHnFAnHTfw3HVmolMHG6D0kUsI9y9gESL"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 to-transparent"></div>
+<div class="absolute bottom-4 left-4 text-white">
+<span class="text-label-sm bg-primary px-2 py-1 rounded mb-2 inline-block">MAJOR EVENT</span>
+<h4 class="font-headline-sm text-white">Global Tech Summit</h4>
+</div>
+</div>
+<div class="p-xl space-y-md">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="calendar_month">calendar_month</span>
+<div>
+<div class="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Date &amp; Time</div>
+<div class="text-body-md font-semibold text-on-surface">Oct 12-14, 2024</div>
+<div class="text-body-sm text-on-surface-variant">08:00 AM - 06:00 PM</div>
+</div>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
+<div>
+<div class="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Location</div>
+<div class="text-body-md font-semibold text-on-surface">São Paulo Expo</div>
+<div class="text-body-sm text-on-surface-variant underline cursor-pointer">View Map</div>
+</div>
+</div>
+<div class="h-px bg-outline-variant"></div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="pie_chart">pie_chart</span>
+<div class="flex-1">
+<div class="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Capacity</div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-body-md font-semibold text-on-surface">1,240 / 2,000</span>
+<span class="text-label-sm text-primary font-bold">62%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 62%"></div>
+</div>
+</div>
+</div>
+<button class="w-full py-3 bg-on-surface text-surface rounded-lg font-label-md hover:bg-on-surface/90 transition-all">Edit Event Details</button>
+</div>
+</div>
+<!-- Recent Activity Feed (Bonus) -->
+<div class="bg-surface-container-lowest rounded-xl p-xl shadow-sm border border-outline-variant">
+<h3 class="font-headline-sm text-[18px] text-on-surface mb-gutter">Recent Activity</h3>
+<div class="space-y-gutter relative before:content-[''] before:absolute before:left-[15px] before:top-2 before:bottom-0 before:w-0.5 before:bg-outline-variant">
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-primary-container flex items-center justify-center z-10 border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]" data-icon="person">person</span>
+</div>
+<div class="text-body-sm"><span class="font-bold">Marcos Silva</span> registered for the event.</div>
+<div class="text-label-sm text-on-surface-variant opacity-60">2 minutes ago</div>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center z-10 border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]" data-icon="payments">payments</span>
+</div>
+<div class="text-body-sm"><span class="font-bold">Payment confirmed</span> for Invoice #EV-9821.</div>
+<div class="text-label-sm text-on-surface-variant opacity-60">15 minutes ago</div>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-primary-container flex items-center justify-center z-10 border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]" data-icon="print">print</span>
+</div>
+<div class="text-body-sm">Bulk label printing started for <span class="font-bold">VIP Batch</span>.</div>
+<div class="text-label-sm text-on-surface-variant opacity-60">1 hour ago</div>
+</div>
+</div>
+<button class="w-full mt-gutter text-primary text-label-sm font-bold uppercase tracking-widest hover:opacity-80 transition-opacity">See all activity</button>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="flex justify-between items-center py-md px-xl ml-64 bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline font-label-sm text-label-sm">
+<div class="flex items-center gap-gutter text-on-secondary-container">
+<span class="font-bold">© 2024 Eventos Flex. All rights reserved.</span>
+<div class="flex gap-4">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+<div class="flex items-center gap-2 text-secondary dark:text-secondary-fixed-dim opacity-60">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+<span>Secure Enterprise Environment</span>
+</div>
+</footer>
+<!-- Floating Action Button: Contextual -->
+<div class="fixed bottom-gutter right-gutter z-50">
+<button class="flex items-center gap-3 bg-primary text-on-primary px-gutter py-md rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all focus:ring-4 focus:ring-primary/20">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-label-md font-bold">New Attendee</span>
+</button>
+</div>
+<script>
+        // Simple Micro-interaction: Update numbers slightly on load for life feel
+        document.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.font-display-lg');
+            counters.forEach(counter => {
+                const target = parseInt(counter.innerText.replace(',', ''));
+                let count = 0;
+                const updateCount = () => {
+                    const speed = 200;
+                    const increment = target / speed;
+                    if(count < target) {
+                        count += increment;
+                        counter.innerText = Math.ceil(count).toLocaleString();
+                        setTimeout(updateCount, 1);
+                    } else {
+                        counter.innerText = target.toLocaleString();
+                    }
+                };
+                updateCount();
+            });
+        });
+    </script>
+</body></html>

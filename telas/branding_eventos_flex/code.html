@@ -1,0 +1,343 @@
+<!DOCTYPE html><html class="light" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Branding - Eventos Flex</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active {
+            border-left: 4px solid #89f5e7;
+            background-color: rgba(63, 70, 92, 0.1);
+        }
+        /* Custom scrollbar for seamless command center look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9ff",
+                        "outline": "#6d7a77",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#89f5e7",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#f4fffc",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-container": "#b05e3d",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-container": "#e5eeff",
+                        "on-secondary-container": "#5c647a",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-high": "#dce9ff",
+                        "secondary": "#565e74",
+                        "secondary-container": "#dae2fd",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#008378",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container-highest": "#d3e4fe",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-variant": "#d3e4fe",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#924628",
+                        "on-background": "#0b1c30",
+                        "surface-tint": "#006a61",
+                        "surface-dim": "#cbdbf5",
+                        "outline-variant": "#bcc9c6",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-surface-variant": "#3d4947",
+                        "on-primary-fixed-variant": "#005049",
+                        "inverse-primary": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#773215",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary": "#ffffff",
+                        "primary": "#00685f",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-surface": "#213145",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#00201d",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "container-max-width": "1440px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "mono-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "mono-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface flex min-h-screen">
+<!-- NavigationDrawer (JSON Authority: style_component_shape, style_bg_color, etc) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-inverse-surface flex flex-col z-50">
+<div class="px-6 py-8">
+<h1 class="font-headline-md text-headline-md text-primary-fixed tracking-tight">Eventos Flex</h1>
+</div>
+<nav class="flex flex-col h-full overflow-y-auto">
+<!-- Mapping labels & icons from JSON. Branding is Active. -->
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-4">group</span>
+<span class="font-label-md text-label-md">Attendees</span>
+</a>
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-4">qr_code_scanner</span>
+<span class="font-label-md text-label-md">Check-in</span>
+</a>
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-4">badge</span>
+<span class="font-label-md text-label-md">Badge Editor</span>
+</a>
+<!-- Active State: Branding -->
+<a class="flex items-center text-primary-fixed border-l-4 border-primary-fixed bg-on-secondary-fixed-variant/10 px-6 py-4 cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-4">palette</span>
+<span class="font-label-md text-label-md">Branding</span>
+</a>
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-sidebar-width flex-grow flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full h-16 sticky top-0 z-40 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+<h2 class="font-headline-sm text-headline-sm text-primary">Branding</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-low transition-all p-2 rounded cursor-pointer">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Notifications</span>
+</div>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">
+                    EF
+                </div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-grow p-margin-desktop max-w-[1200px] w-full mx-auto">
+<div class="mb-12">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Event Branding</h3>
+<p class="font-body-md text-body-md text-outline">Configure a identidade visual e as comunicações do seu evento para garantir uma experiência consistente.</p>
+</div>
+<!-- Bento-style Form Grid -->
+<form class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Section: Identidade Visual -->
+<div class="md:col-span-8 space-y-8">
+<div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-lg shadow-sm">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary">brush</span>
+<h4 class="font-headline-sm text-headline-sm">Identidade Visual</h4>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Logo Upload -->
+<div class="space-y-4">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Logo do Evento</label>
+<div class="relative group cursor-pointer border-2 border-dashed border-outline-variant rounded-xl aspect-video flex flex-col items-center justify-center bg-background hover:bg-surface-container-low transition-colors">
+<img class="h-16 w-auto opacity-40 group-hover:opacity-60 transition-opacity" data-alt="A minimalist professional event logo placeholder centered on a crisp white background. The style is clean and corporate, featuring geometric teal accents and soft gray typography in a high-key studio lighting environment. Modern and authoritative aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmfp3kkfGt2ZxWRbmA-skkiVepWEiBNa7mPcxDHtUUBkojtVuRNY_9FLz22ina1tFRKmOEZ8jUPk1jrSa2R3n59hN1oOaCyvNy8OKc8UyzHYn693TF95NhfTEtY3uF-FimpygQuOpT13rGrSeRuPSOyhLalwNLXlNJglFnCg4ILh2KyVuHOa4NtKZocAFK22ySTq4rDM3BOfO-prD_MK1rHOy7FlPIkVNXu9MHmroFXYNg7nFV6WQoDRapwVo5VZ6WWI90073TZdrK">
+<div class="mt-4 text-center">
+<p class="font-label-md text-label-md text-primary">Alterar Logo</p>
+<p class="text-[10px] text-outline mt-1">PNG, SVG (Max 2MB)</p>
+</div>
+</div>
+</div>
+<!-- Color Picker -->
+<div class="space-y-4">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Cor Primária</label>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-xl bg-[#0D9488] border border-outline-variant shadow-inner"></div>
+<div>
+<p class="font-mono-sm text-mono-sm text-on-surface">#0D9488 (Teal)</p>
+<p class="font-body-md text-body-md text-outline">Cor de destaque principal</p>
+</div>
+</div>
+<input class="w-full border-outline-variant rounded bg-surface-container-lowest focus:ring-primary focus:border-primary font-mono-sm text-mono-sm" type="text" value="#0D9488">
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Informações do Evento -->
+<div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-lg shadow-sm">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary">info</span>
+<h4 class="font-headline-sm text-headline-sm">Informações do Evento</h4>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Nome do Evento</label>
+<input class="w-full border-outline-variant rounded bg-surface-container-lowest focus:ring-primary focus:border-primary font-body-lg text-body-lg" type="text" value="Eventos Flex">
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Data de Início</label>
+<input class="w-full border-outline-variant rounded bg-surface-container-lowest focus:ring-primary focus:border-primary font-body-lg text-body-lg" type="date" value="2024-12-15">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Localização</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">location_on</span>
+<input class="w-full pl-10 border-outline-variant rounded bg-surface-container-lowest focus:ring-primary focus:border-primary font-body-lg text-body-lg" type="text" value="São Paulo, SP">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Configurações de Comunicação -->
+<div class="md:col-span-4 space-y-8">
+<div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-lg shadow-sm">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary">mail</span>
+<h4 class="font-headline-sm text-headline-sm">Configurações de Comunicação</h4>
+</div>
+<div class="space-y-8">
+<!-- Banner Image -->
+<div class="space-y-4">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Banner do E-mail</label>
+<div class="relative overflow-hidden rounded-lg group">
+<div class="bg-cover bg-center w-full h-32 brightness-90 group-hover:scale-105 transition-transform duration-500" data-alt="A wide, horizontal professional banner background featuring an abstract composition of teal and slate gradients. The aesthetic is corporate and modern, designed for a high-end tech conference header. Subtle geometric patterns provide depth without distracting from potential text overlays. Soft lighting and high-quality minimalist finish." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBhoz9DKQ0uO3-pjl1tdcxxz0cMCvCRaE_q3yWJarM6wPFCei-uCBSMCqw-2f5-rCw2Dv2mD2MOynikhFb7yk_vmu1W29L58spLFj28eu-pkiM5aSm-1Xogq95lqwJEkJ0qjtm_5JDLm1UTyth-zuYwdS5PNN_2hGhFzjtgFCO1-LvTwZzfVqmbq45Z5atZRLUSzMSMJyQNu5RZiF5HUiPSOeDd4tlNJCDWC2Ihjzu4vvrctlcNoVA9xGbYD4OcDFUp-f-9gtv50voE')"></div>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white text-on-surface font-label-md text-label-md px-4 py-2 rounded shadow-sm hover:bg-surface-container-low transition-colors" type="button">
+                                            Substituir Banner
+                                        </button>
+</div>
+</div>
+</div>
+<!-- Communication Options -->
+<div class="space-y-6">
+<div class="flex items-center justify-between p-3 bg-background rounded-lg border border-outline-variant/30">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Cabeçalho Personalizado</span>
+<span class="text-[10px] text-outline">Incluir logo no topo dos e-mails</span>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Remetente Padrão</label>
+<input class="w-full border-outline-variant rounded bg-surface-container-lowest focus:ring-primary focus:border-primary font-body-md text-body-md" type="email" value="contato@eventosflex.com">
+</div>
+</div>
+<!-- Mini Preview Card -->
+<div class="pt-6 border-t border-outline-variant">
+<p class="font-label-md text-label-md text-on-surface-variant mb-4 uppercase tracking-wider">Preview de Badges</p>
+<div class="bg-background p-4 rounded-xl border border-outline-variant/50 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-[#0D9488]"></div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold">JD</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-none">John Doe</p>
+<p class="text-[10px] text-outline">VIP Guest</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+<!-- Bottom Actions -->
+<div class="mt-12 flex justify-end gap-4 pb-16">
+<button class="px-8 py-3 rounded bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md text-label-md hover:bg-surface-container-low transition-colors uppercase tracking-widest" type="button">
+                    Descartar Alterações
+                </button>
+<button class="px-12 py-3 rounded bg-[#0D9488] text-white font-label-md text-label-md hover:brightness-110 shadow-lg transition-all active:scale-95 uppercase tracking-widest" type="submit">
+                    Salvar Branding
+                </button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-8 bg-background border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-4 max-w-container-max-width mx-auto">
+<p class="font-body-md text-body-md text-outline">© 2024 Eventos Flex Operations Command</p>
+<div class="flex gap-8">
+<a class="font-label-md text-label-md font-bold text-on-surface hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Support</a>
+<a class="font-label-md text-label-md font-bold text-on-surface hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md font-bold text-on-surface hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Documentation</a>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interactions for form feedback
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('text-primary');
+            });
+        });
+
+        // Floating Action Button logic (Suppressed as per rules for Branding screen)
+        // No FAB rendered.
+    </script>
+</body></html>

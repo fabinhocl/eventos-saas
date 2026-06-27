@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Attendee Management - Eventos Flex</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#6bd8cb",
+                      "secondary": "#565e74",
+                      "on-surface": "#191c1e",
+                      "on-background": "#191c1e",
+                      "surface": "#f7f9fb",
+                      "surface-container-low": "#f2f4f6",
+                      "tertiary-fixed": "#d3e4fe",
+                      "primary-fixed": "#89f5e7",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed-variant": "#005049",
+                      "inverse-on-surface": "#eff1f3",
+                      "secondary-container": "#dae2fd",
+                      "primary": "#00685f",
+                      "outline-variant": "#bcc9c6",
+                      "secondary-fixed": "#dae2fd",
+                      "on-primary-fixed": "#00201d",
+                      "surface-dim": "#d8dadc",
+                      "surface-tint": "#006a61",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed": "#0b1c30",
+                      "error": "#ba1a1a",
+                      "background": "#f7f9fb",
+                      "on-tertiary-container": "#fdfcff",
+                      "on-surface-variant": "#3d4947",
+                      "inverse-surface": "#2d3133",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#eceef0",
+                      "on-secondary-fixed": "#131b2e",
+                      "surface-container-highest": "#e0e3e5",
+                      "primary-container": "#008378",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-container": "#66768d",
+                      "surface-container-high": "#e6e8ea",
+                      "on-secondary-container": "#5c647a",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#f4fffc",
+                      "surface-bright": "#f7f9fb",
+                      "tertiary": "#4d5d73",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "on-tertiary-fixed-variant": "#38485d",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "surface-variant": "#e0e3e5",
+                      "outline": "#6d7a77",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "tertiary-fixed-dim": "#b7c8e1",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "base": "4px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "3xl": "64px",
+                      "max-width": "1440px",
+                      "xs": "4px",
+                      "2xl": "48px",
+                      "margin": "32px",
+                      "sm": "8px",
+                      "lg": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "1", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface antialiased overflow-x-hidden">
+<!-- Side Navigation Shell -->
+<!-- Main Content Shell -->
+<main class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-40 flex justify-between items-center h-16 px-gutter bg-surface-container-lowest border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-4 flex-1">
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary truncate max-w-md">Global Tech Summit 2024</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group hidden lg:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface rounded-full border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm w-64 transition-all" placeholder="Global Search..." type="text"/>
+</div>
+<div class="flex items-center gap-3 border-l border-outline-variant pl-6">
+<button class="relative p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 p-margin space-y-lg pb-24">
+<!-- Breadcrumbs and Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div class="space-y-1">
+<nav class="flex items-center gap-2 text-label-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Attendees</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-secondary font-bold">All</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Attendee List</h1>
+</div>
+<div class="flex items-center gap-sm"><button class="p-2 text-secondary border border-outline-variant rounded-lg hover:bg-surface-container-high"><span class="material-symbols-outlined">more_vert</span></button><button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md shadow-sm hover:brightness-110"><span class="material-symbols-outlined text-[20px]">add</span><span class="hidden sm:inline">Novo</span></button></div>
+</div>
+<!-- Filter & Search Bar -->
+<div class="glass-panel p-md rounded-xl flex flex-wrap items-center gap-gutter">
+<div class="flex-1 min-w-[280px] relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">person_search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-surface border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary text-body-md outline-none" placeholder="Search by name, email, or company..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Status</span>
+<select class="bg-surface border border-outline-variant rounded-lg px-3 py-2 text-sm focus:border-primary outline-none min-w-[140px]">
+<option>All Statuses</option>
+<option>Confirmed</option>
+<option>Pending</option>
+<option>Cancelled</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Ticket Type</span>
+<select class="bg-surface border border-outline-variant rounded-lg px-3 py-2 text-sm focus:border-primary outline-none min-w-[140px]">
+<option>All Tickets</option>
+<option>VIP Pass</option>
+<option>General Admission</option>
+<option>Speaker Pass</option>
+<option>Exhibitor</option>
+</select>
+</div>
+<button class="mt-5 p-2.5 text-on-surface-variant hover:text-primary hover:bg-primary-container/10 rounded-lg transition-all" title="More Filters">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden"><div class="divide-y divide-outline-variant"><div class="p-4 flex flex-col gap-3"><div class="flex justify-between items-start"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">JS</div><div><p class="font-semibold text-on-surface">Julianne Smith</p><p class="text-xs text-on-surface-variant">ID: 24901</p></div></div><span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">Confirmado</span></div><div class="flex justify-between items-center"><span class="text-xs text-secondary">VIP Pass</span><div class="flex gap-2"><button class="p-1.5 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="p-1.5 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button></div></div></div><div class="p-4 flex flex-col gap-3"><div class="flex justify-between items-start"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-sm">MA</div><div><p class="font-semibold text-on-surface">Marco Aurelio</p><p class="text-xs text-on-surface-variant">ID: 24905</p></div></div><span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold uppercase">Pendente</span></div><div class="flex justify-between items-center"><span class="text-xs text-secondary">General</span><div class="flex gap-2"><button class="p-1.5 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="p-1.5 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button></div></div></div></div></div>
+<!-- Floating Statistics Summary (Mini Dashboard) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="glass-panel p-lg rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-fixed text-on-primary-fixed rounded-xl flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Total Attendees</p>
+<h4 class="text-headline-sm font-bold">1,248</h4>
+</div>
+</div>
+<div class="glass-panel p-lg rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container text-on-primary-container rounded-xl flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Confirmed</p>
+<h4 class="text-headline-sm font-bold">982</h4>
+</div>
+</div>
+<div class="glass-panel p-lg rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-fixed text-on-secondary-fixed rounded-xl flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pending_actions</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Check-in Progress</p>
+<h4 class="text-headline-sm font-bold">76%</h4>
+</div>
+</div>
+<div class="glass-panel p-lg rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 bg-error-container text-on-error-container rounded-xl flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">block</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Cancellations</p>
+<h4 class="text-headline-sm font-bold">42</h4>
+</div>
+</div>
+</div>
+</div>
+<!-- Global Footer Shell -->
+<footer class="flex justify-between items-center py-md px-xl bg-surface border-t border-outline-variant shadow-sm mt-auto">
+<p class="font-label-sm text-label-sm text-on-secondary-container">© 2024 Eventos Flex. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors opacity-100 hover:opacity-80" href="#">Support</a>
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors opacity-100 hover:opacity-80" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors opacity-100 hover:opacity-80" href="#">Terms of Service</a>
+</div>
+</footer>
+<nav class="fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant flex justify-around items-center py-2 px-4 z-50 lg:hidden"><a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary" href="#"><span class="material-symbols-outlined">dashboard</span><span class="text-[10px] font-medium">Painel</span></a><a class="flex flex-col items-center gap-1 text-primary" href="#"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span><span class="text-[10px] font-medium">Inscritos</span></a><a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary" href="#"><span class="material-symbols-outlined">how_to_reg</span><span class="text-[10px] font-medium">Check-in</span></a><a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary" href="#"><span class="material-symbols-outlined">settings</span><span class="text-[10px] font-medium">Ajustes</span></a></nav></main>
+<script>
+        // Simple micro-interaction for active states and hover effects
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateY(-1px)';
+                row.style.transition = 'all 0.2s ease';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Initialize tooltips (simulated)
+        console.log('Eventos Flex Dashboard Initialized');
+    </script>
+</body></html>

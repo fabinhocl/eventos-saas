@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Tech Summit 2024 - Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .shadow-resting {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .shadow-hover:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            border-color: #00685f;
+            box-shadow: 0 0 0 3px rgba(0, 104, 95, 0.15);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#6bd8cb",
+                        "secondary": "#565e74",
+                        "on-surface": "#191c1e",
+                        "on-background": "#191c1e",
+                        "surface": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed": "#d3e4fe",
+                        "primary-fixed": "#89f5e7",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#005049",
+                        "inverse-on-surface": "#eff1f3",
+                        "secondary-container": "#dae2fd",
+                        "primary": "#00685f",
+                        "outline-variant": "#bcc9c6",
+                        "secondary-fixed": "#dae2fd",
+                        "on-primary-fixed": "#00201d",
+                        "surface-dim": "#d8dadc",
+                        "surface-tint": "#006a61",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "error": "#ba1a1a",
+                        "background": "#f7f9fb",
+                        "on-tertiary-container": "#fdfcff",
+                        "on-surface-variant": "#3d4947",
+                        "inverse-surface": "#2d3133",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eceef0",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary-container": "#008378",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#66768d",
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-container": "#5c647a",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#f4fffc",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary": "#4d5d73",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "surface-variant": "#e0e3e5",
+                        "outline": "#6d7a77",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "base": "4px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "3xl": "64px",
+                        "max-width": "1440px",
+                        "xs": "4px",
+                        "2xl": "48px",
+                        "margin": "32px",
+                        "sm": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Top Navigation (Shell suppressed for Transactional focus, using simplified header instead) -->
+<header class="sticky top-0 z-50 bg-surface-container-lowest/80 backdrop-blur-md shadow-sm">
+<div class="max-w-7xl mx-auto px-gutter h-20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">flex_no_wrap</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Eventos Flex</h1>
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Global Tech Summit 2024</p>
+</div>
+</div>
+<div class="hidden md:flex items-center gap-xl">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+                    October 24-26, 2024
+                </div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary">location_on</span>
+                    San Francisco, CA
+                </div>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto py-2xl px-gutter">
+<!-- Hero Section -->
+<section class="mb-2xl relative rounded-xl overflow-hidden shadow-resting">
+<div class="aspect-[21/9] w-full">
+<img class="w-full h-full object-cover" data-alt="A wide, cinematic view of a high-tech conference hall with elegant architectural lines, glowing teal ambient lighting, and professional attendees networking in a minimalist corporate setting. The atmosphere is sophisticated and modern, reflecting an elite tech event with premium textures of glass and polished steel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiHCSrEwue1HKrYfbq8186a60CoLzZ548oV9PomCjmv20OOKWAIxDl9Ax1cox-apLaSatMulgiTBaMnm5Mx6fZfhu4LpTf0xlJ-f_-jTEvixQYeqadTPyRErWb8Tz4a_06miS4WhF52sBei4OtW9lHxHX4Lg3ES6RIoCD7y_lW27zNPqUTXkd4bblX7Tf2XkwGI1GcIVWv4bi0Wrt8q-TL2tCdeQzbx_gSRLlfdHAAjfKEsu_jP_SouKffg4qcMyiji765pZxdL9SQ"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-xl">
+<div class="text-white">
+<span class="bg-primary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase mb-md inline-block">Limited Seats Available</span>
+<h2 class="font-headline-lg text-headline-lg font-bold mb-sm">The Future of Enterprise Connectivity</h2>
+<p class="font-body-md text-body-md opacity-90 max-w-2xl">Join 5,000+ industry leaders for three days of intensive learning, strategic networking, and breakthrough technology showcases.</p>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-xl">
+<!-- Left Column: Description -->
+<div class="lg:col-span-1 space-y-xl">
+<div class="glass-card p-xl rounded-xl shadow-resting">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-md">About the Summit</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-lg">
+                        The Global Tech Summit 2024 by Eventos Flex is the definitive gathering for corporate technology leaders and innovation strategists. We focus on actionable insights, peer-to-peer networking, and real-world implementation of emerging tech.
+                    </p>
+<ul class="space-y-md">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">50+ Keynote Sessions by Global CTOs</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Interactive AI &amp; Cloud Workshops</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Exclusive Executive Networking Dinners</span>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-low p-xl rounded-xl border border-outline-variant/30">
+<h4 class="font-label-sm text-label-sm font-bold text-secondary uppercase mb-md tracking-wider">Venue Location</h4>
+<div class="rounded-lg overflow-hidden h-48 mb-md relative">
+<img class="w-full h-full object-cover" data-alt="A modern architectural map view of downtown San Francisco showing the Moscone Center district. The map uses a minimalist, grayscale design with primary teal accents highlighting key landmarks and the event venue. The style is professional, clean, and high-contrast." data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDc00wFLOBGYLn1KCvbeC4DZa0CmHFUzTkxjKmYLX9pyOVbynRBMndwZsDBTQrdTNGqrlCX3gS3tOGHOMc1fL-7Yiaryv4NR62YCVk8K9YcXpkY3eptFMcq1dPfXVFgPvpBEb4afqu7FnrpUiuSATBzrg1fauW9vanLdyM0u1DSgsot93UqAfryTQgQ-FaQ6-om_m1KmaJNeuuFQ47aGwmp3XTjy5eJSMQ8h75zcON8E_fKldTiYRugLm8qiUZCyOtzcg38SFcJmN50"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface">Moscone Center South</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">747 Howard St, San Francisco, CA 94103</p>
+</div>
+</div>
+<!-- Right Column: Registration Form -->
+<div class="lg:col-span-2">
+<div class="bg-surface-container-lowest p-xl md:p-2xl rounded-xl shadow-resting border border-outline-variant/50">
+<div class="mb-xl text-center md:text-left">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Registration Form</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Complete the form below to secure your pass.</p>
+</div>
+<form action="#" class="space-y-lg" method="POST">
+<!-- Personal Info Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="full_name">Full Name</label>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md font-body-md text-body-md input-focus-ring transition-all" id="full_name" name="full_name" placeholder="John Doe" required="" type="text"/>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="email">Work Email</label>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md font-body-md text-body-md input-focus-ring transition-all" id="email" name="email" placeholder="john.doe@company.com" required="" type="email"/>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="company">Company Name</label>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md font-body-md text-body-md input-focus-ring transition-all" id="company" name="company" placeholder="Acme Corp" required="" type="text"/>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="job_title">Job Title</label>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md font-body-md text-body-md input-focus-ring transition-all" id="job_title" name="job_title" placeholder="CTO / VP Engineering" required="" type="text"/>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="phone">Phone Number</label>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md font-body-md text-body-md input-focus-ring transition-all" id="phone" name="phone" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+</div>
+<!-- Ticket Selection -->
+<div class="pt-md">
+<h4 class="font-label-md text-label-md font-bold text-on-surface mb-md">Select Your Ticket</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Ticket Option 1 -->
+<label class="relative group cursor-pointer">
+<input checked="" class="peer sr-only" name="ticket_type" type="radio" value="standard"/>
+<div class="p-lg rounded-xl border border-outline-variant peer-checked:border-primary peer-checked:bg-primary/5 transition-all shadow-resting shadow-hover">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Standard Pass</span>
+<span class="text-primary font-bold">$1,299</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Main conference access, lunch included, digital certificate.</p>
+<div class="w-6 h-6 border-2 border-outline-variant rounded-full flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary">
+<span class="material-symbols-outlined text-white text-[16px] hidden peer-checked:block">check</span>
+</div>
+</div>
+</label>
+<!-- Ticket Option 2 -->
+<label class="relative group cursor-pointer">
+<input class="peer sr-only" name="ticket_type" type="radio" value="vip"/>
+<div class="p-lg rounded-xl border border-outline-variant peer-checked:border-primary peer-checked:bg-primary/5 transition-all shadow-resting shadow-hover">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">VIP Executive</span>
+<span class="text-primary font-bold">$2,499</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">All-access pass, VIP lounge, exclusive networking dinner, and concierge.</p>
+<div class="w-6 h-6 border-2 border-outline-variant rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px] hidden">check</span>
+</div>
+</div>
+</label>
+</div>
+</div>
+<!-- Submit Section -->
+<div class="pt-xl border-t border-outline-variant/30 flex flex-col items-center gap-md">
+<button class="w-full md:w-auto px-12 py-4 bg-primary text-on-primary font-bold text-body-lg rounded-lg shadow-lg hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-3" type="submit">
+                                Register Now
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<p class="font-label-sm text-label-sm text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+                                Your transaction is secure and encrypted.
+                            </p>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Trust Logos / Sponsors -->
+<section class="mt-3xl pt-2xl border-t border-outline-variant/30 text-center">
+<h5 class="font-label-sm text-label-sm font-bold text-secondary uppercase tracking-widest mb-xl">Platinum Strategic Partners</h5>
+<div class="flex flex-wrap justify-center items-center gap-2xl opacity-40 grayscale hover:grayscale-0 transition-all">
+<div class="h-10 w-32 bg-secondary/20 rounded"></div>
+<div class="h-10 w-32 bg-secondary/20 rounded"></div>
+<div class="h-10 w-32 bg-secondary/20 rounded"></div>
+<div class="h-10 w-32 bg-secondary/20 rounded"></div>
+<div class="h-10 w-32 bg-secondary/20 rounded"></div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/50 py-xl mt-3xl">
+<div class="max-w-7xl mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-xl">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">flex_no_wrap</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Eventos Flex</span>
+<span class="text-outline mx-2">|</span>
+<p class="font-label-sm text-label-sm text-secondary">© 2024 Eventos Flex. All rights reserved.</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors" href="#">Support</a>
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for form ticket selection
+        const radioInputs = document.querySelectorAll('input[name="ticket_type"]');
+        radioInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                // Clear all custom check icons visibility
+                document.querySelectorAll('.material-symbols-outlined.hidden').forEach(icon => {
+                    icon.classList.add('hidden');
+                });
+                
+                // Reset all container borders/bg
+                document.querySelectorAll('input[name="ticket_type"] + div').forEach(div => {
+                    div.classList.remove('border-primary', 'bg-primary/5');
+                    div.querySelector('.w-6.h-6').classList.remove('bg-primary', 'border-primary');
+                    div.querySelector('.material-symbols-outlined').classList.add('hidden');
+                });
+
+                if (input.checked) {
+                    const container = input.nextElementSibling;
+                    container.classList.add('border-primary', 'bg-primary/5');
+                    const checkMarkContainer = container.querySelector('.w-6.h-6');
+                    checkMarkContainer.classList.add('bg-primary', 'border-primary');
+                    checkMarkContainer.querySelector('.material-symbols-outlined').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Simple smooth entrance animation
+        window.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.glass-card, form, section');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'all 0.6s ease-out';
+                el.style.transitionDelay = `${index * 0.1}s`;
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

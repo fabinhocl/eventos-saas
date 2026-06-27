@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+{% block title %}Check-in{% endblock %}
+{% block content %}
+<style>
+  .mobile-shell{max-width:760px;margin:0 auto;background:#f8f9ff;border:1px solid #dbe4ee;border-radius:28px;overflow:hidden}
+  .top{background:#213145;color:#fff;padding:22px 24px}.top h1{margin:0;color:#89f5e7}.top p{margin:6px 0 0;color:#c7d7e6}
+  .body{padding:22px;display:grid;gap:18px}.card{background:#fff;border:1px solid #dbe4ee;border-radius:20px;padding:18px;box-shadow:0 10px 24px rgba(15,23,42,.04)}
+  .nav{display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:10px 14px;border-radius:999px;text-decoration:none;background:#dcefed;color:#18474b}.pill.active{background:#0d8b7e;color:#fff}
+  textarea,input{width:100%;box-sizing:border-box;border:1px solid #cfd9e3;border-radius:14px;padding:14px 16px;font:inherit} button{padding:14px 16px;border:none;border-radius:999px;background:#0d8b7e;color:#fff;font-weight:700;cursor:pointer}
+  .recent{display:grid;gap:12px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid #edf2f7;border-radius:16px;padding:12px}.muted{color:#75859b;font-size:13px}
+</style>
+<div class="mobile-shell">
+  <div class="top"><h1>Check-in do evento</h1><p>{{ event.title }} · modo atual do QR: {{ event.qr_mode_label }}</p></div>
+  <div class="body">
+    <div class="card"><div class="nav"><a class="pill" href="{% url 'dashboard' %}?event={{ event.id }}">Início</a><a class="pill" href="{% url 'event_participants' event.id %}">Inscrições / participantes</a><a class="pill" href="{% url 'event_branding' event.id %}">Hotpage e branding</a><a class="pill active" href="{% url 'event_checkin' event.id %}">Check-in</a></div></div>
+    <div class="card"><h3 style="margin-top:0;">Conteúdo lido do QR Code</h3><form method="post">{% csrf_token %}<textarea name="qr_payload" rows="5" placeholder="Cole aqui o conteúdo do QR lido pelo scanner ou aplicativo."></textarea><div style="margin-top:14px;"><button type="submit">Validar check-in</button></div></form></div>
+    <div class="card"><h3 style="margin-top:0;">Últimos registros</h3><div class="recent">{% for reg in recent_registrations %}<div class="row"><div><strong>{{ reg.participant.name }}</strong><div class="muted">{{ reg.participant.email }} · {{ reg.updated_at|date:'d/m H:i' }}</div></div><div class="pill active">{{ reg.status }}</div></div>{% empty %}<div class="row"><div><strong>Nenhum registro recente</strong><div class="muted">Os novos check-ins aparecerão aqui.</div></div></div>{% endfor %}</div></div>
+  </div>
+</div>
+{% endblock %}

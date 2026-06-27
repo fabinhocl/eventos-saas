@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eventos Flex - Dashboard de Credenciamento</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f8f9ff",
+                    "outline": "#6d7a77",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#89f5e7",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#f4fffc",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary-container": "#b05e3d",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "tertiary-fixed": "#ffdbce",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-container": "#5c647a",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-high": "#dce9ff",
+                    "secondary": "#565e74",
+                    "secondary-container": "#dae2fd",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#008378",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "on-secondary-fixed": "#131b2e",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#924628",
+                    "on-background": "#0b1c30",
+                    "surface-tint": "#006a61",
+                    "surface-dim": "#cbdbf5",
+                    "outline-variant": "#bcc9c6",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-surface-variant": "#3d4947",
+                    "on-primary-fixed-variant": "#005049",
+                    "inverse-primary": "#6bd8cb",
+                    "on-tertiary-fixed-variant": "#773215",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-primary": "#ffffff",
+                    "primary": "#00685f",
+                    "surface-container-low": "#eff4ff",
+                    "inverse-surface": "#213145",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#00201d",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed": "#dae2fd",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "container-max-width": "1440px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "mono-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "mono-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .scanner-frame {
+            position: relative;
+            border: 2px solid rgba(13, 148, 136, 0.2);
+            overflow: hidden;
+        }
+        .scanner-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-color: #00685f;
+            border-style: solid;
+        }
+        .corner-tl { top: 0; left: 0; border-width: 4px 0 0 4px; border-top-left-radius: 8px; }
+        .corner-tr { top: 0; right: 0; border-width: 4px 4px 0 0; border-top-right-radius: 8px; }
+        .corner-bl { bottom: 0; left: 0; border-width: 0 0 4px 4px; border-bottom-left-radius: 8px; }
+        .corner-br { bottom: 0; right: 0; border-width: 0 4px 4px 0; border-bottom-right-radius: 8px; }
+        
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00685f, transparent);
+            box-shadow: 0 0 12px #00685f;
+            animation: scan 3s ease-in-out infinite;
+            z-index: 10;
+        }
+        
+        @keyframes scan {
+            0%, 100% { top: 10%; }
+            50% { top: 90%; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        body {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-[280px] bg-inverse-surface text-surface-variant flex flex-col h-full shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">event_available</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-surface-container-lowest leading-none">Eventos Flex</h2>
+<p class="text-[10px] text-primary-fixed mt-1 tracking-widest uppercase font-bold">Command Center</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-6 flex flex-col gap-2">
+<div class="px-4 py-3 rounded-lg flex items-center gap-3 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Painel Geral</span>
+</div>
+<div class="px-4 py-3 rounded-lg flex items-center gap-3 cursor-pointer bg-primary-container text-on-primary-container shadow-lg shadow-black/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+<span class="font-medium">Check-in Operacional</span>
+</div>
+<div class="px-4 py-3 rounded-lg flex items-center gap-3 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">group</span>
+<span class="font-medium">Lista de Inscritos</span>
+</div>
+<div class="px-4 py-3 rounded-lg flex items-center gap-3 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-medium">Relatórios Tempo Real</span>
+</div>
+<div class="mt-auto px-4 py-3 rounded-lg flex items-center gap-3 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Configurações</span>
+</div>
+</nav>
+<div class="p-4 bg-black/20">
+<div class="flex items-center gap-3 p-2">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold text-xs">OP</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold truncate">Operador Principal</p>
+<p class="text-[10px] opacity-60">Terminal 01 • Ativo</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<!-- Top Header -->
+<header class="h-16 border-b border-outline-variant bg-surface flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-sm text-on-surface">Módulo de Credenciamento</h1>
+<span class="px-2 py-0.5 bg-green-100 text-green-800 text-[10px] font-bold rounded">SISTEMA ONLINE</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="text-[10px] font-bold text-outline uppercase tracking-tighter leading-none">Status da Rede</p>
+<p class="text-xs text-primary font-medium">Ping: 12ms</p>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<button class="p-2 hover:bg-surface-container-low transition-all rounded-full flex items-center justify-center text-on-surface-variant relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-surface-container-low transition-all rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="flex-1 overflow-y-auto p-8 bg-background">
+<div class="max-w-7xl mx-auto flex flex-col gap-8">
+<!-- Main Operation Split -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Scanner Side (Left) -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-4">
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-6 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-sm text-on-surface text-lg">Scanner QR Code</h3>
+<span class="material-symbols-outlined text-primary">videocam</span>
+</div>
+<div class="relative aspect-video w-full bg-slate-900 rounded-xl scanner-frame overflow-hidden shadow-lg border-2 border-primary/20">
+<!-- Camera View Placeholder -->
+<div class="absolute inset-0 opacity-40 grayscale flex items-center justify-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFistvyR9R6l3X0oRzNOySYToy9ykIToFv6Jo_ZAt9D9AD_p04lZEa9PdLrDtUEvkOl1NGD14uYEhrIF_nynpW22z1oWKxK3nL3vYMc_I1qZJAgtxblkc5M5lVDi9bAtbuR5P6NQZLOHxdYfr0XYOzpIj2t2qERyVLTO9SGM0QpzHVbssRNWaXLqIdRoDWvSp7BWPRYFb0MkBjK3cxu-5tzK7l6dP_Ls6Q3lytIHucOKpAShBAhsLb3BNPB4dt9x8fRV65Fskc7Vl6'); background-size: cover; background-position: center;"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-12">
+<div class="relative w-48 h-48">
+<div class="scanner-corner corner-tl"></div>
+<div class="scanner-corner corner-tr"></div>
+<div class="scanner-corner corner-bl"></div>
+<div class="scanner-corner corner-br"></div>
+<div class="scan-line"></div>
+</div>
+</div>
+<div class="absolute bottom-6 inset-x-0 text-center">
+<span class="bg-black/70 text-white px-4 py-2 rounded-full text-label-md font-label-md backdrop-blur-md border border-white/20">
+                                        CENTRALIZAR QR CODE NA MOLDURA
+                                    </span>
+</div>
+</div>
+<div class="mt-6 p-4 bg-surface-container-low rounded-lg border border-outline-variant/30 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-body-md text-on-surface-variant">Mantenha a iluminação adequada para uma leitura mais rápida.</p>
+</div>
+</div>
+</div>
+<!-- Manual Search & Activity (Right) -->
+<div class="col-span-12 lg:col-span-7 flex flex-col gap-6">
+<!-- Manual Entry -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-6 shadow-sm">
+<h3 class="font-headline-sm text-on-surface text-lg mb-4">Busca Manual</h3>
+<div class="relative flex gap-3">
+<div class="relative flex-1">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-xl py-4 pl-12 pr-4 text-body-md focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline/60" placeholder="Digite CPF, E-mail ou Código da Inscrição" type="text"/>
+</div>
+<button class="px-8 bg-primary text-white font-label-md rounded-xl hover:bg-primary/90 active:scale-95 transition-all shadow-md shadow-primary/20">
+                                    LOCALIZAR
+                                </button>
+</div>
+</div>
+<!-- Recent Check-ins -->
+<div class="flex-1 bg-surface-container-lowest rounded-2xl border border-outline-variant p-6 shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm text-on-surface text-lg">Últimas Atividades</h3>
+<span class="bg-primary/10 text-primary px-2 py-0.5 rounded text-[10px] font-bold">AO VIVO</span>
+</div>
+<button class="text-xs text-primary font-bold hover:underline">VER HISTÓRICO COMPLETO</button>
+</div>
+<div class="space-y-3 flex-1 overflow-y-auto max-h-[300px] pr-2">
+<!-- Activity Item 1 -->
+<div class="border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline-sm text-base text-on-surface truncate">Ricardo Mendes</p>
+<p class="text-body-md text-on-surface-variant truncate">Entrada VIP • Terminal 01 • Portão Principal</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-mono-sm text-xs text-outline">14:22:10</p>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-bold">CONCLUÍDO</span>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline-sm text-base text-on-surface truncate">Ana Julia Santos</p>
+<p class="text-body-md text-on-surface-variant truncate">Entrada Comum • Terminal 04 • Portão B</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-mono-sm text-xs text-outline">14:20:45</p>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-bold">CONCLUÍDO</span>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline-sm text-base text-on-surface truncate">Marcos Oliveira</p>
+<p class="text-body-md text-on-surface-variant truncate">Expositor • Terminal 01 • Portão Principal</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-mono-sm text-xs text-outline">14:19:12</p>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-bold">CONCLUÍDO</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- KPI Bottom Section -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-label-md font-bold text-outline uppercase tracking-wider">Total Presente</p>
+<p class="font-display-lg text-4xl text-primary mt-2">1.240</p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">82% do esperado</span>
+<span class="text-[10px] text-green-600 font-bold">+12% vs ontem</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-label-md font-bold text-outline uppercase tracking-wider">Pendentes</p>
+<p class="font-display-lg text-4xl text-tertiary mt-2">156</p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">Fluxo estável</span>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-[10px] font-bold">ALTA</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-label-md font-bold text-outline uppercase tracking-wider">Check-ins / Min</p>
+<p class="font-display-lg text-4xl text-on-surface mt-2">24</p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">Pico atingido às 14:05</span>
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-label-md font-bold text-outline uppercase tracking-wider">Capacidade Local</p>
+<p class="font-display-lg text-4xl text-on-surface mt-2">68%</p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30">
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 68%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Desktop Footer -->
+<footer class="h-12 border-t border-outline-variant bg-surface px-8 flex items-center justify-between shrink-0">
+<p class="text-[11px] text-outline">© 2024 Eventos Flex Operations Command • Build v2.4.0-stable</p>
+<div class="flex gap-6">
+<a class="text-[11px] text-outline hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-xs">description</span> Documentação
+                </a>
+<a class="text-[11px] text-outline hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-xs">support_agent</span> Suporte Técnico
+                </a>
+</div>
+</footer>
+</main>
+<!-- Scanner feedback script -->
+<script>
+        const input = document.querySelector('input');
+        const btn = input.nextElementSibling;
+        
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                processSearch();
+            }
+        });
+
+        btn.addEventListener('click', function() {
+            processSearch();
+        });
+
+        function processSearch() {
+            if (!input.value) return;
+            const originalText = btn.innerText;
+            btn.innerText = 'BUSCANDO...';
+            btn.disabled = true;
+            btn.classList.add('opacity-70');
+            
+            setTimeout(() => {
+                btn.innerText = 'SUCESSO';
+                btn.classList.replace('bg-primary', 'bg-tertiary');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.replace('bg-tertiary', 'bg-primary');
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-70');
+                    input.value = '';
+                }, 1500);
+            }, 800);
+        }
+    </script>
+</body></html>

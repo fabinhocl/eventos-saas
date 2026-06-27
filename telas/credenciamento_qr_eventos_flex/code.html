@@ -1,0 +1,270 @@
+<!DOCTYPE html><html class="light" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Eventos Flex - Credenciamento</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f8f9ff",
+                    "outline": "#6d7a77",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#89f5e7",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#f4fffc",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary-container": "#b05e3d",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "tertiary-fixed": "#ffdbce",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-container": "#5c647a",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-high": "#dce9ff",
+                    "secondary": "#565e74",
+                    "secondary-container": "#dae2fd",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#008378",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "on-secondary-fixed": "#131b2e",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#924628",
+                    "on-background": "#0b1c30",
+                    "surface-tint": "#006a61",
+                    "surface-dim": "#cbdbf5",
+                    "outline-variant": "#bcc9c6",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-surface-variant": "#3d4947",
+                    "on-primary-fixed-variant": "#005049",
+                    "inverse-primary": "#6bd8cb",
+                    "on-tertiary-fixed-variant": "#773215",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-primary": "#ffffff",
+                    "primary": "#00685f",
+                    "surface-container-low": "#eff4ff",
+                    "inverse-surface": "#213145",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#00201d",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed": "#dae2fd",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "container-max-width": "1440px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "mono-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "mono-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .scanner-frame {
+            position: relative;
+            border: 2px solid rgba(13, 148, 136, 0.2);
+            overflow: hidden;
+        }
+        .scanner-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-color: #0D9488;
+            border-style: solid;
+        }
+        .corner-tl { top: 0; left: 0; border-width: 4px 0 0 4px; border-top-left-radius: 8px; }
+        .corner-tr { top: 0; right: 0; border-width: 4px 4px 0 0; border-top-right-radius: 8px; }
+        .corner-bl { bottom: 0; left: 0; border-width: 0 0 4px 4px; border-bottom-left-radius: 8px; }
+        .corner-br { bottom: 0; right: 0; border-width: 0 4px 4px 0; border-bottom-right-radius: 8px; }
+        
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #0D9488, transparent);
+            box-shadow: 0 0 8px #0D9488;
+            animation: scan 3s ease-in-out infinite;
+            z-index: 10;
+        }
+        
+        @keyframes scan {
+            0%, 100% { top: 10%; }
+            50% { top: 90%; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md flex flex-col min-h-screen">
+<!-- TopAppBar (Based on Shared Components) -->
+<header class="w-full h-16 sticky top-0 z-40 bg-surface border-b border-outline-variant flex justify-between items-center px-4 max-w-container-max-width mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low transition-all rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-primary">Credenciamento</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-low transition-all rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex-1 w-full max-w-md mx-auto px-margin-mobile py-6 flex flex-col gap-6">
+<!-- Scanner Section -->
+<section class="flex flex-col gap-4">
+<div class="relative aspect-square w-full bg-slate-900 rounded-xl scanner-frame overflow-hidden shadow-lg">
+<!-- Placeholder for Camera View -->
+<div class="absolute inset-0 opacity-40 grayscale flex items-center justify-center" data-alt="A cinematic, high-angle shot of a crowded professional event tech conference floor with blurry corporate booths and attendees in the background. The scene is bathed in a professional cool blue and teal lighting, reflecting a high-tech atmosphere. Minimalist and clean, with a focus on professional event operations." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFistvyR9R6l3X0oRzNOySYToy9ykIToFv6Jo_ZAt9D9AD_p04lZEa9PdLrDtUEvkOl1NGD14uYEhrIF_nynpW22z1oWKxK3nL3vYMc_I1qZJAgtxblkc5M5lVDi9bAtbuR5P6NQZLOHxdYfr0XYOzpIj2t2qERyVLTO9SGM0QpzHVbssRNWaXLqIdRoDWvSp7BWPRYFb0MkBjK3cxu-5tzK7l6dP_Ls6Q3lytIHucOKpAShBAhsLb3BNPB4dt9x8fRV65Fskc7Vl6')">
+</div>
+<!-- Scanner UI Overlay -->
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-12">
+<div class="relative w-full h-full">
+<div class="scanner-corner corner-tl"></div>
+<div class="scanner-corner corner-tr"></div>
+<div class="scanner-corner corner-bl"></div>
+<div class="scanner-corner corner-br"></div>
+<div class="scan-line"></div>
+</div>
+</div>
+<div class="absolute bottom-4 inset-x-0 text-center">
+<span class="bg-black/60 text-white px-3 py-1 rounded-full text-label-md font-label-md backdrop-blur-md">
+                        Aponte para o QR Code
+                    </span>
+</div>
+</div>
+<!-- Manual Entry Field -->
+<div class="relative">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-4 pl-12 pr-4 text-body-md focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline/60 shadow-sm" placeholder="CPF ou Código da Inscrição" type="text">
+<button class="absolute inset-y-2 right-2 px-4 bg-primary text-white font-label-md rounded-md active:scale-95 transition-transform">
+                    BUSCAR
+                </button>
+</div>
+</section>
+<!-- Feedback / Last Check-in Section -->
+<section class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h2 class="font-label-md text-label-md text-outline uppercase tracking-wider">Último Check-in</h2>
+<span class="text-xs text-primary font-bold">HISTÓRICO</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1">
+<p class="font-headline-sm text-headline-sm text-on-surface leading-tight">Ricardo Mendes</p>
+<p class="text-body-md text-on-surface-variant">Entrada VIP • Portão Principal</p>
+</div>
+<div class="text-right">
+<p class="font-mono-sm text-mono-sm text-outline">14:22:10</p>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-bold">CONCLUÍDO</span>
+</div>
+</div>
+<!-- Operational Stats Row -->
+<div class="grid grid-cols-2 gap-3 mt-2">
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/30">
+<p class="text-label-md font-label-md text-outline uppercase">Total Presente</p>
+<p class="font-display-lg text-display-lg text-primary mt-1">1.240</p>
+<p class="text-[11px] text-on-surface-variant mt-1">82% da meta diária</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/30">
+<p class="text-label-md font-label-md text-outline uppercase">Pendentes</p>
+<p class="font-display-lg text-display-lg text-tertiary mt-1">156</p>
+<p class="text-[11px] text-on-surface-variant mt-1">Fluxo estável</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Based on Shared Components) -->
+<footer class="w-full py-8 mt-auto bg-background border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-4 max-w-container-max-width mx-auto">
+<p class="font-label-md text-label-md text-outline">© 2024 Eventos Flex Operations Command</p>
+<div class="flex gap-6">
+<a class="font-body-md text-body-md text-outline hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Support</a>
+<a class="font-body-md text-body-md text-outline hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Documentation</a>
+</div>
+</div>
+</footer>
+<!-- Bottom Nav for Mobile Context -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-inverse-surface text-surface-variant/70 grid grid-cols-4 h-16 z-50">
+<div class="flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-on-secondary-fixed-variant/5 transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Painel</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 cursor-pointer bg-on-secondary-fixed-variant/10 text-primary-fixed border-t-2 border-primary-fixed transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+<span class="text-[10px] font-medium">Check-in</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-on-secondary-fixed-variant/5 transition-colors">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Inscritos</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-on-secondary-fixed-variant/5 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</div>
+</nav>
+<!-- Micro-interaction for feedback -->
+<script>
+        document.querySelector('input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const btn = this.nextElementSibling;
+                btn.innerText = 'OK';
+                btn.classList.replace('bg-primary', 'bg-tertiary');
+                setTimeout(() => {
+                    btn.innerText = 'BUSCAR';
+                    btn.classList.replace('bg-tertiary', 'bg-primary');
+                    this.value = '';
+                }, 1500);
+            }
+        });
+    </script>
+</body></html>

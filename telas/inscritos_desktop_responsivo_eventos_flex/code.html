@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#ffdbce",
+                    "secondary": "#565e74",
+                    "outline-variant": "#bcc9c6",
+                    "on-surface": "#0b1c30",
+                    "on-error": "#ffffff",
+                    "surface-container": "#e5eeff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-tint": "#006a61",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-variant": "#d3e4fe",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "background": "#f8f9ff",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-tertiary-fixed": "#370e00",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary-fixed-variant": "#773215",
+                    "on-primary-fixed": "#00201d",
+                    "tertiary-container": "#b05e3d",
+                    "surface-dim": "#cbdbf5",
+                    "primary-fixed": "#89f5e7",
+                    "primary": "#00685f",
+                    "outline": "#6d7a77",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-container": "#fffbff",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-primary-fixed-variant": "#005049",
+                    "on-primary-container": "#f4fffc",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-container": "#008378",
+                    "tertiary": "#924628",
+                    "error": "#ba1a1a",
+                    "on-secondary-container": "#5c647a",
+                    "secondary-container": "#dae2fd",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#3d4947",
+                    "surface-bright": "#f8f9ff",
+                    "inverse-primary": "#6bd8cb",
+                    "surface": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#dae2fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max-width": "1440px",
+                    "margin-desktop": "32px",
+                    "unit": "4px",
+                    "sidebar-width": "280px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "mono-sm": ["Inter"],
+                    "headline-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "mono-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .list-item-hover { transition: background-color 0.2s ease; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col md:flex-row">
+<!-- Navigation Drawer (Sidebar) -->
+<aside class="hidden md:flex flex-col h-full w-sidebar-width fixed left-0 top-0 bg-inverse-surface z-50 overflow-y-auto">
+<div class="p-8">
+<span class="font-headline-md text-headline-md text-primary-fixed tracking-tight">Eventos Flex</span>
+</div>
+<nav class="flex flex-col grow px-4 gap-1">
+<a class="flex items-center text-surface-variant/70 hover:bg-white/5 hover:text-surface-variant px-4 py-3 rounded-xl transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center text-primary-fixed bg-white/10 px-4 py-3 rounded-xl cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-md text-label-md">Attendees</span>
+</a>
+<a class="flex items-center text-surface-variant/70 hover:bg-white/5 hover:text-surface-variant px-4 py-3 rounded-xl transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-md text-label-md">Check-in</span>
+</a>
+<a class="flex items-center text-surface-variant/70 hover:bg-white/5 hover:text-surface-variant px-4 py-3 rounded-xl transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="badge">badge</span>
+<span class="font-label-md text-label-md">Badge Editor</span>
+</a>
+<a class="flex items-center text-surface-variant/70 hover:bg-white/5 hover:text-surface-variant px-4 py-3 rounded-xl transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="palette">palette</span>
+<span class="font-label-md text-label-md">Branding</span>
+</a>
+<div class="mt-auto pb-8">
+<a class="flex items-center text-surface-variant/70 hover:bg-white/5 hover:text-surface-variant px-4 py-3 rounded-xl transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-sidebar-width flex flex-col min-h-screen relative">
+<!-- Top App Bar -->
+<header class="w-full h-20 sticky top-0 z-40 bg-white border-b border-outline-variant/30 flex items-center justify-between px-6 md:px-margin-desktop">
+<div class="flex items-center gap-6 flex-1 max-w-2xl">
+<button class="md:hidden p-2 rounded-full hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+</button>
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-2.5 bg-surface-container-low border-transparent border focus:bg-white focus:border-primary rounded-full text-body-md outline-none transition-all placeholder:text-outline/60" placeholder="Pesquisar por nome, email ou ingresso..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2.5 rounded-full hover:bg-surface-container-low transition-all relative">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
+<div class="text-right hidden sm:block">
+<p class="text-label-md font-bold text-on-surface">Admin User</p>
+<p class="text-[10px] text-outline uppercase tracking-wider">Event Manager</p>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 p-0.5">
+<img class="w-full h-full rounded-full object-cover" data-alt="A professional headshot of a high-level corporate event manager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtzFYTqEU6cRsGt9kADPzpzTCajGnkordL3C8nvNGg2bWBoIdLjVBuNdjIMO5w6bOBDkvh1tQ-5io3zlln2Jo4GZECYi1WYqrkKWpTIBC9gfBBg3jvqTDKzAkX_ovtEl4QjCh140aor3e-Ee_bsXYVTy0ZGihO8GxOeTV5Y_LQDryuxiZiiiI3P73LSSgYFofeEMPvsuZgVGNiDNe7wbQpjY5yH7p3OIIyDp6NqxUzFfNM4O5jdSHrvztJ0qni8elPQWaKApfOHZ7P"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Filters & Page Title -->
+<section class="p-6 md:p-margin-desktop bg-background">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 max-w-container-max-width mx-auto">
+<div class="space-y-1">
+<h1 class="font-display-lg text-display-lg text-on-surface">Gerenciar Inscritos</h1>
+<p class="text-body-md text-outline">Visualize e gerencie todos os participantes confirmados e pendentes.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<select class="bg-white border-outline-variant/50 rounded-lg text-body-md py-2.5 pl-4 pr-10 focus:ring-primary focus:border-primary">
+<option>Todos os Status</option>
+<option>Confirmado</option>
+<option>Pendente</option>
+<option>Cancelado</option>
+</select>
+<select class="bg-white border-outline-variant/50 rounded-lg text-body-md py-2.5 pl-4 pr-10 focus:ring-primary focus:border-primary">
+<option>Tipo de Ingresso</option>
+<option>VIP Experience</option>
+<option>Full Pass</option>
+<option>Standard Pass</option>
+</select>
+<button class="flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary rounded-lg text-body-md font-semibold hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+                    Novo Inscrito
+                </button>
+</div>
+</div>
+</section>
+<!-- High-Density Data Table -->
+<div class="px-6 md:px-margin-desktop pb-32">
+<div class="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/30">
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider w-12">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">Participante</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">Tipo de Ingresso</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">Inscrição</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider text-center">Status</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1 -->
+<tr class="list-item-hover hover:bg-surface-container-low/30 cursor-pointer">
+<td class="px-6 py-4">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-body-md">JD</div>
+<div>
+<p class="font-bold text-on-surface">Juliana Drummond</p>
+<p class="text-label-md text-outline">juliana.d@techconf.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex px-2.5 py-1 bg-primary-container/10 text-primary-container font-label-md text-[10px] uppercase font-bold tracking-wider rounded border border-primary-container/20">VIP Experience</span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">12/04/2024</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 font-label-md text-label-md rounded-full border border-green-100">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        Confirmado
+                                    </span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="list-item-hover hover:bg-surface-container-low/30 cursor-pointer">
+<td class="px-6 py-4">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-body-md">RS</div>
+<div>
+<p class="font-bold text-on-surface">Ricardo Soares</p>
+<p class="text-label-md text-outline">ricardo@globalvent.br</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex px-2.5 py-1 bg-outline/5 text-on-secondary-fixed-variant font-label-md text-[10px] uppercase font-bold tracking-wider rounded border border-outline/20">Standard Pass</span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">14/04/2024</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-orange-50 text-orange-700 font-label-md text-label-md rounded-full border border-orange-100">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                                        Pendente
+                                    </span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="list-item-hover hover:bg-surface-container-low/30 cursor-pointer">
+<td class="px-6 py-4">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-body-md">AM</div>
+<div>
+<p class="font-bold text-on-surface">Ana Mendes</p>
+<p class="text-label-md text-outline">ana.mendes@startup.io</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex px-2.5 py-1 bg-primary-container/10 text-primary-container font-label-md text-[10px] uppercase font-bold tracking-wider rounded border border-primary-container/20">Full Pass</span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">15/04/2024</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 font-label-md text-label-md rounded-full border border-green-100">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        Confirmado
+                                    </span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="list-item-hover hover:bg-surface-container-low/30 cursor-pointer">
+<td class="px-6 py-4">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-body-md">FM</div>
+<div>
+<p class="font-bold text-on-surface">Felipe Marques</p>
+<p class="text-label-md text-outline">felipe@designstudio.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex px-2.5 py-1 bg-outline/5 text-on-secondary-fixed-variant font-label-md text-[10px] uppercase font-bold tracking-wider rounded border border-outline/20">Standard Pass</span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">16/04/2024</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 font-label-md text-label-md rounded-full border border-green-100">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        Confirmado
+                                    </span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination -->
+<div class="px-6 py-4 bg-surface-container-low/50 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-body-md text-outline">Mostrando 1 a 4 de 128 inscritos</span>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant/30 rounded hover:bg-white transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-2 border border-outline-variant/30 rounded bg-white text-primary font-bold px-4">1</button>
+<button class="p-2 border border-outline-variant/30 rounded hover:bg-white transition-colors px-4">2</button>
+<button class="p-2 border border-outline-variant/30 rounded hover:bg-white transition-colors px-4">3</button>
+<button class="p-2 border border-outline-variant/30 rounded hover:bg-white transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Export Action -->
+<div class="fixed bottom-8 right-8">
+<button class="flex items-center gap-3 px-8 py-4 bg-on-background text-white font-body-lg rounded-full shadow-2xl hover:bg-primary transition-all active:scale-95 group">
+<span class="material-symbols-outlined group-hover:-translate-y-0.5 transition-transform" data-icon="file_download">file_download</span>
+            Exportar Relatório
+        </button>
+</div>
+<!-- Footer -->
+<footer class="w-full py-8 bg-background border-t border-outline-variant/30 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-4 max-w-container-max-width mx-auto">
+<span class="font-label-md text-label-md font-bold text-on-surface/60">© 2024 Eventos Flex Operations Command</span>
+<div class="flex gap-8">
+<a class="font-body-md text-body-md text-outline hover:text-primary transition-colors" href="#">Ajuda</a>
+<a class="font-body-md text-body-md text-outline hover:text-primary transition-colors" href="#">Privacidade</a>
+<a class="font-body-md text-body-md text-outline hover:text-primary transition-colors" href="#">Documentação</a>
+</div>
+</div>
+</footer>
+</main>
+<!-- Mobile Bottom Navigation (Supplemental) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-inverse-surface flex justify-around items-center h-16 z-50 px-4 border-t border-white/5">
+<a class="flex flex-col items-center gap-1 text-surface-variant/70" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium">Dash</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary-fixed" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[10px] font-medium">Inscritos</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-surface-variant/70" href="#">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="text-[10px] font-medium">Check-in</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-surface-variant/70" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</a>
+</nav>
+<script>
+    // Row selection and micro-interactions
+    document.querySelectorAll('.list-item-hover').forEach(row => {
+        row.addEventListener('click', (e) => {
+            if (e.target.type !== 'checkbox') {
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+            }
+        });
+    });
+</script>
+</body></html>

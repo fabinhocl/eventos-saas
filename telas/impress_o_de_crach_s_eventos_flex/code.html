@@ -1,0 +1,359 @@
+<!DOCTYPE html><html class="light" lang="pt-br"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Eventos Flex - Impressão de Crachás</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f8f9ff",
+                    "outline": "#6d7a77",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#89f5e7",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#f4fffc",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary-container": "#b05e3d",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "tertiary-fixed": "#ffdbce",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-container": "#5c647a",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-high": "#dce9ff",
+                    "secondary": "#565e74",
+                    "secondary-container": "#dae2fd",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#008378",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "on-secondary-fixed": "#131b2e",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#924628",
+                    "on-background": "#0b1c30",
+                    "surface-tint": "#006a61",
+                    "surface-dim": "#cbdbf5",
+                    "outline-variant": "#bcc9c6",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-surface-variant": "#3d4947",
+                    "on-primary-fixed-variant": "#005049",
+                    "inverse-primary": "#6bd8cb",
+                    "on-tertiary-fixed-variant": "#773215",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-primary": "#ffffff",
+                    "primary": "#00685f",
+                    "surface-container-low": "#eff4ff",
+                    "inverse-surface": "#213145",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#00201d",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed": "#dae2fd",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "container-max-width": "1440px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "mono-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "mono-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+            margin: 0;
+            display: flex;
+            min-h-screen: 100vh;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #00685f;
+            background-color: #00685f;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #00685f;
+        }
+        /* Badge Realistic Preview */
+        .badge-preview {
+            aspect-ratio: 1 / 1.414; /* A6 roughly */
+            max-width: 320px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex overflow-hidden">
+<!-- NavigationDrawer (Sidebar) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-inverse-surface flex flex-col z-50">
+<div class="px-6 py-8">
+<h1 class="font-headline-md text-headline-md text-primary-fixed tracking-tight">Eventos Flex</h1>
+</div>
+<nav class="flex-grow overflow-y-auto">
+<!-- Dashboard -->
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<!-- Attendees -->
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined mr-4">group</span>
+<span class="font-label-md text-label-md">Attendees</span>
+</a>
+<!-- Check-in -->
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined mr-4">qr_code_scanner</span>
+<span class="font-label-md text-label-md">Check-in</span>
+</a>
+<!-- Badge Editor (Active) -->
+<a class="flex items-center text-primary-fixed border-l-4 border-primary-fixed bg-on-secondary-fixed-variant/10 px-6 py-4 transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined mr-4">badge</span>
+<span class="font-label-md text-label-md">Badge Editor</span>
+</a>
+<!-- Branding -->
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined mr-4">palette</span>
+<span class="font-label-md text-label-md">Branding</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center text-surface-variant/70 hover:text-surface-variant px-6 py-4 hover:bg-on-secondary-fixed-variant/5 transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width flex-grow flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full h-16 sticky top-0 z-40 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter max-w-container-max-width mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface cursor-pointer">menu</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Impressão de Crachás</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container-low p-2 rounded-full transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">notifications</span>
+<span class="font-body-md text-body-md text-on-surface-variant hidden md:inline">Notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white font-bold">
+                    OP
+                </div>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="p-margin-desktop flex-grow max-w-container-max-width mx-auto w-full">
+<!-- Breadcrumbs / Top Actions -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<p class="text-outline font-label-md text-label-md mb-2">OPERATIONS / PRINTER QUEUE</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">Visualização de Impressão</h3>
+</div>
+<div class="flex gap-4">
+<button class="px-4 py-2 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-slate-100 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        EDITAR DESIGN
+                    </button>
+</div>
+</div>
+<!-- Bento Layout for Preview and Settings -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Badge Preview Section (Asymmetric Large Column) -->
+<div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-8 flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Subtle background decoration -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-fixed/20 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl"></div>
+<div class="text-center mb-8">
+<span class="bg-surface-container-high text-on-secondary-container px-3 py-1 rounded-full font-label-md text-[10px]">PREVIEW EM TEMPO REAL</span>
+</div>
+<!-- The Badge -->
+<div class="badge-preview bg-white border border-slate-200 rounded-lg flex flex-col items-center p-8 transition-transform duration-300 hover:scale-[1.02]" id="badge-card">
+<!-- Brand Logo Area -->
+<div class="w-20 h-20 mb-8 flex items-center justify-center" id="badge-logo-container">
+<div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+<!-- User Info -->
+<div class="text-center mb-10">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-1">João Silva</h4>
+<p class="text-on-surface-variant font-body-lg text-body-lg uppercase tracking-widest opacity-70">Senior Product Manager</p>
+<p class="text-outline font-label-md text-label-md mt-2">TECHFLOW SOLUTIONS</p>
+</div>
+<!-- Divider -->
+<div class="w-full border-t border-dashed border-slate-200 mb-10"></div>
+<!-- QR Code Area -->
+<div class="flex flex-col items-center">
+<div class="w-32 h-32 bg-slate-50 p-2 border border-slate-100 rounded-lg mb-4">
+<img class="w-full h-full object-contain" data-alt="A clean, minimalist high-contrast QR code generated in a modern flat design style. The QR code is perfectly centered on a white background with subtle slate grey accents. Professional lighting, 4k resolution, designed for a corporate event management interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhYT1L5rWz1OVx_AcTn5_0B5Jni1hODcZTB5UDF67AaiECmt0okq6qofKke2SnV3DbuyY15zRqE7s6on7X020-VFIXFCvZLxcyRcxdKeGpPM4XBr8pkJNZtfupI-oCq1boYsaaLNVk2rCXs6m_BkLSpFjskHBXhRPuFqCSjAc9gcqTju-HyHFTUZ_HMiVacUSuIX5nj3HOR0Ej09tJquBHgZ4U3qvUdcE1PFf51547QVUEwG2-TAOZn3oLn_cKd75PDE39gp8l2CJ4">
+</div>
+<span class="font-mono-sm text-mono-sm text-outline tracking-widest">EF-2024-JS-092</span>
+</div>
+<!-- Footer/Category Indicator -->
+<div class="mt-auto w-full flex justify-between items-end">
+<div class="h-1 w-24 bg-primary rounded-full"></div>
+<span class="text-primary font-bold font-label-md text-[10px]">VISITANTE VIP</span>
+</div>
+</div>
+<p class="mt-8 text-outline font-body-md text-body-md italic text-center max-w-sm">
+                        O crachá será impresso em papel couché 250g em formato A6. Verifique as margens antes de confirmar.
+                    </p>
+</div>
+<!-- Settings Section (Narrow Column) -->
+<div class="lg:col-span-5 space-y-gutter">
+<!-- Configuration Card -->
+<div class="bg-white rounded-xl border border-slate-200 p-6">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">tune</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Configurações</h4>
+</div>
+<div class="space-y-6">
+<!-- Toggle 1 -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Imprimir na entrada</p>
+<p class="text-outline font-body-md text-body-md">Inicia a fila de impressão ao fazer check-in.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" onchange="console.log('Imprimir na entrada changed')" type="checkbox">
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Toggle 2 -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Incluir logo</p>
+<p class="text-outline font-body-md text-body-md">Exibe o logo do evento no topo do crachá.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="toggle-logo" onchange="document.getElementById('badge-logo-container').classList.toggle('hidden')" type="checkbox">
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Printer Select -->
+<div class="pt-4 border-t border-slate-100">
+<label class="block text-on-surface-variant font-label-md text-label-md mb-2">IMPRESSORA SELECIONADA</label>
+<div class="relative">
+<select class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 appearance-none font-body-md text-body-md focus:outline-none focus:border-primary">
+<option>Dymo LabelWriter 450 (Balcão 01)</option>
+<option>Dymo LabelWriter 550 (Balcão 02)</option>
+<option>Zebra ZD421 (Saída VIP)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-outline pointer-events-none">expand_more</span>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-[10px] text-green-700 font-bold tracking-tight">ONLINE - PRONTO PARA IMPRIMIR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Print Action Card -->
+<div class="bg-primary-container rounded-xl p-6 shadow-sm flex flex-col gap-4">
+<div class="flex items-start gap-4">
+<div class="bg-white/20 p-3 rounded-lg text-white">
+<span class="material-symbols-outlined text-3xl">print</span>
+</div>
+<div class="text-white">
+<h5 class="font-headline-sm text-headline-sm">Pronto para Enviar</h5>
+<p class="text-white/80 font-body-md text-body-md">Envie agora para a fila de impressão térmica.</p>
+</div>
+</div>
+<button class="w-full bg-white text-primary font-bold py-4 rounded-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-3 active:scale-95 shadow-lg">
+<span class="material-symbols-outlined">print_connect</span>
+                            IMPRIMIR CRACHÁ
+                        </button>
+<p class="text-center text-white/60 font-label-md text-[10px]">ESTIMATIVA: 1.5 SEGUNDOS</p>
+</div>
+<!-- Quick Stats -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white border border-slate-200 p-4 rounded-lg">
+<p class="text-outline font-label-md text-[10px] uppercase">Impressos Hoje</p>
+<p class="font-headline-md text-headline-md text-on-surface">1,284</p>
+</div>
+<div class="bg-white border border-slate-200 p-4 rounded-lg">
+<p class="text-outline font-label-md text-[10px] uppercase">Fila Atual</p>
+<p class="font-headline-md text-headline-md text-on-surface">0</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-8 mt-auto bg-background border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-4 w-full max-w-container-max-width mx-auto">
+<p class="font-label-md text-label-md font-bold text-on-surface">© 2024 Eventos Flex Operations Command</p>
+<div class="flex gap-6">
+<a class="text-outline font-body-md text-body-md hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Support</a>
+<a class="text-outline font-body-md text-body-md hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Privacy Policy</a>
+<a class="text-outline font-body-md text-body-md hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Documentation</a>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for the badge card
+        const badge = document.getElementById('badge-card');
+        if (badge) {
+            document.addEventListener('mousemove', (e) => {
+                const rect = badge.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    const rotateX = (y - rect.height / 2) / 20;
+                    const rotateY = -(x - rect.width / 2) / 20;
+                    badge.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                } else {
+                    badge.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+                }
+            });
+        }
+    </script>
+</body></html>

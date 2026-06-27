@@ -1,0 +1,101 @@
+{% extends "core/base.html" %}
+{% block title %}Lista de participantes{% endblock %}
+{% block content %}
+<style>
+  .att-shell { display:grid; grid-template-columns:260px 1fr; min-height:calc(100vh - 32px); background:#f7f9fb; border-radius:24px; overflow:hidden; }
+  .att-side { background:#213145; color:#dbe6f7; padding:28px 0; display:flex; flex-direction:column; }
+  .att-brand { padding:0 28px 24px; border-bottom:1px solid rgba(255,255,255,.08); }
+  .att-brand h1{ margin:0; color:#89f5e7; font-size:28px; }
+  .att-brand p{ margin:4px 0 0; color:#9ab0cc; font-size:14px; }
+  .att-nav { padding:18px 10px; display:grid; gap:4px; flex:1; }
+  .att-nav a, .att-nav button { color:#c8d6ea; text-decoration:none; padding:14px 18px; border-radius:14px; display:flex; align-items:center; gap:12px; background:none; border:none; width:100%; font:inherit; cursor:pointer; }
+  .att-nav a.active, .att-nav a:hover, .att-nav button:hover { background:rgba(255,255,255,.08); color:#89f5e7; }
+  .att-main { display:flex; flex-direction:column; }
+  .att-top { padding:18px 24px; background:#fff; border-bottom:1px solid #dbe4ee; display:flex; justify-content:space-between; gap:16px; align-items:center; }
+  .att-top h2 { margin:0; color:#0d8b7e; font-size:30px; }
+  .att-search { max-width:320px; width:100%; }
+  .att-search input { width:100%; border:1px solid #d6dde7; background:#f7f9fb; border-radius:999px; padding:12px 16px; }
+  .att-content { padding:24px; display:grid; gap:18px; }
+  .header-row { display:flex; justify-content:space-between; gap:16px; align-items:end; }
+  .header-row h1 { margin:0; font-size:44px; color:#152538; }
+  .crumbs { color:#6f8097; font-size:13px; }
+  .btn-row { display:flex; gap:10px; flex-wrap:wrap; }
+  .btn-soft, .btn-primary { min-height:44px; padding:0 18px; border-radius:12px; border:1px solid #d6dde7; background:#fff; color:#59697f; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700; }
+  .btn-primary { background:#0d8b7e; color:#fff; border-color:#0d8b7e; }
+  .filter-card, .table-card, .stats-row .stat { background:#fff; border:1px solid #dbe4ee; border-radius:20px; box-shadow:0 10px 24px rgba(15,23,42,.04); }
+  .filter-card { padding:18px; display:grid; grid-template-columns:1fr auto auto auto; gap:14px; align-items:end; }
+  .field label { display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:#71829a; margin-bottom:6px; }
+  .field input, .field select { width:100%; border:1px solid #d6dde7; border-radius:12px; padding:12px 14px; background:#fff; }
+  .table-card { overflow:hidden; }
+  table { width:100%; border-collapse:collapse; }
+  thead { background:#f2f6fa; }
+  th { text-align:left; padding:18px 16px; font-size:12px; text-transform:uppercase; color:#6b7c90; }
+  td { padding:16px; border-top:1px solid #edf2f7; vertical-align:middle; }
+  tbody tr:hover { background:#f8fbfd; }
+  .sub { color:#7a8a9f; font-size:12px; }
+  .pill { display:inline-flex; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:800; text-transform:uppercase; }
+  .vip { background:#dfe5ff; color:#53607f; } .general { background:#eceef7; color:#5c647a; } .speaker { background:#d7fff6; color:#008378; } .exhibitor { background:#e6e9fb; color:#66768d; }
+  .ok { color:#0d8b7e; font-weight:700; } .pending { color:#5c647a; font-weight:700; } .cancelled { color:#b42318; font-weight:700; }
+  .actions-col a { margin-left:10px; color:#6f8097; text-decoration:none; }
+  .table-foot { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:16px; border-top:1px solid #edf2f7; background:#fbfcfd; color:#6e7f95; font-size:13px; }
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .stats-row .stat { padding:18px; display:flex; gap:14px; align-items:center; }
+  .stat-icon { width:50px; height:50px; border-radius:14px; display:grid; place-items:center; font-size:22px; }
+  .s1{background:#89f5e7;color:#005049;} .s2{background:#008378;color:#fff;} .s3{background:#dae2fd;color:#3f465c;} .s4{background:#ffd9d6;color:#93000a;}
+  .avatar{width:42px;height:42px;border-radius:999px;display:grid;place-items:center;font-weight:800;background:#e5f4f1;color:#0d8b7e}
+  @media (max-width:1100px){ .att-shell{grid-template-columns:1fr;} .att-side{display:none;} .filter-card,.stats-row{grid-template-columns:1fr 1fr;} }
+  @media (max-width:760px){ .att-top,.header-row,.table-foot{flex-direction:column; align-items:flex-start;} .filter-card,.stats-row{grid-template-columns:1fr;} .table-card{overflow:auto;} table{min-width:980px;} }
+</style>
+<div class="att-shell">
+  <aside class="att-side">
+    <div class="att-brand"><h1>Eventos Flex</h1><p>Operations Command</p></div>
+    <nav class="att-nav">
+      <a href="{% url 'dashboard' %}">▦ Dashboard</a>
+      <a class="active" href="{% url 'event_participants' event.id %}">◉ Participantes</a>
+      <a href="{% url 'event_checkin' event.id %}">⌁ Check-in</a>
+      <a href="{% url 'event_branding' event.id %}">◌ Branding</a>
+      <a href="{% url 'event_detail' event.id %}">▣ Visão do evento</a>
+      <a href="{% url 'event_create' %}">＋ Novo evento</a>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">↩ Sair</button></form>
+    </nav>
+  </aside>
+  <div class="att-main">
+    <header class="att-top"><h2>{{ event.title }}</h2><div class="att-search"><input type="text" value="{{ query }}" placeholder="Buscar dados, participantes ou sessões..."></div></header>
+    <div class="att-content">
+      <div class="header-row"><div><div class="crumbs">Participantes › {{ event.title }}</div><h1>Attendee List</h1></div><div class="btn-row"><a class="btn-soft" href="{% url 'export_event_csv' event.id %}">⎙ Export CSV</a><a class="btn-soft" href="{% url 'export_event_xlsx' event.id %}">▤ Export XLSX</a><a class="btn-primary" href="#">＋ Novo participante</a></div></div>
+      <form method="get" class="filter-card">
+        <div class="field"><label>Buscar</label><input type="text" name="q" value="{{ query }}" placeholder="Search by name, email, or company..."></div>
+        <div class="field"><label>Status</label><select name="status"><option value="">Todos</option><option value="confirmado" {% if status_filter == 'confirmado' %}selected{% endif %}>Confirmado</option><option value="pendente" {% if status_filter == 'pendente' %}selected{% endif %}>Pendente</option><option value="cancelado" {% if status_filter == 'cancelado' %}selected{% endif %}>Cancelado</option></select></div>
+        <div class="field"><label>Ação</label><button class="btn-soft" type="submit">Aplicar filtros</button></div>
+        <div class="field"><label>Evento</label><a class="btn-soft" href="{% url 'event_detail' event.id %}">Ver evento</a></div>
+      </form>
+      <section class="table-card">
+        <table>
+          <thead><tr><th>Nome</th><th>Empresa</th><th>Contato</th><th>Status</th><th>Inscrição</th><th style="text-align:right;">Ações</th></tr></thead>
+          <tbody>
+            {% for registration in registrations %}
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:12px;"><div class="avatar">{{ registration.participant.name|slice:':2'|upper }}</div><div><strong>{{ registration.participant.name }}</strong><div class="sub">ID: {{ registration.id }}</div></div></div></td>
+              <td>{{ registration.participant.company|default:'—' }}</td>
+              <td><div>{{ registration.participant.email }}</div><div class="sub">{{ registration.participant.phone|default:'—' }}</div></td>
+              <td>{% if registration.status == 'confirmado' %}<span class="ok">● Confirmado</span>{% elif registration.status == 'pendente' %}<span class="pending">● Pendente</span>{% else %}<span class="cancelled">● Cancelado</span>{% endif %}</td>
+              <td><span class="pill {% if registration.status == 'confirmado' %}vip{% elif registration.status == 'pendente' %}general{% else %}speaker{% endif %}">{{ registration.created_at|date:'d/m/Y H:i' }}</span></td>
+              <td class="actions-col" style="text-align:right;"><a href="{% url 'registration_admin' registration.id %}">Detalhes</a><a href="{% url 'print_badge' registration.id %}">Etiqueta</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" style="padding:24px;">Nenhum participante encontrado para este evento.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="table-foot"><div>Total de registros: <strong>{{ registrations|length }}</strong></div><div><a class="btn-soft" href="{% url 'dashboard' %}">Voltar ao dashboard</a></div></div>
+      </section>
+      <section class="stats-row">
+        <article class="stat"><div class="stat-icon s1">👥</div><div><div class="sub">Total Attendees</div><strong style="font-size:32px;">{{ registrations|length }}</strong></div></article>
+        <article class="stat"><div class="stat-icon s2">✓</div><div><div class="sub">Confirmados</div><strong style="font-size:32px;">{{ registrations|dictsort:'status'|length }}</strong></div></article>
+        <article class="stat"><div class="stat-icon s3">⌁</div><div><div class="sub">Check-in</div><strong style="font-size:32px;">Evento</strong></div></article>
+        <article class="stat"><div class="stat-icon s4">⊘</div><div><div class="sub">Status</div><strong style="font-size:32px;">Ativo</strong></div></article>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

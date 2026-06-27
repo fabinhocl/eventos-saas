@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eventos Flex - Branding Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .preview-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .preview-scroll::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#6bd8cb",
+                        "secondary": "#565e74",
+                        "on-surface": "#191c1e",
+                        "on-background": "#191c1e",
+                        "surface": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed": "#d3e4fe",
+                        "primary-fixed": "#89f5e7",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#005049",
+                        "inverse-on-surface": "#eff1f3",
+                        "secondary-container": "#dae2fd",
+                        "primary": "#00685f",
+                        "outline-variant": "#bcc9c6",
+                        "secondary-fixed": "#dae2fd",
+                        "on-primary-fixed": "#00201d",
+                        "surface-dim": "#d8dadc",
+                        "surface-tint": "#006a61",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "error": "#ba1a1a",
+                        "background": "#f7f9fb",
+                        "on-tertiary-container": "#fdfcff",
+                        "on-surface-variant": "#3d4947",
+                        "inverse-surface": "#2d3133",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eceef0",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary-container": "#008378",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#66768d",
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-container": "#5c647a",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#f4fffc",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary": "#4d5d73",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "surface-variant": "#e0e3e5",
+                        "outline": "#6d7a77",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "base": "4px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "3xl": "64px",
+                        "max-width": "1440px",
+                        "xs": "4px",
+                        "2xl": "48px",
+                        "margin": "32px",
+                        "sm": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col p-md bg-surface border-r border-outline-variant shadow-sm w-64 z-50">
+<div class="flex items-center gap-3 mb-xl px-4">
+<span class="material-symbols-outlined text-primary text-headline-sm" style="font-variation-settings: 'FILL' 1;">layers</span>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Eventos Flex</h1>
+<p class="text-[10px] font-label-sm uppercase tracking-wider text-outline">Enterprise Planner</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-body-md text-body-md">Events</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-md text-body-md">Attendees</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="font-body-md text-body-md">Check-in</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-body-md text-body-md">Badges</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">record_voice_over</span>
+<span class="font-body-md text-body-md">Speakers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">palette</span>
+<span class="font-body-md text-body-md font-bold">Branding</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-outline-variant">
+<div class="flex items-center gap-3 px-4 py-3">
+<img class="w-10 h-10 rounded-full bg-surface-container-highest object-cover" data-alt="Professional headshot of a corporate event administrator in a minimalist studio setting. The lighting is soft and flattering, highlighting a clean, modern aesthetic that aligns with a high-end B2B enterprise environment. The individual is dressed in business casual attire with a friendly, competent expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1jxsTf9AAASf2YAjaEGe6Wgu1kyaRX8v6ngI-njL3GhpmSHeO4do3pvEPk_JRRH-iZ5K8UoZZ--XJKubOhCCIxfbBT8fbg4BOcgPzM1hVLRP4Px7_RF_VIRmT-hBeMK10nQT8G5RY35hvpY9k8WEy4sjNarB354Hk8qJh2J8cpigpgjXAvnrFDwRHWWetpNUgEFA5V_p3SZzDJ4RDc-0u2eERO5vP3CkkuajBgHg8oIvMX5bruZzwHrEBk45JLrFBux4XQw5Zx40o"/>
+<div class="overflow-hidden">
+<p class="font-label-md text-label-md truncate">Alex Rivera</p>
+<p class="text-[11px] text-outline truncate">Event Lead</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Shell -->
+<header class="sticky top-0 z-40 flex justify-between items-center h-16 px-gutter ml-64 bg-surface-container-lowest border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-outline">
+<span class="font-label-sm text-label-sm">Settings</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-label-sm text-label-sm text-primary">Branding</span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container border border-outline-variant rounded-full text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-primary w-64 transition-all" placeholder="Global Tech Summit 2024" type="text"/>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 p-margin max-w-7xl mx-auto">
+<header class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Event Identity</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Configure the visual presence of your event across the platform and public landing pages.</p>
+</header>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Editor Column (8 cols) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<!-- Visual Assets Bento -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Event Logo -->
+<div class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm group hover:shadow-md transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Event Logo</h3>
+<p class="font-label-sm text-label-sm text-outline mt-1 uppercase tracking-wider">Recommended: 400 x 400px</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">image</span>
+</div>
+<div class="relative aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center bg-surface hover:bg-surface-container-low transition-colors cursor-pointer overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-contain p-8 hidden" data-alt="A clean, minimalist company logo featuring an abstract geometric shape that resembles a stylized 'F'. The design is professional and modern, rendered in a striking teal and charcoal gray palette. The background is pristine white, emphasizing the logo's sharp lines and sophisticated aesthetic." id="logo-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKLs8GlvUyC7-nYndJetw6qg6_ELyYFTv7zqn_AszF77XdgoBaUz7mOyB179EzhzHIeve_VXHAs5ghoxpmuq_6p2f5ZYLy7s17Wp49U7BBNJD6TweaJdpFEmRb8qqInjks-LpL2Mqe7Qau39ydjKPk-k3mPMuu4jezcLCSkhhnHEuWunp0ql6zs5HSzgl5MwUfpI6o1xn5OYkC-U9VDG-oXhk6RfMS3jY1Oj-772kX_EjhCuVwCnV0zTdQ4851lHo_WEwCcgDm5VsR"/>
+<div class="text-center p-md">
+<span class="material-symbols-outlined text-outline text-3xl mb-2">upload_file</span>
+<p class="font-label-md text-label-md text-on-surface">Click to upload logo</p>
+<p class="text-[11px] text-outline mt-1">PNG, JPG or SVG (Max 2MB)</p>
+</div>
+</div>
+</div>
+<!-- Hero Banner -->
+<div class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm group hover:shadow-md transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Hero Banner</h3>
+<p class="font-label-sm text-label-sm text-outline mt-1 uppercase tracking-wider">Recommended: 1920 x 600px</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">aspect_ratio</span>
+</div>
+<div class="relative h-[180px] rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center bg-surface hover:bg-surface-container-low transition-colors cursor-pointer overflow-hidden">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-60" data-alt="A panoramic, high-resolution hero image for a tech conference. The scene features a sleek, modern architectural auditorium with dramatic light-mode lighting, soft blues, and teal accents. A blurred audience sits in ergonomic chairs, facing a vibrant stage. The atmosphere is professional, inspiring, and high-tech." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6_p7Dej47LfHht9XA_LXBY7OAjsUTJB5oS6fo6lisG89qSiyq-O8im9juuGa9AaBRYONyL9p7drW7PlkF5gQD2qolgIV7gNmGq55A7DQoTK6VOi1zcvY28V_OhPp6Ar0IOIn4teDmGUOkP-TBBEPN6QcspYZkkfBHmPoyJw1oLedcmS_nmJaxLC6FOzGeLCwUfGQ76gAugs-sbWL-TN6TNpTP5NKEtkB1QRkAknRYJAxmByUgSwqhxrRtRBgdiehdtWEVkRMgcdlu')"></div>
+<div class="relative z-10 text-center">
+<span class="material-symbols-outlined text-primary text-3xl mb-2">add_photo_alternate</span>
+<p class="font-label-md text-label-md text-on-surface">Replace Hero Banner</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Color & Typography Configuration -->
+<section class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-lg">Color Theme &amp; Palette</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+<div class="space-y-md">
+<label class="block">
+<span class="font-label-md text-label-md text-on-surface-variant block mb-2">Primary Accent</span>
+<div class="flex gap-3">
+<input class="h-12 w-20 p-1 bg-white border border-outline-variant rounded-lg cursor-pointer" type="color" value="#00685f"/>
+<input class="flex-1 px-4 py-2 border border-outline-variant rounded-lg font-body-sm text-body-sm uppercase focus:ring-2 focus:ring-primary outline-none" type="text" value="#00685F"/>
+</div>
+</label>
+<p class="text-[11px] text-outline">Used for main buttons, active states, and highlights.</p>
+</div>
+<div class="space-y-md">
+<label class="block">
+<span class="font-label-md text-label-md text-on-surface-variant block mb-2">Secondary Accent</span>
+<div class="flex gap-3">
+<input class="h-12 w-20 p-1 bg-white border border-outline-variant rounded-lg cursor-pointer" type="color" value="#565e74"/>
+<input class="flex-1 px-4 py-2 border border-outline-variant rounded-lg font-body-sm text-body-sm uppercase focus:ring-2 focus:ring-primary outline-none" type="text" value="#565E74"/>
+</div>
+</label>
+<p class="text-[11px] text-outline">Used for supplementary UI elements and metadata.</p>
+</div>
+</div>
+</section>
+<!-- Landing Page Content -->
+<section class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-lg">Public Content Fields</h3>
+<div class="space-y-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<label class="block space-y-2">
+<span class="font-label-md text-label-md text-on-surface-variant">Event Title</span>
+<input class="w-full px-4 py-3 border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none" type="text" value="Global Tech Summit 2024"/>
+</label>
+<label class="block space-y-2">
+<span class="font-label-md text-label-md text-on-surface-variant">Hero Button Text</span>
+<input class="w-full px-4 py-3 border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none" type="text" value="Register Now"/>
+</label>
+</div>
+<label class="block space-y-2">
+<span class="font-label-md text-label-md text-on-surface-variant">Short Subtitle</span>
+<input class="w-full px-4 py-3 border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none" type="text" value="Innovation at the edge of tomorrow."/>
+</label>
+<label class="block space-y-2">
+<span class="font-label-md text-label-md text-on-surface-variant">Event Description</span>
+<textarea class="w-full px-4 py-3 border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none resize-none" rows="4">Join 5,000+ industry leaders, developers, and visionaries for a three-day exploration of AI, sustainable tech, and the future of digital infrastructure.</textarea>
+</label>
+</div>
+</section>
+<div class="flex justify-end gap-md pb-gutter">
+<button class="px-xl py-3 border border-outline-variant text-on-surface-variant font-label-md text-label-md rounded-lg hover:bg-surface-container transition-colors">Discard Changes</button>
+<button class="px-xl py-3 bg-primary text-on-primary font-label-md text-label-md rounded-lg shadow-sm hover:opacity-90 transition-opacity">Save Branding</button>
+</div>
+</div>
+<!-- Preview Sticky Column (4 cols) -->
+<div class="col-span-12 lg:col-span-4">
+<div class="sticky top-gutter space-y-gutter">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Live Preview</h3>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary-container text-on-primary-container">
+<span class="material-symbols-outlined text-[18px]">desktop_windows</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full text-outline hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">smartphone</span>
+</button>
+</div>
+</div>
+<!-- Browser Mockup -->
+<div class="bg-surface-container-highest rounded-xl overflow-hidden border border-outline-variant shadow-xl aspect-[3/4] flex flex-col">
+<!-- Browser Header -->
+<div class="h-10 bg-surface-container-high border-b border-outline-variant flex items-center px-4 gap-2">
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim/60"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/60"></div>
+</div>
+<div class="flex-1 mx-4 h-6 bg-surface-container-lowest rounded-md border border-outline-variant flex items-center px-2">
+<p class="text-[10px] text-outline truncate">globaltech2024.eventosflex.io</p>
+</div>
+</div>
+<!-- Site Mockup Content -->
+<div class="flex-1 bg-white overflow-y-auto preview-scroll relative">
+<!-- Site Header -->
+<div class="h-12 border-b border-outline-variant flex items-center justify-between px-4">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">layers</span>
+<span class="font-bold text-[12px]">GTS 2024</span>
+</div>
+<button class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded">Get Tickets</button>
+</div>
+<!-- Site Hero -->
+<div class="relative h-48 bg-surface-container-low overflow-hidden">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-alt="A panoramic, high-resolution hero image for a tech conference. The scene features a sleek, modern architectural auditorium with dramatic light-mode lighting, soft blues, and teal accents. A blurred audience sits in ergonomic chairs, facing a vibrant stage. The atmosphere is professional, inspiring, and high-tech." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDVrejqQrcdQIF1eqSlfelwGZ1vU8ODY8GDBQapaJzM9CkFSF7ejJ0LQPYX0PFPygj-AIU59emTXbory5ZtFp17o9ZlHQUuG0I-C1LacUJZ1HWPTkQz8JC6DPkuzor8GcdfuhOYlSMC-Lt9fiWq6ubYg_lvkw1iF_nbs4YuowgqVCBppvinGdgxs3Q30HVqoy0WeKcKEF1EWXkC5gcK-5Lt7c1cnWEy6Ak0ycN8pjofN-AHxBddiiA3myZLQUEy5Gxd6_yE97QQuY85')"></div>
+<div class="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-center p-4">
+<h4 class="text-white font-bold text-headline-sm leading-tight">Global Tech Summit 2024</h4>
+<p class="text-white/90 text-[10px] mt-1">Innovation at the edge of tomorrow.</p>
+<button class="mt-4 px-4 py-2 bg-primary text-white text-[10px] font-bold rounded shadow-lg uppercase tracking-wider">Register Now</button>
+</div>
+</div>
+<!-- Site Body -->
+<div class="p-4 space-y-4">
+<div>
+<p class="text-[11px] font-bold text-primary uppercase tracking-widest mb-1">About the event</p>
+<p class="text-[10px] leading-relaxed text-secondary">Join 5,000+ industry leaders, developers, and visionaries for a three-day exploration of AI, sustainable tech, and the future of digital infrastructure.</p>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="p-3 bg-surface border border-outline-variant rounded">
+<p class="text-[8px] text-outline uppercase">Date</p>
+<p class="text-[10px] font-bold">Oct 12-14</p>
+</div>
+<div class="p-3 bg-surface border border-outline-variant rounded">
+<p class="text-[8px] text-outline uppercase">Location</p>
+<p class="text-[10px] font-bold">San Francisco, CA</p>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-[11px] font-bold text-primary uppercase tracking-widest">Key Speakers</p>
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up portrait of a woman tech leader with glasses, professional lighting, corporate modern background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxOaPCD-xOxnM7BbrISseK47-UL5LN41L5NpdB_2DULkjb-8JLmckOA71hnWPjvCY5IDD6-fN5yy-6Hd7MLnJ9KCevoGFST0IUqnXyUiJPXXnf-VtM4tQOpOUhUpcSCzQiOEVi26YMVk0W7f8hhk05l_vpPAz1ILANGRK4CIwK7WQiwhGObKKSp94NsKrxpI-IxcUPWR3CGhDtbMh-bWIWzevsAcnzcG0GJ37hQk3u5aJO2QFhPfdZ4dQLG9pDBypiX2KeKrrQWX2u"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up portrait of a male CEO in a minimalist office, high-end photography, blurred background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8iJOYqrsunVA-2nsqc00lnQo976CQvI9-nl7M2CW_H1uS3AVJiw3K7-rB89mL1vb80ngdYDtHnk5GCLG8tJNYcty9jSRdBZJrTI6c8_J9mOnkMLa53vFtAYlYJuwdyCuU7hj6oZQl0F0T-GntwQsD_k6-sIoDhcKKRWyaPzAbl-iC6t5LpIoNQ1aOwTb4X1bpv_gpAnfEojSJiyROeALGxPbsZ4gelEfgtkFyP_eXH3G9C9iODTio7kW6wT1jtlaIOE8ZxpeNhJuS"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up portrait of a diverse female software architect, neutral lighting, soft grey background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO5ycktfiE7LcZ-JUtgE963Eb3en6z_Lc51lu8xBhs0DxnIp2M6DuSs_NbpwSYGVeFaB3QpxfbsHf3UXs2WwImZtSk8gJ8UDO5MJhJsuSsKO99X_bn6d7jUayVBuYV4XZ4CcYrTHYettdPWmv2zQbsZ_CKMWVqCbNKziGrRlq3kT_ZLLwYvmHb-cM-69a0_w3mH3DyYwiNrhRYFZaTjlGlQPEIXtoYKQPUzsGqiPE92Ial4qA5tCyPI1QiPk12bRi0DqXOPDK1g3S-"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-container-highest flex items-center justify-center">
+<span class="text-[8px] font-bold text-outline">+12</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Site Footer -->
+<div class="p-4 bg-surface-container border-t border-outline-variant">
+<div class="flex justify-between items-center opacity-60">
+<span class="text-[8px]">© 2024 Eventos Flex</span>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-[10px]">share</span>
+<span class="material-symbols-outlined text-[10px]">contact_support</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p class="text-[11px] text-center text-outline px-4 italic">The preview updates in real-time as you modify your branding settings.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Global Footer -->
+<footer class="flex justify-between items-center py-md px-xl ml-64 bg-surface border-t border-outline-variant">
+<p class="font-label-sm text-label-sm text-secondary">© 2024 Eventos Flex. All rights reserved.</p>
+<div class="flex gap-lg">
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors" href="#">Support</a>
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-secondary-container hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+</footer>
+<script>
+        // Simple interactive simulation for color inputs
+        document.querySelectorAll('input[type="color"]').forEach(picker => {
+            picker.addEventListener('input', (e) => {
+                const hex = e.target.value.toUpperCase();
+                e.target.nextElementSibling.value = hex;
+                
+                // Update specific elements in preview if color is primary
+                if(e.target.value === '#00685f' || picker.parentElement.querySelector('span').innerText.includes('Primary')) {
+                   // This is a mockup simulation
+                }
+            });
+        });
+
+        // Toggle device preview (aesthetic only)
+        const deviceBtns = document.querySelectorAll('.flex.gap-2 button');
+        deviceBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                deviceBtns.forEach(b => {
+                    b.classList.remove('bg-primary-container', 'text-on-primary-container');
+                    b.classList.add('text-outline');
+                });
+                btn.classList.remove('text-outline');
+                btn.classList.add('bg-primary-container', 'text-on-primary-container');
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscrição · {{ event.title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f9fb;
+      --surface: #ffffff;
+      --surface-soft: #f2f4f6;
+      --surface-muted: #eceef0;
+      --text: #191c1e;
+      --text-muted: #59636a;
+      --border: #d7dde2;
+      --primary: {{ event.page_color|default:'#00685f' }};
+      --primary-soft: rgba(0, 104, 95, 0.08);
+      --danger: #b42318;
+      --radius: 20px;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --container: 1120px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+    .header {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(255,255,255,.88); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(109,122,119,.15);
+    }
+    .header-inner {
+      min-height: 78px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-mark {
+      width:40px; height:40px; border-radius:12px; display:grid; place-items:center;
+      background: var(--primary); color:#fff; font-weight:800;
+    }
+    .brand-title { font-weight:800; color: var(--primary); }
+    .brand-sub { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color: var(--text-muted); }
+    .header-meta { display:flex; gap:28px; flex-wrap:wrap; color: var(--text-muted); font-size:14px; }
+    .meta-item { display:flex; align-items:center; gap:8px; }
+    main { padding: 34px 0 64px; }
+    .hero {
+      position: relative; overflow: hidden; border-radius: 24px; min-height: 300px; margin-bottom: 28px;
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.14)),
+        url('{{ event.banner_url|default:"https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1600&q=80" }}') center/cover no-repeat;
+      display:flex; align-items:flex-end;
+    }
+    .hero-copy { padding: 28px; color: #fff; max-width: 760px; }
+    .pill {
+      display:inline-block; padding:8px 14px; border-radius:999px; background: rgba(0,104,95,.88);
+      font-size:12px; text-transform:uppercase; letter-spacing:.08em; font-weight:700; margin-bottom:14px;
+    }
+    .hero h1 { margin:0 0 10px; font-size: clamp(30px, 5vw, 46px); }
+    .hero p { margin:0; color: rgba(255,255,255,.88); font-size: 17px; }
+    .layout { display:grid; grid-template-columns: 320px 1fr; gap: 24px; }
+    .card {
+      background: var(--surface); border: 1px solid rgba(109,122,119,.14);
+      border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px;
+    }
+    .sidebar { display:grid; gap: 24px; }
+    .card h2, .card h3 { margin-top:0; }
+    .side-title {
+      color: var(--primary); font-size: 20px; margin-bottom: 14px;
+    }
+    .side-copy { color: var(--text-muted); line-height: 1.7; }
+    .checklist { list-style:none; padding:0; margin:20px 0 0; display:grid; gap:14px; }
+    .checklist li { display:flex; gap:10px; color: var(--text-muted); }
+    .checkicon {
+      width:22px; height:22px; border-radius:999px; flex:0 0 auto;
+      display:grid; place-items:center; color: var(--primary); border:1px solid rgba(0,104,95,.24);
+      background: var(--primary-soft); font-size: 12px; margin-top: 1px;
+    }
+    .location-box {
+      height: 180px; border-radius: 14px; overflow:hidden; margin-bottom: 14px;
+      background:
+        linear-gradient(rgba(25,28,30,.12), rgba(25,28,30,.12)),
+        url('{{ event.banner_url|default:"https://images.unsplash.com/photo-1526778548025-fa2f459cd5ce?auto=format&fit=crop&w=1200&q=80" }}') center/cover no-repeat;
+    }
+    .label { display:block; font-size: 14px; font-weight: 600; margin: 0 0 8px; color: var(--text-muted); }
+    .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .field { margin-bottom: 18px; }
+    input, textarea, select {
+      width: 100%; border: 1px solid var(--border); border-radius: 14px; padding: 15px 16px;
+      font: inherit; background: #fff; color: var(--text); transition: .2s ease;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,104,95,.12);
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    .help { color: var(--text-muted); font-size: 15px; margin: 0 0 24px; }
+    .messages, .errors { margin: 0 0 18px; padding: 0; list-style: none; }
+    .messages li {
+      padding: 14px 16px; border-radius: 14px; margin-bottom: 10px; background: #e9f7f5; color: #0b5b54;
+      border: 1px solid rgba(0,104,95,.16);
+    }
+    .errors li, .field-error {
+      color: var(--danger); font-size: 14px; margin-top: 8px;
+    }
+    .submit-wrap {
+      border-top: 1px solid rgba(109,122,119,.18); margin-top: 8px; padding-top: 24px;
+      display:flex; flex-direction:column; align-items:center; gap:12px;
+    }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:54px;
+      padding: 0 28px; border-radius: 14px; border: 0; cursor:pointer; font-weight: 700; font-size: 17px;
+      background: var(--primary); color:#fff; box-shadow: 0 14px 28px rgba(0,104,95,.16);
+    }
+    .btn:hover { filter: brightness(.96); }
+    .secure { color: var(--text-muted); font-size: 13px; }
+    .partners {
+      margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(109,122,119,.14); text-align:center;
+    }
+    .partners h4 {
+      margin:0 0 20px; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--text-muted);
+    }
+    .partner-row { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
+    .partner-pill {
+      width: 120px; height: 26px; border-radius: 8px; background: rgba(86,94,116,.10);
+    }
+    .footer {
+      margin-top: 48px; padding: 20px 0; border-top: 1px solid rgba(109,122,119,.14); background: #fff;
+    }
+    .footer-inner {
+      max-width: 1120px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;
+      color: var(--text-muted); font-size: 14px;
+    }
+    @media (max-width: 980px) {
+      .layout, .grid-2 { grid-template-columns: 1fr; }
+      .header-inner { align-items:flex-start; padding: 14px 0; }
+      .header-meta { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-mark">EV</div>
+        <div>
+          <div class="brand-title">Eventos Flex</div>
+          <div class="brand-sub">{{ event.title }}</div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="meta-item">📅 {{ event.start_at|date:'d/m/Y H:i' }}{% if event.end_at %} a {{ event.end_at|date:'d/m/Y H:i' }}{% endif %}</div>
+        <div class="meta-item">📍 {{ event.location|default:'Local a definir' }}</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="pill">Vagas limitadas</span>
+        <h1>{{ event.title }}</h1>
+        <p>{{ event.short_description|default:event.description|truncatechars:190 }}</p>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="card">
+          <h2 class="side-title">Sobre o evento</h2>
+          <p class="side-copy">{{ event.description|default:event.short_description }}</p>
+          <ul class="checklist">
+            <li><span class="checkicon">✓</span><span>Inscrição vinculada ao fluxo real do Eventos Flex.</span></li>
+            <li><span class="checkicon">✓</span><span>Confirmação individual para cada participante inscrito.</span></li>
+            <li><span class="checkicon">✓</span><span>Integração com crachá e QR Code no processo do evento.</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:14px; font-size:13px; text-transform:uppercase; letter-spacing:.12em; color:var(--text-muted);">Local do evento</h3>
+          <div class="location-box"></div>
+          <div style="font-weight:700; margin-bottom:6px;">{{ event.location|default:'Local a definir' }}</div>
+          <div class="side-copy">Evento público configurado no Eventos Flex com identidade visual integrada ao novo template.</div>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div style="margin-bottom:24px; text-align:left;">
+          <h2 style="margin:0 0 6px; font-size:28px;">Formulário de inscrição</h2>
+          <p class="help">Preencha os dados abaixo para confirmar sua participação.</p>
+        </div>
+
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+          <ul class="errors">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="grid-2">
+            <div class="field">
+              <label class="label" for="id_name">Nome completo</label>
+              {{ form.name }}
+              {% for error in form.name.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label class="label" for="id_email">E-mail</label>
+              {{ form.email }}
+              {% for error in form.email.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label class="label" for="id_cpf">CPF</label>
+              {{ form.cpf }}
+              {% for error in form.cpf.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label class="label" for="id_phone">Telefone / WhatsApp</label>
+              {{ form.phone }}
+              {% for error in form.phone.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label class="label" for="id_company">Empresa</label>
+              {{ form.company }}
+              {% for error in form.company.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="field">
+              <label class="label" for="id_role">Cargo</label>
+              {{ form.role }}
+              {% for error in form.role.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="submit-wrap">
+            <button class="btn" type="submit">Finalizar inscrição →</button>
+            <div class="secure">Seu cadastro será associado ao evento e processado com segurança.</div>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <section class="partners">
+      <h4>Parceiros estratégicos</h4>
+      <div class="partner-row">
+        <div class="partner-pill"></div>
+        <div class="partner-pill"></div>
+        <div class="partner-pill"></div>
+        <div class="partner-pill"></div>
+        <div class="partner-pill"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div><strong>Eventos Flex</strong> · Hotpage de inscrição integrada</div>
+      <div>© 2026 Eventos Flex. Todos os direitos reservados.</div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,60 +1,305 @@
 {% extends "core/base.html" %}
-{% block title %}Lista de participantes{% endblock %}
+{% block title %}Participantes{% endblock %}
+
 {% block content %}
 <style>
-.hero{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:20px}.hero h1{margin:0;font-size:58px;line-height:.95;color:#10233a}.crumb{font-size:13px;color:#75859b}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{padding:14px 18px;border-radius:16px;border:1px solid #dbe4ee;background:#fff;color:#506177;font-weight:700;text-decoration:none}.btn-primary{background:#0d8b7e;color:#fff;border-color:#0d8b7e}.filters,.table-wrap,.stats{background:#fff;border:1px solid #dbe4ee;border-radius:22px;box-shadow:0 10px 24px rgba(15,23,42,.04)}.filters{padding:18px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px;margin-bottom:18px}.field label{display:block;font-size:12px;color:#75859b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #d6dde7;border-radius:14px;padding:12px 14px;font:inherit}.table-wrap{overflow:hidden}.row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 1fr 1fr 1fr;gap:14px;padding:18px 16px;border-top:1px solid #eef2f7;align-items:center}.row.head{background:#f3f6fb;color:#68798e;font-size:12px;text-transform:uppercase;letter-spacing:.08em;border-top:none}.namebox{display:flex;gap:14px;align-items:center}.avatar{width:40px;height:40px;border-radius:50%;background:#e3f0ec;color:#0d8b7e;display:grid;place-items:center;font-weight:800}.status{display:inline-flex;align-items:center;gap:8px;color:#0d8b7e;font-weight:700}.chip{display:inline-block;background:#e3e6fb;color:#5c668f;border-radius:999px;padding:8px 12px;font-weight:700;font-size:12px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px;margin-top:18px}.stat{border:1px solid #edf1f5;border-radius:18px;padding:16px;background:#fff}.stat strong{display:block;font-size:38px;color:#10233a}.new-link{display:inline-flex;align-items:center;justify-content:center}
-@media (max-width:900px){.hero,.filters,.stats,.row{grid-template-columns:1fr}.hero{align-items:flex-start}.hero h1{font-size:42px}}
+  .hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:18px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+  }
+
+  .hero h1{
+    margin:0;
+    font-size:58px;
+    line-height:.95;
+    color:#10233a;
+  }
+
+  .crumb{
+    font-size:13px;
+    color:#75859b;
+    margin-bottom:8px;
+  }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 18px;
+    border-radius:16px;
+    border:1px solid #dbe4ee;
+    background:#fff;
+    color:#506177;
+    font-weight:700;
+    text-decoration:none;
+  }
+
+  .btn-primary{
+    background:#0d8b7e;
+    color:#fff;
+    border-color:#0d8b7e;
+  }
+
+  .filters,
+  .table-wrap,
+  .stats{
+    background:#fff;
+    border:1px solid #dbe4ee;
+    border-radius:22px;
+    box-shadow:0 10px 24px rgba(15,23,42,.04);
+  }
+
+  .filters{
+    padding:18px;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:14px;
+    margin-bottom:18px;
+  }
+
+  .field label{
+    display:block;
+    font-size:12px;
+    color:#75859b;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:6px;
+  }
+
+  .field input,
+  .field select{
+    width:100%;
+    border:1px solid #d6dde7;
+    border-radius:14px;
+    padding:12px 14px;
+    font:inherit;
+    background:#fff;
+  }
+
+  .table-wrap{
+    overflow:hidden;
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns:2fr 1.2fr 1.5fr 1fr 1fr 1fr;
+    gap:14px;
+    padding:18px 16px;
+    border-top:1px solid #eef2f7;
+    align-items:center;
+  }
+
+  .row.head{
+    background:#f3f6fb;
+    color:#68798e;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    border-top:none;
+    font-weight:700;
+  }
+
+  .namebox{
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+
+  .avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#e3f0ec;
+    color:#0d8b7e;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+    flex-shrink:0;
+  }
+
+  .status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#0d8b7e;
+    font-weight:700;
+  }
+
+  .chip{
+    display:inline-block;
+    background:#e3e6fb;
+    color:#5c668f;
+    border-radius:999px;
+    padding:8px 12px;
+    font-weight:700;
+    font-size:12px;
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    padding:18px;
+    margin-top:18px;
+  }
+
+  .stat{
+    border:1px solid #edf1f5;
+    border-radius:18px;
+    padding:16px;
+    background:#fff;
+  }
+
+  .stat strong{
+    display:block;
+    font-size:38px;
+    color:#10233a;
+    margin-top:6px;
+  }
+
+  .muted{
+    color:#7b8ba0;
+    font-size:13px;
+  }
+
+  @media (max-width:900px){
+    .hero{
+      align-items:flex-start;
+    }
+
+    .hero h1{
+      font-size:42px;
+    }
+
+    .filters,
+    .stats{
+      grid-template-columns:1fr;
+    }
+
+    .row,
+    .row.head{
+      grid-template-columns:1fr;
+    }
+  }
 </style>
-<div class="att-shell">
-  <aside class="att-side">
-    <div class="att-brand"><h1>Eventos Flex</h1><p>Operations Command</p></div>
-    <nav class="att-nav">
-      <a href="{% url 'dashboard' %}">▦ Dashboard</a>
-      <a class="active" href="{% url 'event_participants' event.id %}">◉ Participantes</a>
-      <a href="{% url 'event_checkin' event.id %}">⌁ Check-in</a>
-      <a href="{% url 'event_branding' event.id %}">◌ Branding</a>
-      <a href="{% url 'event_detail' event.id %}">▣ Visão do evento</a>
-      <a href="{% url 'event_create' %}">＋ Novo evento</a>
-      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">↩ Sair</button></form>
-    </nav>
-  </aside>
-  <div class="att-main">
-    <header class="att-top"><h2>{{ event.title }}</h2><div class="att-search"><input type="text" value="{{ query }}" placeholder="Buscar dados, participantes ou sessões..."></div></header>
-    <div class="att-content">
-      <div class="header-row"><div><div class="crumbs">Participantes › {{ event.title }}</div><h1>Attendee List</h1></div><div class="btn-row"><a class="btn-soft" href="{% url 'export_event_csv' event.id %}">⎙ Export CSV</a><a class="btn-soft" href="{% url 'export_event_xlsx' event.id %}">▤ Export XLSX</a><a class="btn-primary" href="#">＋ Novo participante</a></div></div>
-      <form method="get" class="filter-card">
-        <div class="field"><label>Buscar</label><input type="text" name="q" value="{{ query }}" placeholder="Search by name, email, or company..."></div>
-        <div class="field"><label>Status</label><select name="status"><option value="">Todos</option><option value="confirmado" {% if status_filter == 'confirmado' %}selected{% endif %}>Confirmado</option><option value="pendente" {% if status_filter == 'pendente' %}selected{% endif %}>Pendente</option><option value="cancelado" {% if status_filter == 'cancelado' %}selected{% endif %}>Cancelado</option></select></div>
-        <div class="field"><label>Ação</label><button class="btn-soft" type="submit">Aplicar filtros</button></div>
-        <div class="field"><label>Evento</label><a class="btn-soft" href="{% url 'event_detail' event.id %}">Ver evento</a></div>
-      </form>
-      <section class="table-card">
-        <table>
-          <thead><tr><th>Nome</th><th>Empresa</th><th>Contato</th><th>Status</th><th>Inscrição</th><th style="text-align:right;">Ações</th></tr></thead>
-          <tbody>
-            {% for registration in registrations %}
-            <tr>
-              <td><div style="display:flex;align-items:center;gap:12px;"><div class="avatar">{{ registration.participant.name|slice:':2'|upper }}</div><div><strong>{{ registration.participant.name }}</strong><div class="sub">ID: {{ registration.id }}</div></div></div></td>
-              <td>{{ registration.participant.company|default:'—' }}</td>
-              <td><div>{{ registration.participant.email }}</div><div class="sub">{{ registration.participant.phone|default:'—' }}</div></td>
-              <td>{% if registration.status == 'confirmado' %}<span class="ok">● Confirmado</span>{% elif registration.status == 'pendente' %}<span class="pending">● Pendente</span>{% else %}<span class="cancelled">● Cancelado</span>{% endif %}</td>
-              <td><span class="pill {% if registration.status == 'confirmado' %}vip{% elif registration.status == 'pendente' %}general{% else %}speaker{% endif %}">{{ registration.created_at|date:'d/m/Y H:i' }}</span></td>
-              <td class="actions-col" style="text-align:right;"><a href="{% url 'registration_admin' registration.id %}">Detalhes</a><a href="{% url 'print_badge' registration.id %}">Etiqueta</a></td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="6" style="padding:24px;">Nenhum participante encontrado para este evento.</td></tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <div class="table-foot"><div>Total de registros: <strong>{{ registrations|length }}</strong></div><div><a class="btn-soft" href="{% url 'dashboard' %}">Voltar ao dashboard</a></div></div>
-      </section>
-      <section class="stats-row">
-        <article class="stat"><div class="stat-icon s1">👥</div><div><div class="sub">Total Attendees</div><strong style="font-size:32px;">{{ registrations|length }}</strong></div></article>
-        <article class="stat"><div class="stat-icon s2">✓</div><div><div class="sub">Confirmados</div><strong style="font-size:32px;">{{ registrations|dictsort:'status'|length }}</strong></div></article>
-        <article class="stat"><div class="stat-icon s3">⌁</div><div><div class="sub">Check-in</div><strong style="font-size:32px;">Evento</strong></div></article>
-        <article class="stat"><div class="stat-icon s4">⊘</div><div><div class="sub">Status</div><strong style="font-size:32px;">Ativo</strong></div></article>
-      </section>
+
+<div class="hero">
+  <div>
+    <div class="crumb">Operação / Participantes</div>
+    <h1>Lista de Participantes</h1>
+  </div>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'export_event_csv' event.id %}">Export CSV</a>
+    <a class="btn" href="{% url 'export_event_xlsx' event.id %}">Export XLSX</a>
+    <a class="btn btn-primary" href="{% url 'public_registration' event.slug %}">+ Novo participante</a>
+  </div>
+</div>
+
+<div class="filters">
+  <div class="field">
+    <label>Buscar</label>
+    <input placeholder="Search by name, email, or company...">
+  </div>
+
+  <div class="field">
+    <label>Status</label>
+    <select>
+      <option>Todos</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Ação</label>
+    <a class="btn" href="#">Aplicar filtros</a>
+  </div>
+
+  <div class="field">
+    <label>Evento</label>
+    <a class="btn" href="{% url 'dashboard' %}?event={{ event.id }}">Ver evento</a>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <div class="row head">
+    <div>Nome</div>
+    <div>Empresa</div>
+    <div>Contato</div>
+    <div>Status</div>
+    <div>Inscrição</div>
+    <div>Ações</div>
+  </div>
+
+  {% for registration in registrations %}
+    <div class="row">
+      <div class="namebox">
+        <div class="avatar">{{ registration.participant.name|slice:':2'|upper }}</div>
+        <div>
+          <strong>{{ registration.participant.name }}</strong>
+          <div class="muted">ID: {{ registration.participant.id }}</div>
+        </div>
+      </div>
+
+      <div>{{ registration.participant.company|default:'-' }}</div>
+
+      <div>
+        {{ registration.participant.email }}
+        <div class="muted">{{ registration.participant.phone|default:'' }}</div>
+      </div>
+
+      <div>
+        <span class="status">● {{ registration.status|title }}</span>
+      </div>
+
+      <div>
+        <span class="chip">{{ registration.created_at|date:'d/m/Y H:i' }}</span>
+      </div>
+
+      <div>
+        <a href="{% url 'print_badge' registration.id %}">Etiqueta</a>
+      </div>
     </div>
+  {% empty %}
+    <div class="row">
+      <div>Nenhum participante cadastrado.</div>
+      <div>-</div>
+      <div>-</div>
+      <div>-</div>
+      <div>-</div>
+      <div>-</div>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <div>Total Attendees</div>
+    <strong>{{ stats.total }}</strong>
+  </div>
+
+  <div class="stat">
+    <div>Confirmados</div>
+    <strong>{{ stats.confirmados }}</strong>
+  </div>
+
+  <div class="stat">
+    <div>Check-in</div>
+    <strong>{{ stats.checkins }}</strong>
+  </div>
+
+  <div class="stat">
+    <div>Status</div>
+    <strong>Ativo</strong>
   </div>
 </div>
 {% endblock %}

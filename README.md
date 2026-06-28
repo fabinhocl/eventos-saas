@@ -125,3 +125,9 @@ Foi corrigido explicitamente o erro de sintaxe em `core/views.py` na função `r
 - correção do erro TypeError no dashboard após login, removendo filtro sobre queryset já fatiado.
 
 - correção definitiva em dashboard_view: o queryset base não é mais fatiado antes do filtro por evento.
+
+- sidebar e topbar padronizadas no base.html para dashboard, participantes, check-in e branding;
+- botão novo participante ligado à tela administrativa de inscrições com event querystring;
+- branding com formulário POST multipart para salvar logo/capa/cores/textos e refletir no preview.
+
+- correção do base.html para remover duplicidade do bloco content que causava TemplateSyntaxError.

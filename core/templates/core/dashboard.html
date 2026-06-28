@@ -2,62 +2,159 @@
 {% block title %}Painel da organização{% endblock %}
 {% block content %}
 <style>
-  .ops-shell{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 32px);background:#f8f9ff;border-radius:28px;overflow:hidden}
-  .ops-sidebar{background:#213145;color:#dbe6f7;display:flex;flex-direction:column}
-  .ops-brand{padding:28px;border-bottom:1px solid rgba(255,255,255,.08)} .ops-brand h1{margin:0;color:#89f5e7;font-size:28px}.ops-brand p{margin:6px 0 0;color:#9ab0cc}
-  .ops-nav{padding:16px 10px;display:grid;gap:6px;flex:1}.ops-nav a,.ops-nav button{display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:18px;background:none;border:none;color:#d7e2f1;text-decoration:none;font:inherit;cursor:pointer;width:100%;text-align:left}.ops-nav a.active,.ops-nav a:hover,.ops-nav button:hover{background:rgba(255,255,255,.08);color:#89f5e7}
-  .ops-main{display:flex;flex-direction:column;min-width:0}.ops-top{background:#fff;border-bottom:1px solid #dbe4ee;padding:16px 24px;display:flex;justify-content:space-between;gap:18px;align-items:center}
-  .ops-top-left{display:flex;align-items:center;gap:18px}.event-switch{display:flex;align-items:center;gap:10px;background:#eef3fb;border:1px solid #d7e1ec;border-radius:14px;padding:10px 14px}.event-switch select{border:none;background:transparent;font:inherit;color:#173046;min-width:240px}
-  .ops-title{padding-left:18px;border-left:1px solid #d7e1ec}.ops-title h2{margin:0;color:#10233a;font-size:20px}.ops-search{display:flex;align-items:center;gap:14px}.search-pill input{width:220px;border:1px solid #d6dde7;background:#f3f7fb;border-radius:999px;padding:12px 16px}.notif{position:relative;font-size:22px}.notif b{position:absolute;right:-2px;top:-2px;width:8px;height:8px;background:#d92d20;border-radius:50%}.userbox{display:flex;align-items:center;gap:12px;padding-left:14px;border-left:1px solid #d7e1ec}.initials{width:42px;height:42px;border-radius:14px;background:#0d8b7e;color:#fff;display:grid;place-items:center;font-weight:800}
-  .ops-content{padding:24px;display:grid;gap:22px}.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.kpi-card,.panel{background:#fff;border:1px solid #dbe4ee;border-radius:22px;box-shadow:0 10px 24px rgba(15,23,42,.04)}.kpi-card{padding:22px}.kpi-top{display:flex;justify-content:space-between;align-items:start}.icon-box{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:22px}.i-a{background:#eef2ff}.i-b{background:#dffaf6}.i-c{background:#ffe9dd}.i-d{background:#ffe6e2}.kpi-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:999px;padding:6px 10px;font-weight:700;background:#e8fbf7;color:#0a7f73}.kpi-warn{background:#fff0ef;color:#b42318}.kpi-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#75859b;margin:16px 0 8px}.kpi-value{font-size:34px;font-weight:800;color:#10233a;line-height:1.05}
-  .panel{padding:22px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:16px}.panel-head h3{margin:0;font-size:18px;color:#10233a}.muted{color:#75859b;font-size:14px}
-  .chart-wrap{height:250px;display:flex;align-items:end;gap:10px;padding-top:16px}.bar{flex:1;border-radius:12px 12px 0 0;background:linear-gradient(180deg,#46c7b6,#109082);min-height:18px}.bar-labels{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-top:12px;color:#7b8699;font-size:11px;text-transform:uppercase}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px}.item-row{border:1px solid #edf1f5;border-radius:16px;padding:14px;display:flex;justify-content:space-between;gap:12px;align-items:center}.date-box{width:56px;height:56px;border-radius:14px;background:#eef6ff;display:grid;place-items:center;color:#0d8b7e;font-weight:800;text-align:center;line-height:1.1}.pill{padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase;background:#e8fbf7;color:#0b7e72}.fab{position:fixed;right:28px;bottom:28px;width:62px;height:62px;border-radius:999px;background:#0d8b7e;color:#fff;display:grid;place-items:center;text-decoration:none;font-size:32px;box-shadow:0 18px 34px rgba(13,139,126,.28)}
-  @media (max-width:1100px){.ops-shell{grid-template-columns:1fr}.ops-sidebar{display:none}.kpi-grid,.two-col{grid-template-columns:1fr 1fr}}
-  @media (max-width:760px){.ops-top,.ops-top-left,.ops-search,.panel-head{flex-direction:column;align-items:flex-start}.kpi-grid,.two-col{grid-template-columns:1fr}.search-pill input,.event-switch select{width:100%;min-width:0}}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.kpi-card,.panel{background:#fff;border:1px solid #dbe4ee;border-radius:22px;box-shadow:0 10px 24px rgba(15,23,42,.04)}
+.kpi-card{padding:22px}
+.kpi-top{display:flex;justify-content:space-between;align-items:start}
+.icon-box{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:22px}
+.i-a{background:#eef2ff}
+.i-b{background:#dffaf6}
+.i-c{background:#ffe9dd}
+.i-d{background:#ffe6e2}
+.kpi-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:999px;padding:6px 10px;font-weight:700;background:#e8fbf7;color:#0a7f73}
+.kpi-warn{background:#fff0ef;color:#b42318}
+.kpi-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#75859b;margin:16px 0 8px}
+.kpi-value{font-size:34px;font-weight:800;color:#10233a;line-height:1.05}
+.panel{padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:16px}
+.panel-head h3{margin:0;font-size:18px}
+.muted{color:#75859b;font-size:14px}
+.chart-wrap{height:250px;display:flex;align-items:end;gap:10px;padding-top:16px}
+.bar{flex:1;border-radius:12px 12px 0 0;background:linear-gradient(180deg,#46c7b6,#109082);min-height:18px}
+.bar-labels{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-top:12px;color:#7b8699;font-size:11px;text-transform:uppercase}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.item-row{border:1px solid #edf1f5;border-radius:16px;padding:14px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.date-box{width:56px;height:56px;border-radius:14px;background:#eef6ff;display:grid;place-items:center;color:#0d8b7e;font-weight:800;text-align:center;line-height:1.1}
+.pill{padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase;background:#e8fbf7;color:#0b7e72}
+.fab{position:fixed;right:28px;bottom:28px;width:62px;height:62px;border-radius:999px;background:#0d8b7e;color:#fff;display:grid;place-items:center;text-decoration:none;font-size:32px;box-shadow:0 18px 34px rgba(13,139,126,.28)}
+@media (max-width:1100px){.kpi-grid,.two-col{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.kpi-grid,.two-col{grid-template-columns:1fr}.panel-head{flex-direction:column;align-items:flex-start}}
 </style>
-<div class="ops-shell">
-  <aside class="ops-sidebar">
-    <div class="ops-brand"><h1>Eventos Flex</h1><p>Operations Command</p></div>
-    <nav class="ops-nav">
-      <a class="active" href="{% url 'dashboard' %}">▦ Dashboard</a>
-      {% if active_event %}
-      <a href="{% url 'event_participants' active_event.id %}">◉ Participantes</a>
-      <a href="{% url 'event_checkin' active_event.id %}">⌁ Check-in</a>
-      <a href="{% url 'event_branding' active_event.id %}">◌ Branding</a>
-      {% else %}
-      <a href="#">◉ Participantes</a><a href="#">⌁ Check-in</a><a href="#">◌ Branding</a>
-      {% endif %}
-      <a href="{% url 'event_create' %}">＋ Novo evento</a>
-      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">↩ Sair</button></form>
-    </nav>
-  </aside>
-  <div class="ops-main">
-    <header class="ops-top">
-      <div class="ops-top-left">
-        <form class="event-switch" method="get"><span>🗓</span><select name="event" onchange="this.form.submit()">{% for ev in events %}<option value="{{ ev.id }}" {% if active_event and ev.id == active_event.id %}selected{% endif %}>{{ ev.title }}</option>{% endfor %}</select></form>
-        <div class="ops-title"><h2>Executive Overview</h2></div>
-      </div>
-      <div class="ops-search"><div class="search-pill"><input type="text" placeholder="Search data..."></div><div class="notif">🔔<b></b></div><div class="userbox"><div style="text-align:right"><div style="font-size:12px;font-weight:800;color:#10233a">{{ request.user.get_full_name|default:request.user.username }}</div><div style="font-size:11px;color:#6f8097;text-transform:uppercase">Event Director</div></div><div class="initials">{{ request.user.username|slice:':2'|upper }}</div></div></div>
-    </header>
-    <div class="ops-content">
-      <section class="kpi-grid">
-        <article class="kpi-card"><div class="kpi-top"><div class="icon-box i-a">👥</div><span class="kpi-badge">Base ativa</span></div><div class="kpi-label">Total inscritos</div><div class="kpi-value">{{ event_stats.total }}</div></article>
-        <article class="kpi-card"><div class="kpi-top"><div class="icon-box i-b">☑</div><span class="kpi-badge">Confirmados</span></div><div class="kpi-label">Check-ins realizados</div><div class="kpi-value">{{ event_stats.confirmados }}</div></article>
-        <article class="kpi-card"><div class="kpi-top"><div class="icon-box i-c">💳</div><span class="kpi-badge">Evento ativo</span></div><div class="kpi-label">Evento selecionado</div><div class="kpi-value">{% if active_event %}{{ active_event.title|truncatechars:14 }}{% else %}—{% endif %}</div></article>
-        <article class="kpi-card"><div class="kpi-top"><div class="icon-box i-d">⚠</div><span class="kpi-badge kpi-warn">Acompanhar</span></div><div class="kpi-label">Pendentes</div><div class="kpi-value">{{ event_stats.pendentes }}</div></article>
-      </section>
-      <section class="panel">
-        <div class="panel-head"><div><h3>Daily Registration Trends</h3><div class="muted">Indicadores do evento selecionado</div></div><div class="muted">Hoje · Semana · Mês</div></div>
-        <div class="chart-wrap"><div class="bar" style="height:14%"></div><div class="bar" style="height:22%"></div><div class="bar" style="height:36%"></div><div class="bar" style="height:68%"></div><div class="bar" style="height:82%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:21%"></div><div class="bar" style="height:8%"></div></div>
-        <div class="bar-labels"><span>08h</span><span>10h</span><span>12h</span><span>14h</span><span>16h</span><span>18h</span><span>20h</span><span>22h</span></div>
-      </section>
-      <section class="two-col">
-        <article class="panel"><div class="panel-head"><h3>Sessões do evento</h3><span class="muted">Agenda resumida</span></div>{% for session in sessions %}<div class="item-row"><div style="display:flex;gap:14px;align-items:center;"><div class="date-box">EV<br>{{ forloop.counter }}</div><div><strong>{{ session.label }}</strong><div class="muted">{{ session.time }} · {{ session.place }}</div></div></div><span class="pill">Sessão</span></div>{% empty %}<div class="item-row"><div><strong>Sem sessões cadastradas</strong><div class="muted">Selecione um evento para visualizar a agenda resumida.</div></div></div>{% endfor %}</article>
-        <article class="panel"><div class="panel-head"><h3>Recent Check-ins</h3><span class="muted">Últimas movimentações</span></div>{% for reg in active_registrations|slice:':4' %}<div class="item-row"><div><strong>{{ reg.participant.name }}</strong><div class="muted">{{ reg.created_at|date:'d/m H:i' }} · {{ reg.participant.company|default:'Participante' }}</div></div><span class="pill">{{ reg.status }}</span></div>{% empty %}<div class="item-row"><div><strong>Sem movimentações</strong><div class="muted">Os check-ins e inscrições recentes aparecerão aqui.</div></div></div>{% endfor %}</article>
-      </section>
+
+<section class="kpi-grid">
+  <article class="kpi-card">
+    <div class="kpi-top">
+      <div class="icon-box i-a">👥</div>
+      <span class="kpi-badge">Base ativa</span>
     </div>
+    <div class="kpi-label">Total inscritos</div>
+    <div class="kpi-value">{{ event_stats.total }}</div>
+  </article>
+
+  <article class="kpi-card">
+    <div class="kpi-top">
+      <div class="icon-box i-b">☑</div>
+      <span class="kpi-badge">Confirmados</span>
+    </div>
+    <div class="kpi-label">Check-ins realizados</div>
+    <div class="kpi-value">{{ event_stats.confirmados }}</div>
+  </article>
+
+  <article class="kpi-card">
+    <div class="kpi-top">
+      <div class="icon-box i-c">💳</div>
+      <span class="kpi-badge">Evento ativo</span>
+    </div>
+    <div class="kpi-label">Evento selecionado</div>
+    <div class="kpi-value">
+      {% if active_event %}{{ active_event.title|truncatechars:14 }}{% else %}—{% endif %}
+    </div>
+  </article>
+
+  <article class="kpi-card">
+    <div class="kpi-top">
+      <div class="icon-box i-d">⚠</div>
+      <span class="kpi-badge kpi-warn">Acompanhar</span>
+    </div>
+    <div class="kpi-label">Pendentes</div>
+    <div class="kpi-value">{{ event_stats.pendentes }}</div>
+  </article>
+</section>
+
+<section class="panel" style="margin-top:22px;">
+  <div class="panel-head">
+    <div>
+      <h3>Daily Registration Trends</h3>
+      <div class="muted">Indicadores do evento selecionado</div>
+    </div>
+    <div class="muted">Hoje · Semana · Mês</div>
   </div>
-</div>
+
+  <div class="chart-wrap">
+    <div class="bar" style="height:14%"></div>
+    <div class="bar" style="height:22%"></div>
+    <div class="bar" style="height:36%"></div>
+    <div class="bar" style="height:68%"></div>
+    <div class="bar" style="height:82%"></div>
+    <div class="bar" style="height:55%"></div>
+    <div class="bar" style="height:21%"></div>
+    <div class="bar" style="height:8%"></div>
+  </div>
+
+  <div class="bar-labels">
+    <span>08h</span>
+    <span>10h</span>
+    <span>12h</span>
+    <span>14h</span>
+    <span>16h</span>
+    <span>18h</span>
+    <span>20h</span>
+    <span>22h</span>
+  </div>
+</section>
+
+<section class="two-col" style="margin-top:22px;">
+  <article class="panel">
+    <div class="panel-head">
+      <h3>Sessões do evento</h3>
+      <span class="muted">Agenda resumida</span>
+    </div>
+
+    {% for session in sessions %}
+      <div class="item-row">
+        <div style="display:flex;gap:14px;align-items:center;">
+          <div class="date-box">EV<br>{{ forloop.counter }}</div>
+          <div>
+            <strong>{{ session.label }}</strong>
+            <div class="muted">{{ session.time }} · {{ session.place }}</div>
+          </div>
+        </div>
+        <span class="pill">Sessão</span>
+      </div>
+    {% empty %}
+      <div class="item-row">
+        <div>
+          <strong>Sem sessões cadastradas</strong>
+          <div class="muted">Selecione um evento para visualizar a agenda resumida.</div>
+        </div>
+      </div>
+    {% endfor %}
+  </article>
+
+  <article class="panel">
+    <div class="panel-head">
+      <h3>Recent Check-ins</h3>
+      <span class="muted">Últimas movimentações</span>
+    </div>
+
+    {% for reg in active_registrations|slice:':4' %}
+      <div class="item-row">
+        <div>
+          <strong>{{ reg.participant.name }}</strong>
+          <div class="muted">{{ reg.created_at|date:'d/m H:i' }} · {{ reg.participant.company|default:'Participante' }}</div>
+        </div>
+        <span class="pill">{{ reg.status }}</span>
+      </div>
+    {% empty %}
+      <div class="item-row">
+        <div>
+          <strong>Sem movimentações</strong>
+          <div class="muted">Os check-ins e inscrições recentes aparecerão aqui.</div>
+        </div>
+      </div>
+    {% endfor %}
+  </article>
+</section>
+
 <a class="fab" href="{% url 'event_create' %}">+</a>
 {% endblock %}

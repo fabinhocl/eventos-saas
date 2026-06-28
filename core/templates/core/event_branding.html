@@ -1,22 +1,373 @@
 {% extends "core/base.html" %}
 {% block title %}Branding{% endblock %}
+
 {% block content %}
 <style>
-  .brand-shell{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 32px);background:#f8f9ff;border-radius:28px;overflow:hidden}.side{background:#213145;color:#dbe6f7}.side .brand{padding:28px;border-bottom:1px solid rgba(255,255,255,.08)}.side .brand h1{margin:0;color:#89f5e7}.side nav{padding:16px 10px;display:grid;gap:6px}.side nav a,.side nav button{display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:18px;color:#d7e2f1;text-decoration:none;background:none;border:none;font:inherit;cursor:pointer;width:100%}.side nav a.active,.side nav a:hover,.side nav button:hover{background:rgba(255,255,255,.08);color:#89f5e7}
-  .main{display:flex;flex-direction:column}.top{background:#fff;border-bottom:1px solid #dbe4ee;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}.top h2{margin:0;color:#0d8b7e}.user{width:36px;height:36px;border-radius:12px;background:#0d8b7e;color:#fff;display:grid;place-items:center;font-weight:800}
-  .content{padding:24px;display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.section,.preview{background:#fff;border:1px solid #dbe4ee;border-radius:22px;padding:22px;box-shadow:0 10px 24px rgba(15,23,42,.04)}.stack{display:grid;gap:22px}.title{display:flex;align-items:center;gap:10px;margin-bottom:18px}.title h3{margin:0}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field label{display:block;font-size:12px;color:#708197;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.field input{width:100%;box-sizing:border-box;border:1px solid #d6dde7;border-radius:12px;padding:12px 14px}.upload{border:2px dashed #c9d4df;border-radius:18px;min-height:128px;display:grid;place-items:center;color:#7b8ba0;background:#fafcfe}.preview-box{border:1px solid #e6edf4;border-radius:18px;overflow:hidden;background:#fff}.preview-banner{height:90px;background:linear-gradient(135deg,#0d8b7e,#5ac2d9)}.preview-body{padding:18px;text-align:center}.cta{display:inline-block;margin-top:12px;background:#0d8b7e;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none}.badge{margin-top:18px;border:1px solid #e6edf4;border-radius:18px;padding:18px;position:relative}.badge::before{content:'';position:absolute;left:0;top:0;width:100%;height:6px;background:#0d8b7e}.actions{display:grid;gap:12px;margin-top:18px}button{padding:14px 16px;border:none;border-radius:14px;font-weight:700;cursor:pointer}.primary{background:#0d8b7e;color:#fff}.secondary{background:#fff;border:1px solid #d6dde7;color:#66788f}
-  @media (max-width:1100px){.brand-shell{grid-template-columns:1fr}.side{display:none}.content{grid-template-columns:1fr}}
+  .content-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:24px;
+  }
+
+  .section,
+  .preview{
+    background:#fff;
+    border:1px solid #dbe4ee;
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 10px 24px rgba(15,23,42,.04);
+  }
+
+  .stack{
+    display:grid;
+    gap:22px;
+  }
+
+  .title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+
+  .title h3{
+    margin:0;
+    color:#10233a;
+  }
+
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+
+  .grid3{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:18px;
+  }
+
+  .field label{
+    display:block;
+    font-size:12px;
+    color:#708197;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:6px;
+  }
+
+  .field input{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #d6dde7;
+    border-radius:12px;
+    padding:12px 14px;
+    font:inherit;
+    background:#fff;
+  }
+
+  .upload{
+    border:2px dashed #c9d4df;
+    border-radius:18px;
+    min-height:128px;
+    display:grid;
+    place-items:center;
+    color:#7b8ba0;
+    background:#fafcfe;
+    overflow:hidden;
+    cursor:pointer;
+    text-align:center;
+    padding:12px;
+  }
+
+  .upload img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .preview-box{
+    border:1px solid #e6edf4;
+    border-radius:18px;
+    overflow:hidden;
+    background:#fff;
+  }
+
+  .preview-banner{
+    height:90px;
+    background:linear-gradient(
+      135deg,
+      {{ event.page_color|default:'#0d8b7e' }},
+      {{ event.background_color|default:'#53beee' }}
+    );
+  }
+
+  .preview-cover{
+    height:90px;
+    background-size:cover;
+    background-position:center;
+  }
+
+  .preview-body{
+    padding:18px;
+    text-align:center;
+  }
+
+  .cta{
+    display:inline-block;
+    margin-top:12px;
+    background:{{ event.page_color|default:'#0d8b7e' }};
+    color:#fff;
+    padding:10px 18px;
+    border-radius:999px;
+    text-decoration:none;
+  }
+
+  .badge{
+    margin-top:18px;
+    border:1px solid #e6edf4;
+    border-radius:18px;
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .badge::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:6px;
+    background:{{ event.page_color|default:'#0d8b7e' }};
+  }
+
+  .actions{
+    display:grid;
+    gap:12px;
+    margin-top:18px;
+  }
+
+  button{
+    padding:14px 16px;
+    border:none;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  .primary{
+    background:#0d8b7e;
+    color:#fff;
+  }
+
+  .secondary{
+    background:#fff;
+    border:1px solid #d6dde7;
+    color:#66788f;
+  }
+
+  .helper{
+    margin-top:14px;
+    color:#708197;
+    font-size:13px;
+  }
+
+  .file-name{
+    margin-top:8px;
+    font-size:12px;
+    color:#0d8b7e;
+    font-weight:700;
+    text-transform:none;
+    letter-spacing:0;
+  }
+
+  @media (max-width:1100px){
+    .content-grid{
+      grid-template-columns:1fr;
+    }
+
+    .grid2,
+    .grid3{
+      grid-template-columns:1fr;
+    }
+  }
 </style>
-<div class="brand-shell">
-  <aside class="side"><div class="brand"><h1>Eventos Flex</h1><div style="color:#9ab0cc;margin-top:6px;">Operations Command</div></div><nav><a href="{% url 'dashboard' %}?event={{ event.id }}">▦ Dashboard</a><a href="{% url 'event_participants' event.id %}">◉ Participantes</a><a href="{% url 'event_checkin' event.id %}">⌁ Check-in</a><a class="active" href="{% url 'event_branding' event.id %}">◌ Branding</a><a href="{% url 'event_create' %}">＋ Novo evento</a><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">↩ Sair</button></form></nav></aside>
-  <div class="main"><header class="top"><div><div style="color:#6f8097;font-size:13px;">Branding</div><h2>Event Branding</h2></div><div style="display:flex;align-items:center;gap:14px;"><div style="color:#6f8097;">🔔 Notifications</div><div class="user">{{ request.user.username|slice:':2'|upper }}</div></div></header>
-  <div class="content">
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div class="content-grid">
     <div class="stack">
-      <section class="section"><div class="title"><span>🖌</span><h3>Identidade Visual</h3></div><div class="grid2"><div class="field"><label>Logo do evento</label><div class="upload">Upload da logo</div></div><div class="field"><label>Cor primária</label><input value="{{ event.page_color }}"><label style="margin-top:14px;">Cor de fundo</label><input value="{{ event.background_color }}"></div></div></section>
-      <section class="section"><div class="title"><span>ℹ</span><h3>Informações do Evento</h3></div><div class="field"><label>Nome do evento</label><input value="{{ event.title }}"></div><div class="grid2"><div class="field"><label>Data de início</label><input value="{{ event.start_at|date:'Y-m-d\TH:i' }}"></div><div class="field"><label>Localização</label><input value="{{ event.location }}"></div></div></section>
-      <section class="section"><div class="title"><span>✉</span><h3>Configurações de Comunicação</h3></div><div class="grid2"><div class="field"><label>Banner do e-mail</label><div class="upload">Prévia do banner</div></div><div class="field"><label>Remetente padrão</label><input value="contato@eventosflex.com"><label style="margin-top:14px;">Texto do botão</label><input value="{{ event.cta_label }}"></div></div></section>
+      <section class="section">
+        <div class="title">
+          <span>🖌</span>
+          <h3>Identidade Visual</h3>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label>Logo do evento</label>
+            <label class="upload" for="id_logo">
+              {% if event.logo_image %}
+                <img src="{{ event.logo_image.url }}" alt="Logo do evento">
+              {% else %}
+                <div>
+                  <strong>Upload da logo</strong><br>
+                  <span>Clique para selecionar uma imagem</span>
+                </div>
+              {% endif %}
+            </label>
+            <input id="id_logo" type="file" name="logo" accept="image/*" style="display:none">
+            <div id="logo-file-name" class="file-name"></div>
+          </div>
+
+          <div class="field">
+            <label>Banner / capa do evento</label>
+            <label class="upload" for="id_cover_image">
+              {% if event.banner_image %}
+                <img src="{{ event.banner_image.url }}" alt="Capa do evento">
+              {% else %}
+                <div>
+                  <strong>Upload da capa</strong><br>
+                  <span>Clique para selecionar uma imagem</span>
+                </div>
+              {% endif %}
+            </label>
+            <input id="id_cover_image" type="file" name="cover_image" accept="image/*" style="display:none">
+            <div id="cover-file-name" class="file-name"></div>
+          </div>
+        </div>
+
+        <div class="grid2" style="margin-top:18px;">
+          <div class="field">
+            <label>Cor primária</label>
+            <input name="page_color" value="{{ event.page_color|default:'' }}">
+          </div>
+
+          <div class="field">
+            <label>Cor de fundo</label>
+            <input name="background_color" value="{{ event.background_color|default:'' }}">
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="title">
+          <span>ℹ</span>
+          <h3>Informações do Evento</h3>
+        </div>
+
+        <div class="field">
+          <label>Nome do evento</label>
+          <input name="title" value="{{ event.title|default:'' }}">
+        </div>
+
+        <div class="grid3" style="margin-top:18px;">
+          <div class="field">
+            <label>Data de início</label>
+            <input type="datetime-local" name="start_at" value="{{ event.start_at|date:'Y-m-d\\TH:i' }}">
+          </div>
+
+          <div class="field">
+            <label>Data de término</label>
+            <input type="datetime-local" name="end_at" value="{{ event.end_at|date:'Y-m-d\\TH:i' }}">
+          </div>
+          
+          <div class="field">
+            <label>Localização</label>
+            <input name="location" value="{{ event.location|default:'' }}">
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="title">
+          <span>✉</span>
+          <h3>Configurações de Comunicação</h3>
+        </div>
+
+        <div class="field">
+          <label>Texto do botão CTA</label>
+          <input name="cta_label" value="{{ event.cta_label|default:'' }}">
+        </div>
+      </section>
     </div>
-    <aside class="preview"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;"><strong style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#71829a;">Live Preview</strong><span style="font-size:11px;color:#0d8b7e;font-weight:800;">Visualização real</span></div><div class="preview-box"><div class="preview-banner"></div><div class="preview-body"><div style="font-weight:800;font-size:20px;color:#10233a;">Seu ingresso está pronto!</div><div style="margin-top:6px;color:#74869b;">Esperamos por você em {{ event.title }}</div><a href="#" class="cta">{{ event.cta_label }}</a></div></div><div class="badge"><div style="display:flex;justify-content:space-between;align-items:end;gap:12px;"><div><div style="font-weight:800;color:#10233a;">Johnathan Doe</div><div style="color:#74869b;">Participante exemplo</div><div style="margin-top:10px;color:#0d8b7e;font-size:12px;font-weight:800;">VIP GUEST</div></div><div style="font-size:32px;">▣</div></div></div><div class="actions"><button class="primary">Salvar alterações</button><button class="secondary">Descartar</button></div></aside>
-  </div></div>
-</div>
+
+    <aside class="preview">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <strong style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#71829a;">Live Preview</strong>
+        <span style="font-size:11px;color:#0d8b7e;font-weight:800;">Visualização real</span>
+      </div>
+
+      <div class="preview-box">
+        {% if event.banner_image %}
+          <div class="preview-cover" style="background-image:url('{{ event.banner_image.url }}')"></div>
+        {% elif event.banner_url %}
+          <div class="preview-cover" style="background-image:url('{{ event.banner_url }}')"></div>
+        {% else %}
+          <div class="preview-banner"></div>
+        {% endif %}
+
+        <div class="preview-body">
+          {% if event.logo_image %}
+            <img src="{{ event.logo_image.url }}" alt="Logo" style="max-height:48px;max-width:180px;margin:0 auto 12px;">
+          {% elif event.logo_url %}
+            <img src="{{ event.logo_url }}" alt="Logo" style="max-height:48px;max-width:180px;margin:0 auto 12px;">
+          {% endif %}
+
+          <div style="font-weight:800;font-size:20px;color:#10233a;">Seu ingresso está pronto!</div>
+          <div style="margin-top:6px;color:#74869b;">Esperamos por você em {{ event.title }}</div>
+          <a href="#" class="cta">{{ event.cta_label|default:'Inscreva-se' }}</a>
+        </div>
+      </div>
+
+      <div class="badge">
+        <div style="display:flex;justify-content:space-between;align-items:end;gap:12px;">
+          <div>
+            <div style="font-weight:800;color:#10233a;">Johnathan Doe</div>
+            <div style="color:#74869b;">Participante exemplo</div>
+            <div style="margin-top:10px;color:{{ event.page_color|default:'#0d8b7e' }};font-size:12px;font-weight:800;">VIP GUEST</div>
+          </div>
+          <div style="font-size:32px;">▣</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" type="submit">Salvar alterações</button>
+        <button class="secondary" type="button" onclick="window.location.reload()">Descartar</button>
+      </div>
+
+      <div class="helper">
+        As imagens enviadas aqui passam a refletir também na tela pública do evento, usando os campos de logo e capa do cadastro.
+      </div>
+    </aside>
+  </div>
+</form>
+
+<script>
+  const logoInput = document.getElementById('id_logo');
+  const coverInput = document.getElementById('id_cover_image');
+  const logoFileName = document.getElementById('logo-file-name');
+  const coverFileName = document.getElementById('cover-file-name');
+
+  if (logoInput) {
+    logoInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file && logoFileName) {
+        logoFileName.textContent = 'Arquivo selecionado: ' + file.name;
+      }
+    });
+  }
+
+  if (coverInput) {
+    coverInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file && coverFileName) {
+        coverFileName.textContent = 'Arquivo selecionado: ' + file.name;
+      }
+    });
+  }
+</script>
 {% endblock %}

@@ -39,7 +39,22 @@ TEMPLATES = [{
 }]
 
 WSGI_APPLICATION = 'badge_project.wsgi.application'
-DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}}
+#DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}}
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "eventosflex",
+        "USER": "eventos_user",
+        "PASSWORD": "Sys.Admin!@#098",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+    }
+}
+
+
+
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Maceio'
 USE_I18N = True

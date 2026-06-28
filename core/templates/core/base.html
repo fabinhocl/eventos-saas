@@ -3,29 +3,317 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Eventos SaaS{% endblock %}</title>
+  <title>{% block title %}Eventos Flex{% endblock %}</title>
   <style>
-    body{font-family:Arial,sans-serif;background:#f5f3ee;color:#222;margin:0;padding:24px}
-    .wrap{max-width:1280px;margin:0 auto}
-    .msg{margin-bottom:12px;padding:12px;border-radius:10px;background:#eef7f7;color:#18474b}
-    .err{background:#fde8f1;color:#8a1148}
-    .public-topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-    .btn{display:inline-block;padding:12px 16px;border-radius:999px;background:#0d6c73;color:#fff;text-decoration:none;border:none;cursor:pointer}
-    .btn-secondary{background:#dcefed;color:#18474b}
-    .actions{display:flex;gap:10px;flex-wrap:wrap}
-    form.inline{margin:0}
+    :root{
+      --bg:#efede7;
+      --surface:#f8f9ff;
+      --line:#dbe4ee;
+      --nav:#213145;
+      --nav-soft:#344962;
+      --teal:#0d8b7e;
+      --teal-soft:#89f5e7;
+      --text:#10233a;
+      --muted:#708197;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    a{text-decoration:none;color:inherit}
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:280px 1fr;
+      background:var(--bg);
+    }
+
+    .sidebar{
+      background:var(--nav);
+      color:#dce7f7;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+    }
+
+    .brand{
+      padding:28px 24px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .brand h1{
+      margin:0;
+      color:var(--teal-soft);
+      font-size:28px;
+      line-height:1.1;
+    }
+
+    .brand p{
+      margin:8px 0 0;
+      color:#9db0c9;
+      font-size:14px;
+    }
+
+    .nav{
+      padding:18px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+
+    .nav a,
+    .nav button{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:18px;
+      border-radius:18px;
+      background:transparent;
+      border:none;
+      color:#e2ebf7;
+      font:inherit;
+      cursor:pointer;
+      width:100%;
+      text-align:left;
+      font-size:15px;
+    }
+
+    .nav a.active,
+    .nav a:hover,
+    .nav button:hover{
+      background:var(--nav-soft);
+      color:var(--teal-soft);
+    }
+
+    .main{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      background:var(--surface);
+    }
+
+    .topbar{
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      padding:16px 24px;
+    }
+
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      min-width:0;
+    }
+
+    .event-switch{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#eef3fb;
+      border:1px solid #d7e1ec;
+      border-radius:16px;
+      padding:10px 14px;
+      min-width:280px;
+    }
+
+    .event-switch select{
+      border:none;
+      background:transparent;
+      font:inherit;
+      color:var(--text);
+      width:100%;
+      outline:none;
+    }
+
+    .page-title{
+      padding-left:18px;
+      border-left:1px solid #d7e1ec;
+    }
+
+    .eyebrow{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .page-title h2{
+      margin:0;
+      font-size:20px;
+    }
+
+    .top-right{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .search{
+      background:#f3f7fb;
+      border:1px solid #d6dde7;
+      border-radius:999px;
+      padding:12px 16px;
+      min-width:260px;
+    }
+
+    .search input{
+      border:none;
+      background:transparent;
+      outline:none;
+      width:100%;
+      font:inherit;
+    }
+
+    .notif{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+    }
+
+    .avatar-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding-left:14px;
+      border-left:1px solid #d7e1ec;
+    }
+
+    .avatar{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:var(--teal);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+    }
+
+    .content{
+      flex:1;
+      min-width:0;
+      padding:24px;
+    }
+
+    @media (max-width:1100px){
+      .app{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        display:none;
+      }
+
+      .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .top-left,
+      .top-right{
+        width:100%;
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .event-switch,
+      .search{
+        width:100%;
+        min-width:0;
+      }
+
+      .avatar-wrap{
+        border-left:none;
+        padding-left:0;
+      }
+    }
   </style>
 </head>
 <body>
-<div class="wrap">
-  {% if not request.user.is_authenticated %}
-  <div class="public-topnav">
-    <a href="{% url 'home' %}" class="btn btn-secondary">Início</a>
-    <div class="actions"><a href="{% url 'login' %}" class="btn">Login organizador</a></div>
-  </div>
+  {% if request.user.is_authenticated and nav_context %}
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <h1>Eventos Flex</h1>
+          <p>Operations Command</p>
+        </div>
+
+        <nav class="nav">
+          <a href="{% url 'dashboard' %}{% if nav_context.active_event %}?event={{ nav_context.active_event.id }}{% endif %}" class="{% if nav_context.section == 'dashboard' %}active{% endif %}">▦ Dashboard</a>
+
+          {% if nav_context.active_event %}
+            <a href="{% url 'event_participants' nav_context.active_event.id %}" class="{% if nav_context.section == 'participants' %}active{% endif %}">◉ Participantes</a>
+            <a href="{% url 'event_checkin' nav_context.active_event.id %}" class="{% if nav_context.section == 'checkin' %}active{% endif %}">⌁ Check-in</a>
+            <a href="{% url 'event_branding' nav_context.active_event.id %}" class="{% if nav_context.section == 'branding' %}active{% endif %}">◌ Branding</a>
+          {% endif %}
+
+          <a href="{% url 'event_create' %}">＋ Novo evento</a>
+
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">↩ Sair</button>
+          </form>
+        </nav>
+      </aside>
+
+      <section class="main">
+        <header class="topbar">
+          <div class="top-left">
+            <div class="event-switch">
+              <span>🗓</span>
+              <select onchange="if(this.value){window.location=this.value;}">
+                {% for ev in nav_context.events %}
+                  <option value="{% if nav_context.section == 'participants' %}{% url 'event_participants' ev.id %}{% elif nav_context.section == 'checkin' %}{% url 'event_checkin' ev.id %}{% elif nav_context.section == 'branding' %}{% url 'event_branding' ev.id %}{% else %}{% url 'dashboard' %}?event={{ ev.id }}{% endif %}" {% if nav_context.active_event and ev.id == nav_context.active_event.id %}selected{% endif %}>
+                    {{ ev.title }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="page-title">
+              <div class="eyebrow">{{ nav_context.active_event.title|default:"Organização" }}</div>
+              <h2>{{ nav_context.page_title }}</h2>
+            </div>
+          </div>
+
+          <div class="top-right">
+            <div class="search">
+              <input placeholder="Buscar dados, participantes ou sessões...">
+            </div>
+
+            <div class="notif">🔔 <span>Notifications</span></div>
+
+            <div class="avatar-wrap">
+              <div style="text-align:right;">
+                <div style="font-size:12px;font-weight:800;">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div style="font-size:11px;color:var(--muted);text-transform:uppercase;">Event Director</div>
+              </div>
+              <div class="avatar">{{ request.user.username|slice:':2'|upper }}</div>
+            </div>
+          </div>
+        </header>
+
+        <main class="content">
+          {% block content %}{% endblock %}
+        </main>
+      </section>
+    </div>
+  {% else %}
+    <main class="content">
+      {% block guest_content %}{% endblock %}
+    </main>
   {% endif %}
-  {% if messages %}{% for message in messages %}<div class="msg{% if message.tags == 'error' %} err{% endif %}">{{ message }}</div>{% endfor %}{% endif %}
-  {% block content %}{% endblock %}
-</div>
 </body>
 </html>

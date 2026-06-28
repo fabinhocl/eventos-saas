@@ -12,6 +12,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from .forms import EventForm, PublicRegistrationForm, RegistrationAdminForm
 from .models import Event, OrganizerProfile, Participant, Registration
 
@@ -147,7 +148,8 @@ def dashboard_view(request):
         {'label': 'Networking / Expo', 'time': '12:00 - 13:30', 'place': 'Foyer'},
     ] if active_event else []
     recent_registrations = list(registrations[:20])
-    return render(request, 'core/dashboard.html', {'profile': profile, 'events': events, 'registrations': recent_registrations, 'active_event': active_event, 'active_registrations': active_registrations, 'event_stats': event_stats, 'sessions': sessions})
+    nav_context = {'section': 'dashboard', 'page_title': 'Executive Overview', 'active_event': active_event, 'events': events}
+    return render(request, 'core/dashboard.html', {'profile': profile, 'events': events, 'registrations': recent_registrations, 'active_event': active_event, 'active_registrations': active_registrations, 'event_stats': event_stats, 'sessions': sessions, 'nav_context': nav_context})
 
 
 @login_required
@@ -184,39 +186,86 @@ def event_overview_view(request, event_id):
 @login_required
 def event_participants_view(request, event_id):
     profile = get_organizer_profile(request.user)
-    event = get_object_or_404(Event, id=event_id)
-    if not profile or event.tenant_id != profile.tenant_id:
-        return HttpResponseForbidden('Acesso não permitido.')
-    status_filter = request.GET.get('status', '').strip()
-    query = request.GET.get('q', '').strip()
+    if not profile:
+        return HttpResponseForbidden('Usuário sem vínculo com organização.')
+
+    event = get_object_or_404(Event, id=event_id, tenant=profile.tenant)
     registrations = event.registrations.select_related('participant').order_by('-created_at')
-    if status_filter:
-        registrations = registrations.filter(status=status_filter)
-    if query:
-        registrations = registrations.filter(participant__name__icontains=query) | event.registrations.filter(participant__email__icontains=query)
+
+    stats = {
+        'total': registrations.count(),
+        'confirmados': registrations.filter(status='confirmado').count(),
+        'checkins': registrations.filter(status='confirmado').count(),
+    }
+
+    nav_context = {
+        'section': 'participants',
+        'page_title': event.title,
+        'active_event': event,
+        'events': Event.objects.filter(tenant=profile.tenant).order_by('-created_at'),
+    }
+
     return render(request, 'core/event_participants.html', {
         'profile': profile,
         'event': event,
         'registrations': registrations,
-        'status_filter': status_filter,
-        'query': query,
+        'stats': stats,
+        'nav_context': nav_context,
     })
+
 
 
 @login_required
 def event_branding_view(request, event_id):
     profile = get_organizer_profile(request.user)
-    event = get_object_or_404(Event, id=event_id)
-    if not profile or event.tenant_id != profile.tenant_id:
-        return HttpResponseForbidden('Acesso não permitido.')
-    form = EventForm(request.POST or None, request.FILES or None, instance=event)
-    if request.method == 'POST' and form.is_valid():
-        updated = form.save()
-        messages.success(request, 'Hotpage atualizada com sucesso.')
-        return redirect('event_branding', event_id=updated.id)
-    return render(request, 'core/event_branding.html', {'profile': profile, 'event': event, 'form': form})
+    if not profile:
+        return HttpResponseForbidden('Usuário sem vínculo com organização.')
 
+    event = get_object_or_404(Event, id=event_id, tenant=profile.tenant)
 
+    if request.method == "POST":
+        event.title = request.POST.get("title", event.title)
+        event.location = request.POST.get("location", event.location)
+        event.page_color = request.POST.get("page_color", event.page_color)
+        event.background_color = request.POST.get("background_color", event.background_color)
+        event.cta_label = request.POST.get("cta_label", event.cta_label)
+
+        start_at = request.POST.get("start_at")
+        end_at = request.POST.get("end_at")
+
+        if start_at:
+            parsed_start = parse_datetime(start_at)
+            if parsed_start:
+                event.start_at = parsed_start
+
+        if end_at:
+            parsed_end = parse_datetime(end_at)
+            if parsed_end:
+                event.end_at = parsed_end
+
+        if request.FILES.get("logo"):
+            event.logo_image = request.FILES["logo"]
+
+        if request.FILES.get("cover_image"):
+            event.banner_image = request.FILES["cover_image"]
+
+        event.save()
+        return redirect('event_branding', event_id=event.id)
+
+    nav_context = {
+        'section': 'branding',
+        'page_title': 'Event Branding',
+        'active_event': event,
+        'events': Event.objects.filter(tenant=profile.tenant).order_by('-created_at'),
+    }
+
+    return render(request, 'core/event_branding.html', {
+        'profile': profile,
+        'event': event,
+        'nav_context': nav_context,
+    })
+
+    
 @login_required
 def export_event_csv_view(request, event_id):
     profile = get_organizer_profile(request.user)
@@ -356,21 +405,27 @@ def participant_access_view(request, token):
 def event_checkin_view(request, event_id):
     profile = get_organizer_profile(request.user)
     event = get_object_or_404(Event, id=event_id)
+
     if not profile or event.tenant_id != profile.tenant_id:
         return HttpResponseForbidden('Acesso não permitido.')
+
     result = None
+
     if request.method == 'POST':
-        raw_code = (request.POST.get('qr_content') or '').strip()
+        raw_code = (request.POST.get('qr_payload') or '').strip()
+
         if 'EVENTOSFLEX|CHECKIN|' not in raw_code:
             messages.error(request, 'QR Code inválido para check-in.')
         else:
             try:
                 parts = dict(piece.split('=', 1) for piece in raw_code.split('|')[2:])
+
                 registration = Registration.objects.select_related('participant', 'event').get(
                     id=int(parts['registration']),
                     event_id=int(parts['event']),
                     access_token=parts['token'],
                 )
+
                 if registration.event_id != event.id:
                     messages.error(request, 'Este QR pertence a outro evento.')
                 else:
@@ -378,8 +433,30 @@ def event_checkin_view(request, event_id):
                     stamp = timezone.now().strftime('%d/%m/%Y %H:%M')
                     registration.notes = ((registration.notes or '') + f"\nCheck-in registrado em {stamp}").strip()
                     registration.save()
+
                     result = registration
                     messages.success(request, f'Check-in realizado para {registration.participant.name}.')
             except Exception:
                 messages.error(request, 'Não foi possível validar o QR Code informado.')
-    return render(request, 'core/event_checkin.html', {'profile': profile, 'event': event, 'result': result})
+
+    recent_registrations = (
+        Registration.objects
+        .select_related('participant')
+        .filter(event=event)
+        .order_by('-updated_at')[:10]
+    )
+
+    nav_context = {
+        'section': 'checkin',
+        'page_title': event.title,
+        'active_event': event,
+        'events': Event.objects.filter(tenant=profile.tenant).order_by('-created_at'),
+    }
+
+    return render(request, 'core/event_checkin.html', {
+        'profile': profile,
+        'event': event,
+        'result': result,
+        'recent_registrations': recent_registrations,
+        'nav_context': nav_context,
+    })

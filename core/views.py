@@ -72,9 +72,15 @@ def format_event_datetime(value):
 def send_registration_confirmation(registration):
     event = registration.event
     participant = registration.participant
+
+    if not participant.email:
+        return
+
     access_url = f"{settings.SITE_URL}{reverse('participant_access', args=[registration.access_token])}"
-    start_label = format_event_datetime(event.start_at)
-    end_label = format_event_datetime(event.end_at)
+    start_label = format_event_datetime(event.start_at) or 'A definir'
+    end_label = format_event_datetime(event.end_at) or 'A definir'
+    main_color = event.page_color or '#0d6c73'
+
     text_body = "\n".join([
         f"Olá, {participant.name}!",
         '',
@@ -88,36 +94,43 @@ def send_registration_confirmation(registration):
         '',
         'Guarde este e-mail para consultar seus dados.',
     ])
+
     html_body = f"""
-    <div style='font-family:Arial,sans-serif;background:#f5f3ee;padding:24px'>
-      <div style='max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #d9d9d9;border-radius:18px;overflow:hidden'>
-        <div style='background:{event.page_color or '#0d6c73'};padding:20px 24px;color:#ffffff'>
-          <h2 style='margin:0;font-size:24px'>Inscrição confirmada</h2>
-          <p style='margin:8px 0 0 0'>{event.title}</p>
+    <div style="font-family:Arial,sans-serif;background:#f5f3ee;padding:24px">
+      <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #d9d9d9;border-radius:18px;overflow:hidden">
+        <div style="background:{main_color};padding:20px 24px;color:#ffffff">
+          <h2 style="margin:0;font-size:24px">Inscrição confirmada</h2>
+          <p style="margin:8px 0 0 0">{event.title}</p>
         </div>
-        <div style='padding:24px'>
+        <div style="padding:24px">
           <p>Olá, <strong>{participant.name}</strong>!</p>
           <p>Sua inscrição foi confirmada com sucesso.</p>
-          <p><strong>Evento:</strong> {event.title}<br>
-          <strong>Início:</strong> {start_label}<br>
-          <strong>Fim:</strong> {end_label}<br>
-          <strong>Local:</strong> {event.location or 'A definir'}<br>
-          <strong>Empresa:</strong> {participant.company or 'Não informada'}</p>
-          <p><a href='{access_url}' style='display:inline-block;padding:12px 18px;background:{event.page_color or '#0d6c73'};color:#ffffff;text-decoration:none;border-radius:999px'>Acessar minha inscrição</a></p>
-          <p style='color:#666'>Guarde este e-mail para consultar seus dados e sua confirmação.</p>
+          <p>
+            <strong>Evento:</strong> {event.title}<br>
+            <strong>Início:</strong> {start_label}<br>
+            <strong>Fim:</strong> {end_label}<br>
+            <strong>Local:</strong> {event.location or 'A definir'}<br>
+            <strong>Empresa:</strong> {participant.company or 'Não informada'}
+          </p>
+          <p>
+            <a href="{access_url}" style="display:inline-block;padding:12px 18px;background:{main_color};color:#ffffff;text-decoration:none;border-radius:999px">
+              Acessar minha inscrição
+            </a>
+          </p>
+          <p style="color:#666">Guarde este e-mail para consultar seus dados e sua confirmação.</p>
         </div>
       </div>
     </div>
     """
+
     message = EmailMultiAlternatives(
-        f'Confirmação de inscrição - {event.title}',
-        text_body,
-        settings.DEFAULT_FROM_EMAIL,
-        [participant.email],
+        subject=f'Confirmação de inscrição - {event.title}',
+        body=text_body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[participant.email],
     )
     message.attach_alternative(html_body, 'text/html')
     message.send(fail_silently=False)
-
 
 def home_view(request):
     events = Event.objects.filter(public_active=True).order_by('-created_at')[:12]

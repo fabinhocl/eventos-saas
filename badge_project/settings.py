@@ -3,8 +3,16 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.environ.get(
+    "ALLOWED_HOSTS",
+    "127.0.0.1,localhost", 
+    "0.0.0.0", 
+    "eventosflex.inralyze.com.br", 
+    "137.131.153.208"
+).split(",")
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,11 +53,11 @@ WSGI_APPLICATION = 'badge_project.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "eventosflex",
-        "USER": "eventos_user",
-        "PASSWORD": "Sys.Admin!@#098",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "NAME": os.environ.get("POSTGRES_DB", "eventosflex"),
+        "USER": os.environ.get("POSTGRES_USER", "eventos_user"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+        "HOST": os.environ.get("POSTGRES_HOST", "db"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 

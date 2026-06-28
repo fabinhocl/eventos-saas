@@ -1,15 +1,14 @@
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env', override=True)
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
-    "127.0.0.1,localhost", 
-    "0.0.0.0", 
-    "eventosflex.inralyze.com.br", 
-    "137.131.153.208"
+    "127.0.0.1,localhost,137.131.153.208"
 ).split(",")
 
 
@@ -55,8 +54,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("POSTGRES_DB", "eventosflex"),
         "USER": os.environ.get("POSTGRES_USER", "eventos_user"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
-        "HOST": os.environ.get("POSTGRES_HOST", "db"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "Sys.Admin!@#098"),
+        "HOST": os.environ.get("POSTGRES_HOST", "127.0.0.1"),
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
@@ -78,15 +77,22 @@ LOGOUT_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/organizacao/login/'
 
 EMAIL_MODE = os.getenv('EMAIL_MODE', 'console').lower()
+
 if EMAIL_MODE == 'smtp':
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.titan.email')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '465'))
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() == 'true'
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False').lower() in ('1', 'true', 'yes', 'on')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'True').lower() in ('1', 'true', 'yes', 'on')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'eventos@localhost.test')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+EMAIL_TIMEOUT = 30
+
 SITE_URL = os.getenv('SITE_URL', 'http://127.0.0.1:8000')
+
+

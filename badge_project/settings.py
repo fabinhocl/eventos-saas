@@ -8,8 +8,17 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
-    "127.0.0.1,localhost,137.131.153.208"
+    "eventosflex.infralyze.com.br",
+    "137.131.153.208",
+    "localhost",
+    "127.0.0.1",
 ).split(",")
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://eventosflex.infralyze.com.br",
+]
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 

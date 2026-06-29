@@ -6,8 +6,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env', override=True)
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
 DEBUG = os.environ.get("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.environ.get(
-    "eventosflex.infralyze.com.br,137.131.153.208,localhost,127.0.0.1",
+
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS",
+    "eventosflex.infralyze.com.br,137.131.153.208,localhost,127.0.0.1"
 ).split(",")
 
 CSRF_TRUSTED_ORIGINS = [

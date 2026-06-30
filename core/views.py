@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
-from .forms import EventForm, PublicRegistrationForm, RegistrationAdminForm
+from .forms import EventForm, PublicRegistrationForm, RegistrationAdminForm, ParticipantForm
 from .models import Event, OrganizerProfile, Participant, Registration
 
 
@@ -195,35 +195,94 @@ def event_overview_view(request, event_id):
     }
     return render(request, 'core/event_overview.html', {'profile': profile, 'event': event, 'stats': stats})
 
+@login_required
+def participant_detail(request, participant_id):
+    profile = get_organizer_profile(request.user)
+    if not profile:
+        return HttpResponseForbidden("Usuário sem vínculo com organização.")
+
+    participant = get_object_or_404(Participant, pk=participant_id)
+
+    latest_registration = (
+        Registration.objects
+        .select_related("event")
+        .filter(participant=participant, event__tenant=profile.tenant)
+        .order_by("-created_at")
+        .first()
+    )
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "delete":
+            event_id = latest_registration.event.id if latest_registration else None
+            participant.delete()
+            messages.success(request, "Participante excluído com sucesso.")
+
+            if event_id:
+                return redirect("event_participants", event_id=event_id)
+            return redirect("dashboard")
+
+        form = ParticipantForm(request.POST, instance=participant)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dados do participante atualizados com sucesso.")
+            return redirect("participant_detail", participant_id=participant.id)
+        else:
+            messages.error(request, "Corrija os campos destacados e tente novamente.")
+    else:
+        form = ParticipantForm(instance=participant)
+
+    nav_context = {
+        "section": "participants",
+        "page_title": "Detalhes do participante",
+        "active_event": latest_registration.event if latest_registration else None,
+        "events": Event.objects.filter(tenant=profile.tenant).order_by("-created_at"),
+    }
+
+    context = {
+        "profile": profile,
+        "participant": participant,
+        "form": form,
+        "latest_registration": latest_registration,
+        "nav_context": nav_context,
+    }
+    return render(request, "core/participant_detail.html", context)
+
 
 @login_required
 def event_participants_view(request, event_id):
     profile = get_organizer_profile(request.user)
     if not profile:
-        return HttpResponseForbidden('Usuário sem vínculo com organização.')
+        return HttpResponseForbidden("Usuário sem vínculo com organização.")
 
     event = get_object_or_404(Event, id=event_id, tenant=profile.tenant)
-    registrations = event.registrations.select_related('participant').order_by('-created_at')
+
+    registrations = (
+        event.registrations
+        .select_related("participant", "event")
+        .order_by("-created_at")
+    )
 
     stats = {
-        'total': registrations.count(),
-        'confirmados': registrations.filter(status='confirmado').count(),
-        'checkins': registrations.filter(status='confirmado').count(),
+        "total": registrations.count(),
+        "confirmados": registrations.filter(status="confirmado").count(),
+        "checkins": registrations.filter(status="confirmado").count(),
     }
 
     nav_context = {
-        'section': 'participants',
-        'page_title': event.title,
-        'active_event': event,
-        'events': Event.objects.filter(tenant=profile.tenant).order_by('-created_at'),
+        "section": "participants",
+        "page_title": event.title,
+        "active_event": event,
+        "events": Event.objects.filter(tenant=profile.tenant).order_by("-created_at"),
     }
 
-    return render(request, 'core/event_participants.html', {
-        'profile': profile,
-        'event': event,
-        'registrations': registrations,
-        'stats': stats,
-        'nav_context': nav_context,
+    return render(request, "core/event_participants.html", {
+        "profile": profile,
+        "event": event,
+        "registrations": registrations,
+        "stats": stats,
+        "nav_context": nav_context,
     })
 
 
@@ -331,17 +390,20 @@ def registration_admin_view(request, registration_id):
 
 
 @login_required
-def resend_confirmation_view(request, registration_id):
-    profile = get_organizer_profile(request.user)
-    registration = get_object_or_404(Registration.objects.select_related('participant', 'event'), id=registration_id)
-    if not profile or registration.event.tenant_id != profile.tenant_id:
-        return HttpResponseForbidden('Acesso não permitido.')
-    try:
-        send_registration_confirmation(registration)
-        messages.success(request, f'E-mail reenviado para {registration.participant.email}.')
-    except Exception as exc:
-        messages.error(request, f'Falha no envio: {exc}')
-    return redirect('registration_admin', registration_id=registration.id)
+def participant_resend_email(request, registration_id):
+    registration = get_object_or_404(
+        Registration.objects.select_related("event", "participant"),
+        pk=registration_id
+    )
+
+    if request.method == "POST":
+        try:
+            send_registration_confirmation(registration)
+            messages.success(request, f"E-mail reenviado para {registration.participant.email}.")
+        except Exception as e:
+            messages.error(request, f"Erro ao reenviar e-mail: {e}")
+
+    return redirect("event_participants", event_id=registration.event.id)
 
 
 @login_required

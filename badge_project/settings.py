@@ -16,7 +16,10 @@ CSRF_TRUSTED_ORIGINS = [
     "https://eventosflex.infralyze.com.br",
 ]
 
+USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SITE_URL = os.getenv("SITE_URL", "https://eventosflex.infralyze.com.br")
+
 
 
 
@@ -100,6 +103,6 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'eventos
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 EMAIL_TIMEOUT = 30
 
-SITE_URL = os.getenv('SITE_URL', 'http://127.0.0.1:8000')
+
 
 

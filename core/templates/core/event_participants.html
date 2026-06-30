@@ -14,7 +14,7 @@
 
   .hero h1{
     margin:0;
-    font-size:58px;
+    font-size:38px;
     line-height:.95;
     color:#10233a;
   }
@@ -57,6 +57,7 @@
     border:1px solid #dbe4ee;
     border-radius:22px;
     box-shadow:0 10px 24px rgba(15,23,42,.04);
+    text-align:center;
   }
 
   .filters{
@@ -151,6 +152,7 @@
     gap:14px;
     padding:18px;
     margin-top:18px;
+    text-align:center;
   }
 
   .stat{
@@ -162,7 +164,7 @@
 
   .stat strong{
     display:block;
-    font-size:38px;
+    font-size:30px;
     color:#10233a;
     margin-top:6px;
   }
@@ -172,13 +174,48 @@
     font-size:13px;
   }
 
+  .acoes-col{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    gap:8px;
+}
+
+.inline-form{
+  display:block;
+  margin:0;
+}
+
+.action-link{
+  color:#10233a;
+  font-weight:700;
+  text-decoration:none;
+  line-height:1.2;
+}
+
+.action-link:hover{
+  color:#0d8b7e;
+  text-decoration:underline;
+}
+
+.btn-link{
+  background:none;
+  border:none;
+  padding:0;
+  margin:0;
+  cursor:pointer;
+  font:inherit;
+  text-align:left;
+}
+
   @media (max-width:900px){
     .hero{
       align-items:flex-start;
     }
 
     .hero h1{
-      font-size:42px;
+      font-size:20px;
     }
 
     .filters,
@@ -250,11 +287,14 @@
         </div>
       </div>
 
-      <div>{{ registration.participant.company|default:'-' }}</div>
+      <div>
+        <div>{{ registration.participant.company|default:"-" }}</div>
+        <div class="muted">{{ registration.participant.role|default:"-" }}</div>
+      </div>
 
       <div>
-        {{ registration.participant.email }}
-        <div class="muted">{{ registration.participant.phone|default:'' }}</div>
+        <div>{{ registration.participant.email }}</div>
+        <div class="muted">{{ registration.participant.phone|default:"-" }}</div>
       </div>
 
       <div>
@@ -262,11 +302,26 @@
       </div>
 
       <div>
-        <span class="chip">{{ registration.created_at|date:'d/m/Y H:i' }}</span>
+        <span class="chip">{{ registration.created_at|date:"d/m/Y H:i" }}</span>
       </div>
 
-      <div>
-        <a href="{% url 'print_badge' registration.id %}">Etiqueta</a>
+      <div class="acoes-col">
+        <a href="{% url 'participant_detail' registration.participant.id %}" class="action-link">
+          Detalhes
+        </a>
+
+        <a href="{% url 'print_badge' registration.id %}" class="action-link">
+          Etiqueta
+        </a>
+
+        <form method="post"
+              action="{% url 'participant_resend_email' registration.id %}"
+              class="inline-form">
+          {% csrf_token %}
+          <button type="submit" class="action-link btn-link">
+            Reenviar e-mail
+          </button>
+        </form>
       </div>
     </div>
   {% empty %}
@@ -283,7 +338,7 @@
 
 <div class="stats">
   <div class="stat">
-    <div>Total Attendees</div>
+    <div>Total Inscritos</div>
     <strong>{{ stats.total }}</strong>
   </div>
 

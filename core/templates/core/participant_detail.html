@@ -1,0 +1,311 @@
+{% extends "core/base.html" %}
+{% block title %}Detalhes do Participante{% endblock %}
+
+{% block content %}
+<style>
+  .page-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:18px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+  }
+
+  .page-top h1{
+    margin:0;
+    font-size:30px;
+    line-height:.95;
+    color:#10233a;
+  }
+
+  .crumb{
+    font-size:13px;
+    color:#75859b;
+    margin-bottom:8px;
+  }
+
+  .top-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 18px;
+    border-radius:16px;
+    border:1px solid #dbe4ee;
+    background:#fff;
+    color:#506177;
+    font-weight:700;
+    text-decoration:none;
+    cursor:pointer;
+  }
+
+  .btn-primary{
+    background:#0d8b7e;
+    color:#fff;
+    border-color:#0d8b7e;
+  }
+
+  .btn-danger{
+    background:#fff4f4;
+    color:#b42318;
+    border-color:#f3c7c7;
+  }
+
+  .panel{
+    background:#fff;
+    border:1px solid #dbe4ee;
+    border-radius:22px;
+    box-shadow:0 10px 24px rgba(15,23,42,.04);
+    padding:22px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:18px;
+  }
+
+  .card{
+    background:#fff;
+    border:1px solid #edf1f5;
+    border-radius:18px;
+    padding:18px;
+  }
+
+  .participant-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:18px;
+  }
+
+  .avatar{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:#e3f0ec;
+    color:#0d8b7e;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+    font-size:20px;
+    flex-shrink:0;
+  }
+
+  .muted{
+    color:#7b8ba0;
+    font-size:13px;
+  }
+
+  .form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .field label{
+    font-size:12px;
+    color:#75859b;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  .field input{
+    width:100%;
+    border:1px solid #d6dde7;
+    border-radius:14px;
+    padding:12px 14px;
+    font:inherit;
+    background:#fff;
+  }
+
+  .errorlist{
+    margin:0;
+    padding:0;
+    list-style:none;
+    color:#b42318;
+    font-size:12px;
+  }
+
+  .full{
+    grid-column:1 / -1;
+  }
+
+  .stack{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .meta-item{
+    padding:14px;
+    border:1px solid #edf1f5;
+    border-radius:16px;
+    background:#fbfcfe;
+  }
+
+  .meta-item strong{
+    display:block;
+    color:#10233a;
+    margin-bottom:4px;
+  }
+
+  .danger-zone{
+    border:1px solid #f3d1d1;
+    background:#fffafa;
+  }
+
+  .danger-zone h3{
+    margin-top:0;
+    color:#8f1d1d;
+  }
+
+  .form-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:18px;
+  }
+
+  @media (max-width:900px){
+    .page-top h1{
+      font-size:20px;
+    }
+
+    .grid,
+    .form-grid{
+      grid-template-columns:1fr;
+    }
+  }
+</style>
+
+<div class="page-top">
+  <div>
+    <div class="crumb">Operação / Participantes / Detalhes</div>
+    <h1>Detalhes do Participante</h1>
+  </div>
+
+  <div class="top-actions">
+    {% if latest_registration %}
+      <a class="btn" href="{% url 'event_participants' latest_registration.event.id %}">
+        Voltar para participantes
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <div class="participant-head">
+      <div class="avatar">{{ participant.name|slice:':2'|upper }}</div>
+      <div>
+        <strong>{{ participant.name }}</strong>
+        <div class="muted">ID: {{ participant.id }}</div>
+      </div>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-grid">
+        <div class="field full">
+          <label for="{{ form.name.id_for_label }}">Nome</label>
+          {{ form.name }}
+          {{ form.name.errors }}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.email.id_for_label }}">E-mail</label>
+          {{ form.email }}
+          {{ form.email.errors }}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.cpf.id_for_label }}">CPF</label>
+          {{ form.cpf }}
+          {{ form.cpf.errors }}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.phone.id_for_label }}">Telefone</label>
+          {{ form.phone }}
+          {{ form.phone.errors }}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.role.id_for_label }}">Cargo</label>
+          {{ form.role }}
+          {{ form.role.errors }}
+        </div>
+
+        <div class="field full">
+          <label for="{{ form.company.id_for_label }}">Empresa</label>
+          {{ form.company }}
+          {{ form.company.errors }}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+
+        {% if latest_registration %}
+          <a class="btn" href="{% url 'event_participants' latest_registration.event.id %}">
+            Voltar para participantes
+          </a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <strong>Inscrição mais recente</strong>
+      {% if latest_registration %}
+        <div class="meta-item">
+          <strong>Evento</strong>
+          <div class="muted">{{ latest_registration.event.title }}</div>
+        </div>
+
+        <div class="meta-item">
+          <strong>Status</strong>
+          <div class="muted">{{ latest_registration.status|title }}</div>
+        </div>
+
+        <div class="meta-item">
+          <strong>Data da inscrição</strong>
+          <div class="muted">{{ latest_registration.created_at|date:"d/m/Y H:i" }}</div>
+        </div>
+      {% else %}
+        <div class="meta-item">
+          <div class="muted">Nenhuma inscrição encontrada para este participante.</div>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="card danger-zone">
+      <h3>Excluir cadastro</h3>
+      <p class="muted">
+        Esta ação remove o participante do sistema. Use com cuidado.
+      </p>
+
+      <form method="post" onsubmit="return confirm('Tem certeza que deseja excluir este participante?');">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete">
+        <button type="submit" class="btn btn-danger">Excluir participante</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

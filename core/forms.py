@@ -102,3 +102,9 @@ class RegistrationAdminForm(forms.ModelForm):
             participant.save()
             registration.save()
         return registration
+
+
+class ParticipantForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        fields = ["name", "email", "cpf", "phone", "company", "role"]

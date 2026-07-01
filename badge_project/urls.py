@@ -2,11 +2,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, include
 from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #path('', include('core.urls')),
     path('', views.home_view, name='home'),
     path('organizacao/login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('organizacao/logout/', auth_views.LogoutView.as_view(), name='logout'),
@@ -26,4 +27,8 @@ urlpatterns = [
     path('e/<slug:slug>/', views.public_event_view, name='public_event'),
     path('e/<slug:slug>/inscricao/', views.public_registration_view, name='public_registration'),
     path('minha-inscricao/<uuid:token>/', views.participant_access_view, name='participant_access'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('debug-media/', views.debug_media_view, name='debug_media'),
+] 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -42,11 +42,13 @@ class Event(models.Model):
     qr_mode = models.CharField('Modo do QR Code', max_length=20, choices=QR_MODE_CHOICES, default='both')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
     def banner_src(self):
         if self.banner_image:
             return self.banner_image.url
         return self.banner_url
 
+    @property
     def logo_src(self):
         if self.logo_image:
             return self.logo_image.url

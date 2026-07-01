@@ -419,16 +419,24 @@ def print_badge_view(request, registration_id):
 
 def public_event_view(request, slug):
     event = get_object_or_404(Event, slug=slug, public_active=True)
-    return render(request, 'core/public_event.html', {'event': event, 'start_label': format_event_datetime(event.start_at), 'end_label': format_event_datetime(event.end_at)})
-
+    context = {
+        "event": event,
+        "start_label": format_event_datetime(event.start_at),
+        "end_label": format_event_datetime(event.end_at),
+        "logo_src": event.logo_src,
+        "banner_src": event.banner_src,
+    }
+    return render(request, "core/public_event.html", context)
 
 def public_registration_view(request, slug):
     event = get_object_or_404(Event, slug=slug, public_active=True)
     form = PublicRegistrationForm(request.POST or None)
+
     if request.method == 'POST' and form.is_valid():
         email = form.cleaned_data['email']
         cpf = form.cleaned_data['cpf']
         participant = Participant.objects.filter(email=email).first() or Participant.objects.filter(cpf=cpf).first()
+
         if participant:
             if participant.email != email and Participant.objects.filter(email=email).exclude(id=participant.id).exists():
                 form.add_error('email', 'Já existe outro participante cadastrado com este e-mail.')
@@ -456,11 +464,13 @@ def public_registration_view(request, slug):
                     company=form.cleaned_data['company'],
                     role=form.cleaned_data['role'],
                 )
+
         if not form.errors:
             existing_registration = Registration.objects.filter(event=event, participant=participant).first()
             if existing_registration:
                 messages.info(request, 'Este participante já estava inscrito neste evento.')
                 return redirect('participant_access', token=existing_registration.access_token)
+
             registration = Registration.objects.create(event=event, participant=participant)
             try:
                 send_registration_confirmation(registration)
@@ -468,7 +478,13 @@ def public_registration_view(request, slug):
             except Exception as exc:
                 messages.error(request, f'Inscrição salva, mas houve falha no envio do e-mail: {exc}')
             return redirect('participant_access', token=registration.access_token)
-    return render(request, 'core/public_registration.html', {'event': event, 'form': form})
+
+    return render(request, 'core/public_registration.html', {
+        'event': event,
+        'form': form,
+        'logo_src': event.logo_src,
+        'banner_src': event.banner_src,
+    })
 
 
 def participant_access_view(request, token):
@@ -535,3 +551,10 @@ def event_checkin_view(request, event_id):
         'recent_registrations': recent_registrations,
         'nav_context': nav_context,
     })
+
+def debug_media_view(request):
+    return HttpResponse(
+        f"DEBUG={settings.DEBUG}<br>"
+        f"MEDIA_URL={settings.MEDIA_URL}<br>"
+        f"MEDIA_ROOT={settings.MEDIA_ROOT}"
+    )   

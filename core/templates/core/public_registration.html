@@ -1,277 +1,470 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscrição · {{ event.title }}</title>
+  <title>Inscrição — {{ event.title }}</title>
+  <meta name="description" content="Inscreva-se em {{ event.title }}.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --bg: #f7f9fb;
+    :root{
+      --bg: {{ event.background_color|default:'#f3f4ee' }};
       --surface: #ffffff;
-      --surface-soft: #f2f4f6;
-      --surface-muted: #eceef0;
-      --text: #191c1e;
-      --text-muted: #59636a;
-      --border: #d7dde2;
-      --primary: {{ event.page_color|default:'#00685f' }};
-      --primary-soft: rgba(0, 104, 95, 0.08);
-      --danger: #b42318;
-      --radius: 20px;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-      --container: 1120px;
+      --text: {{ event.text_color|default:'#1d241d' }};
+      --text-muted: #5d665f;
+      --outline: #d8ddd5;
+      --primary: {{ event.page_color|default:'#25D366' }};
+      --primary-text: #ffffff;
+      --error: #ba1a1a;
+      --error-bg: #ffe8e6;
+      --shadow: 0 12px 32px rgba(20, 28, 20, 0.06);
+      --radius: 16px;
+      --container: 1160px;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Hanken Grotesk",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
     }
-    img { max-width: 100%; display: block; }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
-    .header {
-      position: sticky; top: 0; z-index: 20;
-      background: rgba(255,255,255,.88); backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(109,122,119,.15);
+
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+
+    .container{
+      width:min(calc(100% - 32px), var(--container));
+      margin:0 auto;
     }
-    .header-inner {
-      min-height: 78px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+
+    .label{
+      font-family:"JetBrains Mono",monospace;
+      font-size:11px;
+      line-height:1;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#6f776f;
     }
-    .brand { display:flex; align-items:center; gap:12px; }
-    .brand-mark {
-      width:40px; height:40px; border-radius:12px; display:grid; place-items:center;
-      background: var(--primary); color:#fff; font-weight:800;
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      background:rgba(248,248,244,.94);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(216,221,213,.9);
     }
-    .brand-title { font-weight:800; color: var(--primary); }
-    .brand-sub { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color: var(--text-muted); }
-    .header-meta { display:flex; gap:28px; flex-wrap:wrap; color: var(--text-muted); font-size:14px; }
-    .meta-item { display:flex; align-items:center; gap:8px; }
-    main { padding: 34px 0 64px; }
-    .hero {
-      position: relative; overflow: hidden; border-radius: 24px; min-height: 300px; margin-bottom: 28px;
-      box-shadow: var(--shadow);
-      background:
-        linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.14)),
-        url('{{ event.banner_url|default:"https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1600&q=80" }}') center/cover no-repeat;
-      display:flex; align-items:flex-end;
+
+    .topbar-inner{
+      min-height:58px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:8px 0;
     }
-    .hero-copy { padding: 28px; color: #fff; max-width: 760px; }
-    .pill {
-      display:inline-block; padding:8px 14px; border-radius:999px; background: rgba(0,104,95,.88);
-      font-size:12px; text-transform:uppercase; letter-spacing:.08em; font-weight:700; margin-bottom:14px;
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      flex:1 1 auto;
     }
-    .hero h1 { margin:0 0 10px; font-size: clamp(30px, 5vw, 46px); }
-    .hero p { margin:0; color: rgba(255,255,255,.88); font-size: 17px; }
-    .layout { display:grid; grid-template-columns: 320px 1fr; gap: 24px; }
-    .card {
-      background: var(--surface); border: 1px solid rgba(109,122,119,.14);
-      border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px;
+
+    .brand-logo{
+      width:32px;
+      height:32px;
+      object-fit:contain;
+      background:#fff;
+      border:1px solid #e5e9e1;
+      border-radius:8px;
+      padding:4px;
+      flex-shrink:0;
     }
-    .sidebar { display:grid; gap: 24px; }
-    .card h2, .card h3 { margin-top:0; }
-    .side-title {
-      color: var(--primary); font-size: 20px; margin-bottom: 14px;
+
+    .brand-title{
+      font-size:15px;
+      font-weight:700;
+      line-height:1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .side-copy { color: var(--text-muted); line-height: 1.7; }
-    .checklist { list-style:none; padding:0; margin:20px 0 0; display:grid; gap:14px; }
-    .checklist li { display:flex; gap:10px; color: var(--text-muted); }
-    .checkicon {
-      width:22px; height:22px; border-radius:999px; flex:0 0 auto;
-      display:grid; place-items:center; color: var(--primary); border:1px solid rgba(0,104,95,.24);
-      background: var(--primary-soft); font-size: 12px; margin-top: 1px;
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
+      padding:0 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      transition:.18s ease;
     }
-    .location-box {
-      height: 180px; border-radius: 14px; overflow:hidden; margin-bottom: 14px;
-      background:
-        linear-gradient(rgba(25,28,30,.12), rgba(25,28,30,.12)),
-        url('{{ event.banner_url|default:"https://images.unsplash.com/photo-1526778548025-fa2f459cd5ce?auto=format&fit=crop&w=1200&q=80" }}') center/cover no-repeat;
+
+    .btn-primary{
+      background:var(--primary);
+      color:#ffffff;
     }
-    .label { display:block; font-size: 14px; font-weight: 600; margin: 0 0 8px; color: var(--text-muted); }
-    .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .field { margin-bottom: 18px; }
-    input, textarea, select {
-      width: 100%; border: 1px solid var(--border); border-radius: 14px; padding: 15px 16px;
-      font: inherit; background: #fff; color: var(--text); transition: .2s ease;
+
+    .btn-outline{
+      background:transparent;
+      border-color:rgba(29,36,29,.16);
+      color:var(--text);
     }
-    input:focus, textarea:focus, select:focus {
-      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,104,95,.12);
+
+    .hero{
+      padding:22px 0 72px;
     }
-    textarea { min-height: 110px; resize: vertical; }
-    .help { color: var(--text-muted); font-size: 15px; margin: 0 0 24px; }
-    .messages, .errors { margin: 0 0 18px; padding: 0; list-style: none; }
-    .messages li {
-      padding: 14px 16px; border-radius: 14px; margin-bottom: 10px; background: #e9f7f5; color: #0b5b54;
-      border: 1px solid rgba(0,104,95,.16);
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:20px;
+      align-items:start;
     }
-    .errors li, .field-error {
-      color: var(--danger); font-size: 14px; margin-top: 8px;
+
+    .card{
+      background:var(--surface);
+      border:1px solid var(--outline);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
-    .submit-wrap {
-      border-top: 1px solid rgba(109,122,119,.18); margin-top: 8px; padding-top: 24px;
-      display:flex; flex-direction:column; align-items:center; gap:12px;
+
+    .card-body{
+      padding:28px;
     }
-    .btn {
-      display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:54px;
-      padding: 0 28px; border-radius: 14px; border: 0; cursor:pointer; font-weight: 700; font-size: 17px;
-      background: var(--primary); color:#fff; box-shadow: 0 14px 28px rgba(0,104,95,.16);
+
+    .title{
+      margin:12px 0 10px;
+      font-size:clamp(34px,5vw,60px);
+      line-height:.95;
+      letter-spacing:-.045em;
     }
-    .btn:hover { filter: brightness(.96); }
-    .secure { color: var(--text-muted); font-size: 13px; }
-    .partners {
-      margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(109,122,119,.14); text-align:center;
+
+    .lead{
+      margin:0 0 18px;
+      color:var(--text-muted);
+      font-size:18px;
+      max-width:34ch;
     }
-    .partners h4 {
-      margin:0 0 20px; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--text-muted);
+
+    .messages{
+      display:grid;
+      gap:12px;
+      margin-bottom:18px;
     }
-    .partner-row { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
-    .partner-pill {
-      width: 120px; height: 26px; border-radius: 8px; background: rgba(86,94,116,.10);
+
+    .message{
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-size:15px;
     }
-    .footer {
-      margin-top: 48px; padding: 20px 0; border-top: 1px solid rgba(109,122,119,.14); background: #fff;
+
+    .message.success{
+      background:#e8f7ed;
+      color:#0f5c2e;
+      border-color:#c6e7d1;
     }
-    .footer-inner {
-      max-width: 1120px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;
-      color: var(--text-muted); font-size: 14px;
+
+    .message.info{
+      background:#eef4fb;
+      color:#234d71;
+      border-color:#d2deec;
     }
-    @media (max-width: 980px) {
-      .layout, .grid-2 { grid-template-columns: 1fr; }
-      .header-inner { align-items:flex-start; padding: 14px 0; }
-      .header-meta { gap: 12px; }
+
+    .message.error{
+      background:#fff0ef;
+      color:#8d2219;
+      border-color:#efc2bd;
+    }
+
+    .message.warning{
+      background:#fff7e8;
+      color:#7c5600;
+      border-color:#f0d9ad;
+    }
+
+    .error-summary{
+      margin-bottom:18px;
+      background:var(--error-bg);
+      color:#7f1612;
+      border:1px solid #efbeb8;
+      border-radius:12px;
+      padding:14px 16px;
+      font-size:14px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .field.full{
+      grid-column:1 / -1;
+    }
+
+    .field label{
+      font-family:"JetBrains Mono",monospace;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#5f685f;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      min-height:54px;
+      padding:14px 16px;
+      border:1px solid #cfd5cc;
+      border-radius:12px;
+      background:#fff;
+      font:inherit;
+      color:var(--text);
+      transition:.18s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      outline:none;
+      border-color:#b9c2b6;
+      box-shadow:0 0 0 4px rgba(37,211,102,.08);
+    }
+
+    .field.has-error input,
+    .field.has-error select,
+    .field.has-error textarea{
+      border-color:#d46d64;
+      background:#fffafa;
+    }
+
+    .errorlist{
+      margin:0;
+      padding:0;
+      list-style:none;
+      color:var(--error);
+      font-size:13px;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .side-banner{
+      padding:0;
+      overflow:hidden;
+      min-height:250px;
+    }
+
+    .side-banner img{
+      width:100%;
+      height:100%;
+      min-height:250px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .meta-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+
+    .meta{
+      background:var(--surface);
+      border:1px solid var(--outline);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .meta strong{
+      display:block;
+      margin-top:10px;
+      font-size:16px;
+      line-height:1.25;
+    }
+
+    @media (max-width: 980px){
+      .grid,
+      .meta-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 640px){
+      .container{
+        width:min(calc(100% - 20px), var(--container));
+      }
+
+      .brand-title{
+        font-size:14px;
+        max-width:170px;
+      }
+
+      .card-body{
+        padding:20px;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .title{
+        font-size:42px;
+      }
+
+      .lead{
+        font-size:16px;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="container header-inner">
-      <div class="brand">
-        <div class="brand-mark">EV</div>
-        <div>
-          <div class="brand-title">Eventos Flex</div>
-          <div class="brand-sub">{{ event.title }}</div>
-        </div>
-      </div>
-      <div class="header-meta">
-        <div class="meta-item">📅 {{ event.start_at|date:'d/m/Y H:i' }}{% if event.end_at %} a {{ event.end_at|date:'d/m/Y H:i' }}{% endif %}</div>
-        <div class="meta-item">📍 {{ event.location|default:'Local a definir' }}</div>
-      </div>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="{% url 'public_event' event.slug %}" class="brand">
+        {% if logo_src %}
+          <img src="{{ logo_src }}" alt="{{ event.title }}" class="brand-logo">
+        {% endif %}
+        <span class="brand-title">{{ event.title }}</span>
+      </a>
+
+      <a href="{% url 'public_event' event.slug %}" class="btn btn-outline">Voltar ao evento</a>
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-copy">
-        <span class="pill">Vagas limitadas</span>
-        <h1>{{ event.title }}</h1>
-        <p>{{ event.short_description|default:event.description|truncatechars:190 }}</p>
+  <main class="hero">
+    <div class="container">
+      <div class="grid">
+        <section class="card">
+          <div class="card-body">
+            <div class="label">Inscrição pública</div>
+            <h1 class="title">Garanta sua vaga</h1>
+            <p class="lead">{{ event.short_description|default:event.description|striptags|truncatechars:120 }}</p>
+
+            {% if messages %}
+              <div class="messages">
+                {% for message in messages %}
+                  <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if form.non_field_errors %}
+              <div class="error-summary">
+                {{ form.non_field_errors }}
+              </div>
+            {% endif %}
+
+            <form method="post" novalidate>
+              {% csrf_token %}
+
+              <div class="form-grid">
+                <div class="field full {% if form.name.errors %}has-error{% endif %}">
+                  <label for="{{ form.name.id_for_label }}">Nome completo</label>
+                  {{ form.name }}
+                  {{ form.name.errors }}
+                </div>
+
+                <div class="field {% if form.email.errors %}has-error{% endif %}">
+                  <label for="{{ form.email.id_for_label }}">E-mail</label>
+                  {{ form.email }}
+                  {{ form.email.errors }}
+                </div>
+
+                <div class="field {% if form.cpf.errors %}has-error{% endif %}">
+                  <label for="{{ form.cpf.id_for_label }}">CPF</label>
+                  {{ form.cpf }}
+                  {{ form.cpf.errors }}
+                </div>
+
+                <div class="field {% if form.phone.errors %}has-error{% endif %}">
+                  <label for="{{ form.phone.id_for_label }}">Telefone / WhatsApp</label>
+                  {{ form.phone }}
+                  {{ form.phone.errors }}
+                </div>
+
+                <div class="field {% if form.company.errors %}has-error{% endif %}">
+                  <label for="{{ form.company.id_for_label }}">Empresa</label>
+                  {{ form.company }}
+                  {{ form.company.errors }}
+                </div>
+
+                <div class="field {% if form.role.errors %}has-error{% endif %}">
+                  <label for="{{ form.role.id_for_label }}">Cargo</label>
+                  {{ form.role }}
+                  {{ form.role.errors }}
+                </div>
+              </div>
+
+              <div class="actions">
+                <button type="submit" class="btn btn-primary">
+                  {{ event.cta_label|default:"Fazer inscrição" }}
+                </button>
+                <a href="{% url 'public_event' event.slug %}" class="btn btn-outline">Voltar</a>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <aside>
+          {% if banner_src %}
+            <section class="card side-banner">
+              <img src="{{ banner_src }}" alt="{{ event.title }}">
+            </section>
+          {% endif %}
+
+          <div class="meta-grid">
+            <div class="meta">
+              <div class="label">Local</div>
+              <strong>{{ event.location|default:"Local a confirmar" }}</strong>
+            </div>
+
+            <div class="meta">
+              <div class="label">Início</div>
+              <strong>{% if event.start_at %}{{ event.start_at|date:"d/m/Y H:i" }}{% else %}A confirmar{% endif %}</strong>
+            </div>
+
+            <div class="meta">
+              <div class="label">Encerramento</div>
+              <strong>{% if event.end_at %}{{ event.end_at|date:"d/m/Y H:i" }}{% else %}A confirmar{% endif %}</strong>
+            </div>
+
+            <div class="meta">
+              <div class="label">Status</div>
+              <strong>{% if event.public_active %}Inscrições abertas{% else %}Indisponível{% endif %}</strong>
+            </div>
+          </div>
+        </aside>
       </div>
-    </section>
-
-    <div class="layout">
-      <aside class="sidebar">
-        <div class="card">
-          <h2 class="side-title">Sobre o evento</h2>
-          <p class="side-copy">{{ event.description|default:event.short_description }}</p>
-          <ul class="checklist">
-            <li><span class="checkicon">✓</span><span>Inscrição vinculada ao fluxo real do Eventos Flex.</span></li>
-            <li><span class="checkicon">✓</span><span>Confirmação individual para cada participante inscrito.</span></li>
-            <li><span class="checkicon">✓</span><span>Integração com crachá e QR Code no processo do evento.</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3 style="margin-bottom:14px; font-size:13px; text-transform:uppercase; letter-spacing:.12em; color:var(--text-muted);">Local do evento</h3>
-          <div class="location-box"></div>
-          <div style="font-weight:700; margin-bottom:6px;">{{ event.location|default:'Local a definir' }}</div>
-          <div class="side-copy">Evento público configurado no Eventos Flex com identidade visual integrada ao novo template.</div>
-        </div>
-      </aside>
-
-      <section class="card">
-        <div style="margin-bottom:24px; text-align:left;">
-          <h2 style="margin:0 0 6px; font-size:28px;">Formulário de inscrição</h2>
-          <p class="help">Preencha os dados abaixo para confirmar sua participação.</p>
-        </div>
-
-        {% if messages %}
-          <ul class="messages">
-            {% for message in messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-
-        {% if form.non_field_errors %}
-          <ul class="errors">
-            {% for error in form.non_field_errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-
-        <form method="post">
-          {% csrf_token %}
-          <div class="grid-2">
-            <div class="field">
-              <label class="label" for="id_name">Nome completo</label>
-              {{ form.name }}
-              {% for error in form.name.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-            </div>
-            <div class="field">
-              <label class="label" for="id_email">E-mail</label>
-              {{ form.email }}
-              {% for error in form.email.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-            </div>
-            <div class="field">
-              <label class="label" for="id_cpf">CPF</label>
-              {{ form.cpf }}
-              {% for error in form.cpf.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-            </div>
-            <div class="field">
-              <label class="label" for="id_phone">Telefone / WhatsApp</label>
-              {{ form.phone }}
-              {% for error in form.phone.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-            </div>
-            <div class="field">
-              <label class="label" for="id_company">Empresa</label>
-              {{ form.company }}
-              {% for error in form.company.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-            </div>
-            <div class="field">
-              <label class="label" for="id_role">Cargo</label>
-              {{ form.role }}
-              {% for error in form.role.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-            </div>
-          </div>
-          <div class="submit-wrap">
-            <button class="btn" type="submit">Finalizar inscrição →</button>
-            <div class="secure">Seu cadastro será associado ao evento e processado com segurança.</div>
-          </div>
-        </form>
-      </section>
     </div>
-
-    <section class="partners">
-      <h4>Parceiros estratégicos</h4>
-      <div class="partner-row">
-        <div class="partner-pill"></div>
-        <div class="partner-pill"></div>
-        <div class="partner-pill"></div>
-        <div class="partner-pill"></div>
-        <div class="partner-pill"></div>
-      </div>
-    </section>
   </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-      <div><strong>Eventos Flex</strong> · Hotpage de inscrição integrada</div>
-      <div>© 2026 Eventos Flex. Todos os direitos reservados.</div>
-    </div>
-  </footer>
 </body>
 </html>

@@ -123,11 +123,14 @@ def send_registration_confirmation(registration):
     </div>
     """
 
+    bcc_list = [settings.REGISTRATION_CONFIRMATION_BCC] if settings.REGISTRATION_CONFIRMATION_BCC else []
+
     message = EmailMultiAlternatives(
         subject=f'Confirmação de inscrição - {event.title}',
         body=text_body,
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[participant.email],
+        bcc=bcc_list,
     )
     message.attach_alternative(html_body, 'text/html')
     message.send(fail_silently=False)

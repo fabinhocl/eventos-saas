@@ -1,1 +1,118 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Detalhes da inscrição</title><style>body{font-family:Arial,sans-serif;background:#f5f3ee;padding:24px;margin:0}.wrap{max-width:980px;margin:0 auto}.card{background:#fff;border:1px solid #ddd;border-radius:18px;padding:28px;margin-bottom:18px}.btn{display:inline-block;padding:12px 16px;border-radius:999px;background:#0d6c73;color:#fff;text-decoration:none;border:none;cursor:pointer}.btn-secondary{background:#dcefed;color:#18474b}.actions{display:flex;gap:10px;flex-wrap:wrap}.msg{margin-bottom:12px;padding:12px;border-radius:10px;background:#eef7f7;color:#18474b}.err{background:#fde8f1;color:#8a1148}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{font-weight:700}input,select,textarea{width:100%;padding:12px;border:1px solid #bbb;border-radius:10px;box-sizing:border-box}.field-full{grid-column:1/-1}.help{color:#666;font-size:14px}@media (max-width:760px){.grid{grid-template-columns:1fr}}</style></head><body><div class="wrap"><div class="card"><h1>Detalhes da inscrição</h1><p class="help"><strong>Evento:</strong> {{ registration.event.title }}</p>{% if messages %}{% for message in messages %}<div class="msg{% if message.tags == 'error' %} err{% endif %}">{{ message }}</div>{% endfor %}{% endif %}<form method="post">{% csrf_token %}<div class="grid">{% for field in form %}<div class="{% if field.name == 'notes' or field.name == 'name' or field.name == 'company' or field.name == 'role' %}field-full{% endif %}"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}</div><div class="actions" style="margin-top:18px"><button class="btn" type="submit">Salvar alterações</button><a class="btn" href="{% url 'print_badge' registration.id %}">Imprimir etiqueta</a><a class="btn btn-secondary" href="{% url 'resend_confirmation' registration.id %}">Reenviar confirmação</a><a class="btn btn-secondary" href="{% url 'event_participants' registration.event.id %}">Voltar à lista</a></div></form></div></div></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalhes da inscrição</title>
+        <style>
+            body{
+                font-family:Arial,sans-serif;
+                background:#f5f3ee;
+                padding:24px;
+                margin:0
+            }
+            .wrap{
+                max-width:980px;
+                margin:0 auto
+            }
+            .card{
+                background:#fff;
+                border:1px solid #ddd;
+                border-radius:18px;
+                padding:28px;
+                margin-bottom:18px
+            }
+            .btn{
+                display:inline-block;
+                padding:12px 16px;
+                border-radius:999px;
+                background:#0d6c73;
+                color:#fff;
+                text-decoration:none;
+                border:none;cursor:pointer
+            }
+            .btn-secondary{
+                background:#dcefed;
+                color:#18474b
+            }
+            .actions{
+                display:flex;
+                gap:10px;
+                flex-wrap:wrap
+            }
+            .msg{
+                margin-bottom:12px;
+                padding:12px;
+                border-radius:10px;
+                background:#eef7f7;
+                color:#18474b
+            }
+            .err{
+                background:#fde8f1;
+                color:#8a1148
+            }
+            .grid{
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:14px
+            }
+            label{
+                font-weight:700
+            }
+            input,select,textarea{
+                width:100%;
+                padding:12px;
+                border:1px solid #bbb;
+                border-radius:10px;
+                box-sizing:border-box
+            }
+            .field-full{
+                grid-column:1/-1
+            }
+            .help{
+                color:#666;
+                font-size:14px
+            }
+            @media (max-width:760px){
+                .grid{
+                    grid-template-columns:1fr
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="card">
+                <h1>Detalhes da inscrição</h1>
+                <p class="help">
+                    <strong>Evento:</strong> {{ registration.event.title }}
+                </p>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="msg{% if message.tags == 'error' %} err{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="grid">
+                        {% for field in form %}
+                            <div class="{% if field.name == 'notes' or field.name == 'name' or field.name == 'company' or field.name == 'role' %}field-full{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {{ field.errors }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="actions" style="margin-top:18px">
+                        <button class="btn" type="submit">Salvar alterações</button>
+                        <a class="btn" href="{% url 'print_badge' registration.id %}">Imprimir etiqueta</a>
+                        <a class="btn btn-secondary" href="{% url 'resend_confirmation' registration.id %}">Reenviar confirmação</a>
+                        <a class="btn btn-secondary" href="{% url 'event_participants' registration.event.id %}">Voltar à lista</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,14 @@
+Olá, {{ participant.name }}!
+
+Sua inscrição foi confirmada com sucesso.
+
+Evento: {{ event.title }}
+Data de início: {{ start_label }}
+Data de encerramento: {{ end_label }}
+Local: {{ event.location|default:"A definir" }}
+Empresa informada: {{ participant.company|default:"Não informada" }}
+
+Link da sua inscrição:
+{{ access_url }}
+
+Guarde este e-mail para consultar seus dados e sua confirmação.

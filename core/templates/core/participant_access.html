@@ -1,1 +1,250 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Minha inscrição</title><style>body{font-family:Arial,sans-serif;background:#f5f3ee;padding:24px}.wrap{max-width:820px;margin:0 auto}.card{background:#fff;border:1px solid #ddd;border-radius:16px;padding:24px;margin-bottom:18px}.help{color:#666;font-size:14px}.btn{display:inline-block;padding:12px 16px;border-radius:999px;background:#0d6c73;color:#fff;text-decoration:none}</style></head><body><div class="wrap"><div class="card"><h1>Minha inscrição</h1><p><strong>Participante:</strong> {{ registration.participant.name }}</p><p><strong>E-mail:</strong> {{ registration.participant.email }}</p><p><strong>CPF:</strong> {{ registration.participant.cpf }}</p><p><strong>Telefone:</strong> {{ registration.participant.phone }}</p><p><strong>Empresa:</strong> {{ registration.participant.company }}</p><p><strong>Cargo:</strong> {{ registration.participant.role }}</p></div><div class="card"><h2>Evento</h2><p><strong>{{ registration.event.title }}</strong></p><p>{{ registration.event.short_description }}</p><p class="help">{{ registration.event.location }}{% if registration.event.start_at %} · {{ registration.event.start_at }}{% endif %}</p><a class="btn" href="{% url 'public_event' registration.event.slug %}">Ver hotpage do evento</a></div></div></body></html>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha inscrição — {{ event.title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f3ee;
+      --surface:#ffffff;
+      --surface-soft:#f7f6f2;
+      --border:#e7e2da;
+      --text:#1e2320;
+      --muted:#667067;
+      --primary:{{ event.page_color|default:'#0d6c73' }};
+      --primary-dark:#0a555a;
+      --shadow:0 10px 30px rgba(0,0,0,.05);
+      --radius:22px;
+      --container:1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Hanken Grotesk",sans-serif;
+      line-height:1.5;
+    }
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{
+      width:min(var(--container), calc(100% - 24px));
+      margin:0 auto;
+    }
+    .page{
+      padding:28px 0 64px;
+    }
+    .hero,
+    .card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .hero{
+      padding:28px;
+      margin-bottom:24px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .logo{
+      width:102px;
+      height:102px;
+      border-radius:18px;
+      border:1px solid #e8e4dc;
+      background:#fff;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      padding:8px;
+    }
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(13,108,115,.10);
+      color:var(--primary);
+      font-family:"JetBrains Mono",monospace;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .hero h1{
+      margin:12px 0 8px;
+      font-size:clamp(34px, 6vw, 54px);
+      line-height:1.02;
+      letter-spacing:-.03em;
+    }
+    .hero p{
+      margin:0;
+      font-size:18px;
+      color:var(--muted);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+    }
+    .card{
+      padding:28px;
+    }
+    .card h2{
+      margin:0 0 18px;
+      font-size:18px;
+      letter-spacing:-.02em;
+    }
+    .list{
+      display:grid;
+      gap:14px;
+    }
+    .item{
+      background:var(--surface-soft);
+      border:1px solid #ece7df;
+      border-radius:16px;
+      padding:14px 16px;
+    }
+    .item-label{
+      display:block;
+      margin-bottom:6px;
+      font-family:"JetBrains Mono",monospace;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .item-value{
+      font-size:18px;
+      color:var(--text);
+    }
+    .item-value.small{
+      font-size:16px;
+    }
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:22px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:50px;
+      padding:0 18px;
+      border-radius:999px;
+      font-weight:700;
+      border:1px solid transparent;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-secondary{
+      background:transparent;
+      color:var(--primary);
+      border-color:rgba(13,108,115,.25);
+    }
+    @media (max-width: 860px){
+      .grid{grid-template-columns:1fr}
+      .brand{align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="container">
+      <section class="hero">
+        <div class="brand">
+          {% if event.logo_src %}
+            <div class="logo">
+              <img src="{{ event.logo_src }}" alt="Logo do evento">
+            </div>
+          {% endif %}
+
+          <div>
+            <span class="eyebrow">Inscrição confirmada</span>
+            <h1>Minha inscrição</h1>
+            <p>{{ event.title }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Participante</h2>
+          <div class="list">
+            <div class="item">
+              <span class="item-label">Nome</span>
+              <div class="item-value">{{ registration.participant.name }}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">E-mail</span>
+              <div class="item-value small">{{ registration.participant.email|default:"Não informado" }}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">CPF</span>
+              <div class="item-value small">{{ registration.participant.cpf|default:"Não informado" }}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">Telefone</span>
+              <div class="item-value small">{{ registration.participant.phone|default:"Não informado" }}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">Empresa</span>
+              <div class="item-value small">{{ registration.participant.company|default:"Não informada" }}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">Cargo</span>
+              <div class="item-value small">{{ registration.participant.role|default:"Não informado" }}</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Evento</h2>
+          <div class="list">
+            <div class="item">
+              <span class="item-label">Evento</span>
+              <div class="item-value">{{ event.title }}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">Local</span>
+              <div class="item-value small">{{ event.location|default:"A definir" }}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">Início</span>
+              <div class="item-value small">{% if event.start_at %}{{ event.start_at|date:"d/m/Y \\à\\s H:i" }}{% else %}A definir{% endif %}</div>
+            </div>
+            <div class="item">
+              <span class="item-label">Encerramento</span>
+              <div class="item-value small">{% if event.end_at %}{{ event.end_at|date:"d/m/Y \\à\\s H:i" }}{% else %}A definir{% endif %}</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <a href="{% url 'public_event' event.slug %}" class="btn btn-primary">Ver homepage do evento</a>
+            <a href="{% url 'public_registration' event.slug %}" class="btn btn-secondary">Nova inscrição</a>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

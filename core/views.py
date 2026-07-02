@@ -10,6 +10,7 @@ from django.contrib.auth.views import LogoutView
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
@@ -81,52 +82,38 @@ def send_registration_confirmation(registration):
     end_label = format_event_datetime(event.end_at) or 'A definir'
     main_color = event.page_color or '#0d6c73'
 
-    text_body = "\n".join([
-        f"Olá, {participant.name}!",
-        '',
-        'Sua inscrição foi confirmada com sucesso.',
-        f"Evento: {event.title}",
-        f"Data de início: {start_label}",
-        f"Data de encerramento: {end_label}",
-        f"Local: {event.location or 'A definir'}",
-        f"Empresa informada: {participant.company or 'Não informada'}",
-        f"Link da sua inscrição: {access_url}",
-        '',
-        'Guarde este e-mail para consultar seus dados.',
-    ])
+    raw_logo_url = ''
+    try:
+        raw_logo_url = event.logo_src or ''
+    except Exception:
+        raw_logo_url = ''
 
-    html_body = f"""
-    <div style="font-family:Arial,sans-serif;background:#f5f3ee;padding:24px">
-      <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #d9d9d9;border-radius:18px;overflow:hidden">
-        <div style="background:{main_color};padding:20px 24px;color:#ffffff">
-          <h2 style="margin:0;font-size:24px">Inscrição confirmada</h2>
-          <p style="margin:8px 0 0 0">{event.title}</p>
-        </div>
-        <div style="padding:24px">
-          <p>Olá, <strong>{participant.name}</strong>!</p>
-          <p>Sua inscrição foi confirmada com sucesso.</p>
-          <p>
-            <strong>Evento:</strong> {event.title}<br>
-            <strong>Início:</strong> {start_label}<br>
-            <strong>Fim:</strong> {end_label}<br>
-            <strong>Local:</strong> {event.location or 'A definir'}<br>
-            <strong>Empresa:</strong> {participant.company or 'Não informada'}
-          </p>
-          <p>
-            <a href="{access_url}" style="display:inline-block;padding:12px 18px;background:{main_color};color:#ffffff;text-decoration:none;border-radius:999px">
-              Acessar minha inscrição
-            </a>
-          </p>
-          <p style="color:#666">Guarde este e-mail para consultar seus dados e sua confirmação.</p>
-        </div>
-      </div>
-    </div>
-    """
+    if raw_logo_url and raw_logo_url.startswith('http'):
+        absolute_logo_url = raw_logo_url
+    elif raw_logo_url:
+        absolute_logo_url = f"{settings.SITE_URL}{raw_logo_url}"
+    else:
+        absolute_logo_url = ''
+
+    context = {
+        'registration': registration,
+        'event': event,
+        'participant': participant,
+        'access_url': access_url,
+        'start_label': start_label,
+        'end_label': end_label,
+        'main_color': main_color,
+        'absolute_logo_url': absolute_logo_url,
+    }
+
+    subject = f'Confirmação de inscrição - {event.title}'
+    text_body = render_to_string('email/registration_confirmation.txt', context)
+    html_body = render_to_string('email/registration_confirmation.html', context)
 
     bcc_list = [settings.REGISTRATION_CONFIRMATION_BCC] if settings.REGISTRATION_CONFIRMATION_BCC else []
 
     message = EmailMultiAlternatives(
-        subject=f'Confirmação de inscrição - {event.title}',
+        subject=subject,
         body=text_body,
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[participant.email],
@@ -138,7 +125,6 @@ def send_registration_confirmation(registration):
 def home_view(request):
     events = Event.objects.filter(public_active=True).order_by('-created_at')[:12]
     return render(request, 'core/home.html', {'events': events})
-
 
 @login_required
 def dashboard_view(request):
@@ -420,6 +406,22 @@ def print_badge_view(request, registration_id):
     return render(request, 'core/print_badge.html', {'registration': registration, 'qr_code': qr_code, 'qr_mode_label': qr_mode_label})
 
 
+@property
+def logo_src(self):
+    if self.logo_image:
+        return self.logo_image.url
+    if self.logo_url:
+        return self.logo_url
+    return ''
+
+@property
+def banner_src(self):
+    if self.banner_image:
+        return self.banner_image.url
+    if self.banner_url:
+        return self.banner_url
+    return ''
+
 def public_event_view(request, slug):
     event = get_object_or_404(Event, slug=slug, public_active=True)
     context = {
@@ -491,9 +493,12 @@ def public_registration_view(request, slug):
 
 
 def participant_access_view(request, token):
-    registration = get_object_or_404(Registration.objects.select_related('participant', 'event'), access_token=token)
-    return render(request, 'core/participant_access.html', {'registration': registration})
+    registration = get_object_or_404(Registration.objects.select_related('event', 'participant'), access_token=token)
 
+    return render(request, 'core/participant_access.html', {
+        'registration': registration,
+        'event': registration.event,
+    })
 
 @login_required
 def event_checkin_view(request, event_id):

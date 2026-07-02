@@ -80,8 +80,8 @@
     }
 
     .brand-logo{
-      width:32px;
-      height:32px;
+      width:102px;
+      height:102px;
       object-fit:contain;
       background:#fff;
       border:1px solid #e5e9e1;
@@ -350,8 +350,8 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <a href="{% url 'public_event' event.slug %}" class="brand">
-        {% if logo_src %}
-          <img src="{{ logo_src }}" alt="{{ event.title }}" class="brand-logo">
+        {% if event.logo_image %}
+          <img src="{{ event.logo_src }}" alt="{{ event.title }}" class="brand-logo">
         {% endif %}
         <span class="brand-title">{{ event.title }}</span>
       </a>

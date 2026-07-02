@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmação de inscrição</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f3ee;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f3ee;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#ffffff;border:1px solid #dcd8d2;border-radius:22px;overflow:hidden;">
+          <tr>
+            <td style="background:{{ main_color }};padding:18px 24px;">
+              <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.78);">
+                Confirmação de inscrição
+              </div>
+              <div style="font-family:Arial,sans-serif;font-size:28px;line-height:1.1;font-weight:700;color:#ffffff;margin-top:8px;">
+                Sua vaga está confirmada
+              </div>
+              <div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:rgba(255,255,255,.88);margin-top:8px;">
+                {{ event.title }}
+              </div>
+            </td>
+          </tr>
+
+          {% if absolute_logo_url %}
+          <tr>
+            <td style="padding:24px 24px 0 24px;">
+              <img src="{{ absolute_logo_url }}" alt="Logo do evento" style="display:block;max-width:84px;max-height:84px;border:0;outline:none;text-decoration:none;border-radius:14px;background:#ffffff;padding:6px;">
+            </td>
+          </tr>
+          {% endif %}
+
+          <tr>
+            <td style="padding:24px;">
+              <div style="font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#222;">
+                Olá, <strong>{{ participant.name }}</strong>!
+              </div>
+              <div style="font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#4b5560;margin-top:8px;">
+                Sua inscrição foi confirmada com sucesso. Guarde este e-mail para consultar seus dados e acessar sua inscrição quando precisar.
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0 24px 24px 24px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:separate;border-spacing:0 12px;">
+                <tr>
+                  <td style="background:#f7f6f2;border:1px solid #e6e3dc;border-radius:14px;padding:14px 16px;font-family:Arial,sans-serif;">
+                    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Evento</div>
+                    <div style="margin-top:6px;font-size:16px;color:#111827;font-weight:700;">{{ event.title }}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="background:#f7f6f2;border:1px solid #e6e3dc;border-radius:14px;padding:14px 16px;font-family:Arial,sans-serif;">
+                    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Início</div>
+                    <div style="margin-top:6px;font-size:16px;color:#111827;">{{ start_label }}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="background:#f7f6f2;border:1px solid #e6e3dc;border-radius:14px;padding:14px 16px;font-family:Arial,sans-serif;">
+                    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Encerramento</div>
+                    <div style="margin-top:6px;font-size:16px;color:#111827;">{{ end_label }}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="background:#f7f6f2;border:1px solid #e6e3dc;border-radius:14px;padding:14px 16px;font-family:Arial,sans-serif;">
+                    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Local</div>
+                    <div style="margin-top:6px;font-size:16px;color:#111827;">{{ event.location|default:'A definir' }}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="background:#f7f6f2;border:1px solid #e6e3dc;border-radius:14px;padding:14px 16px;font-family:Arial,sans-serif;">
+                    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Empresa informada</div>
+                    <div style="margin-top:6px;font-size:16px;color:#111827;">{{ participant.company|default:'Não informada' }}</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0 24px 28px 24px;">
+              <a href="{{ access_url }}" style="display:inline-block;padding:14px 20px;background:{{ main_color }};color:#ffffff;text-decoration:none;border-radius:999px;font-family:Arial,sans-serif;font-size:15px;font-weight:700;">
+                Acessar minha inscrição
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0 24px 28px 24px;">
+              <div style="font-family:Arial,sans-serif;font-size:13px;line-height:1.6;color:#6b7280;">
+                Link direto da sua inscrição:<br>
+                <a href="{{ access_url }}" style="color:{{ main_color }};text-decoration:none;">{{ access_url }}</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -84,8 +84,8 @@
     }
 
     .brand-logo{
-      width:32px;
-      height:32px;
+      width:12px;
+      height:12px;
       object-fit:contain;
       background:#fff;
       border:1px solid #e5e9e1;
@@ -95,12 +95,25 @@
     }
 
     .brand-title{
-      font-size:15px;
+      font-size:25px;
       font-weight:700;
       line-height:1.1;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+    }
+
+    .logo{
+      width: 124px;
+      height: 124px;
+      border-radius: 12px;
+      padding: 6px;
+    }
+
+    .logo img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .nav{
@@ -366,8 +379,14 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <a href="{% url 'public_event' event.slug %}" class="brand">
-        {% if logo_src %}
-          <img src="{{ logo_src }}" alt="{{ event.title }}" class="brand-logo">
+        {% if event.logo_image %}
+          <div class="logo">
+            <img src="{{ event.logo_image.url }}" alt="Logo do evento">
+          </div>
+        {% elif event.logo_url %}
+          <div class="logo">
+            <img src="{{ event.logo_url }}" alt="Logo do evento">
+          </div>
         {% endif %}
         <span class="brand-title">{{ event.title }}</span>
       </a>

@@ -14,6 +14,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
+from email.utils import formataddr
 from .forms import EventForm, PublicRegistrationForm, RegistrationAdminForm, ParticipantForm
 from .models import Event, OrganizerProfile, Participant, Registration
 
@@ -110,12 +111,15 @@ def send_registration_confirmation(registration):
     text_body = render_to_string('email/registration_confirmation.txt', context)
     html_body = render_to_string('email/registration_confirmation.html', context)
 
+    sender_name = event.title
+    from_email = formataddr((sender_name, settings.DEFAULT_FROM_EMAIL))
+
     bcc_list = [settings.REGISTRATION_CONFIRMATION_BCC] if settings.REGISTRATION_CONFIRMATION_BCC else []
 
     message = EmailMultiAlternatives(
         subject=subject,
         body=text_body,
-        from_email=settings.DEFAULT_FROM_EMAIL,
+        from_email=from_email,
         to=[participant.email],
         bcc=bcc_list,
     )

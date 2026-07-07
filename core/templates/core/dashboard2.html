@@ -1,12 +1,11 @@
 {% extends "core/base.html" %}
 {% block title %}Painel da organização{% endblock %}
-
 {% block content %}
 
 <style>
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .kpi-card,.panel{background:#fff;border:1px solid #dbe4ee;border-radius:22px;box-shadow:0 10px 24px rgba(15,23,42,.04)}
-.kpi-card{padding:18px}
+.kpi-card{padding:22px}
 .kpi-top{display:flex;justify-content:space-between;align-items:start}
 .icon-box{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:22px}
 .i-a{background:#eef2ff}
@@ -15,8 +14,8 @@
 .i-d{background:#ffe6e2}
 .kpi-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:999px;padding:6px 10px;font-weight:700;background:#e8fbf7;color:#0a7f73}
 .kpi-warn{background:#fff0ef;color:#b42318}
-.kpi-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#75859b;margin:16px 0 8px;place-items:center}
-.kpi-value{font-size:24px;font-weight:800;color:#10233a;line-height:1.05}
+.kpi-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#75859b;margin:16px 0 8px}
+.kpi-value{font-size:34px;font-weight:800;color:#10233a;line-height:1.05}
 .panel{padding:22px}
 .panel-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:16px}
 .panel-head h3{margin:0;font-size:18px}
@@ -30,7 +29,6 @@
 @media (max-width:1100px){.kpi-grid,.two-col{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){.kpi-grid,.two-col{grid-template-columns:1fr}.panel-head{flex-direction:column;align-items:flex-start}}
 </style>
-
 <section class="kpi-grid">
   <article class="kpi-card">
     <div class="kpi-top">
@@ -52,13 +50,11 @@
 
   <article class="kpi-card">
     <div class="kpi-top">
-      <div class="icon-box i-c">💳</div>
+      <div class="icon-box i-c">🎫</div>
       <span class="kpi-badge">Evento ativo</span>
     </div>
     <div class="kpi-label">Evento selecionado</div>
-    <div class="kpi-value">
-      {% if active_event %}{{ active_event.title|truncatechars:14 }}{% else %}—{% endif %}
-    </div>
+    <div class="kpi-value">{% if active_event %}{{ active_event.title|truncatechars:14 }}{% else %}—{% endif %}</div>
   </article>
 
   <article class="kpi-card">
@@ -70,7 +66,6 @@
     <div class="kpi-value">{{ event_stats.pendentes }}</div>
   </article>
 </section>
-
 
 <section class="panel" style="margin-top:22px;">
   <div class="panel-head">
@@ -87,7 +82,12 @@
     </div>
     {{ daily_chart_json|json_script:"daily-chart-data" }}
   {% else %}
-    <!-- fallback de “Sem dados” -->
+    <div class="item-row">
+      <div>
+        <strong>Sem dados para o gráfico</strong>
+        <div class="muted">Ainda não existem inscrições suficientes para gerar a série diária.</div>
+      </div>
+    </div>
   {% endif %}
 </section>
 
@@ -97,7 +97,6 @@
       <h3>Sessões do evento</h3>
       <span class="muted">Agenda resumida</span>
     </div>
-
     {% for session in sessions %}
       <div class="item-row">
         <div style="display:flex;gap:14px;align-items:center;">
@@ -110,7 +109,12 @@
         <span class="pill">Sessão</span>
       </div>
     {% empty %}
-      <div class="item-row"><div><strong>Sem sessões cadastradas</strong><div class="muted">Selecione um evento para visualizar a agenda resumida.</div></div></div>
+      <div class="item-row">
+        <div>
+          <strong>Sem sessões cadastradas</strong>
+          <div class="muted">Selecione um evento para visualizar a agenda resumida.</div>
+        </div>
+      </div>
     {% endfor %}
   </article>
 
@@ -119,7 +123,6 @@
       <h3>Recent Check-ins</h3>
       <span class="muted">Últimas movimentações</span>
     </div>
-
     {% for reg in active_registrations|slice:":4" %}
       <div class="item-row">
         <div>
@@ -129,16 +132,19 @@
         <span class="pill">{{ reg.status }}</span>
       </div>
     {% empty %}
-      <div class="item-row"><div><strong>Sem movimentações</strong><div class="muted">Os check-ins e inscrições recentes aparecerão aqui.</div></div></div>
+      <div class="item-row">
+        <div>
+          <strong>Sem movimentações</strong>
+          <div class="muted">Os check-ins e inscrições recentes aparecerão aqui.</div>
+        </div>
+      </div>
     {% endfor %}
   </article>
 </section>
 
 <a class="fab" href="{% url 'event_create' %}">+</a>
 
-{{ daily_chart_json|json_script:"daily-chart-data" }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const node = document.getElementById('daily-chart-data');
@@ -161,9 +167,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-   // registra o plugin de data labels
-  Chart.register(ChartDataLabels);
-
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -181,24 +184,13 @@ document.addEventListener('DOMContentLoaded', function () {
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { enabled: true },
-      datalabels: {
-          color: '#0f172a',      // cor do número
-          anchor: 'end',         // onde “ancora” no elemento
-          align: 'start',        // posição em relação à âncora
-          offset: -4,            // ajuste fino em pixels
-          font: {
-            weight: 'bold',
-            size: 11,
-          },
-          formatter: (value) => value // mostra o próprio total
-        }
+        tooltip: { enabled: true }
       },
       scales: {
         x: { grid: { display: false } },
-        y: { beginAtZero: true, ticks: { precision: 0 } },
-      },
-    },
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
   });
 });
 </script>

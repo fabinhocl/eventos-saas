@@ -5,262 +5,323 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Eventos Flex{% endblock %}</title>
   <style>
-    :root{
-      --bg:#efede7;
-      --surface:#f8f9ff;
-      --line:#dbe4ee;
-      --nav:#213145;
-      --nav-soft:#344962;
-      --teal:#0d8b7e;
-      --teal-soft:#89f5e7;
-      --text:#10233a;
-      --muted:#708197;
-    }
+  :root{
+    --bg:#efede7;
+    --surface:#f8f9ff;
+    --line:#dbe4ee;
+    --nav:#213145;
+    --nav-soft:#344962;
+    --teal:#0d8b7e;
+    --teal-soft:#89f5e7;
+    --text:#10233a;
+    --muted:#708197;
+    --danger:#a13544;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  a{text-decoration:none;color:inherit}
 
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family:Inter,Arial,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
+  .app{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:280px 1fr;
+    background:var(--bg);
+  }
 
-    a{text-decoration:none;color:inherit}
+  .sidebar{
+    background:var(--nav);
+    color:#dce7f7;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
 
-    .app{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:280px 1fr;
-      background:var(--bg);
-    }
+  .brand{
+    padding:28px 24px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .brand h1{margin:0;color:var(--teal-soft);font-size:28px;line-height:1.1}
+  .brand p{margin:8px 0 0;color:#9db0c9;font-size:14px}
 
-    .sidebar{
-      background:var(--nav);
-      color:#dce7f7;
-      padding:0;
-      display:flex;
-      flex-direction:column;
-      min-height:100vh;
-    }
+  .nav{
+    padding:18px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+  }
+  .nav a,.nav button{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px;
+    border-radius:18px;
+    background:transparent;
+    border:none;
+    color:#e2ebf7;
+    font:inherit;
+    cursor:pointer;
+    width:100%;
+    text-align:left;
+    font-size:15px;
+  }
+  .nav a.active,.nav a:hover,.nav button:hover{
+    background:var(--nav-soft);
+    color:var(--teal-soft);
+  }
 
-    .brand{
-      padding:28px 24px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
+  .main{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    background:var(--surface);
+  }
 
-    .brand h1{
-      margin:0;
-      color:var(--teal-soft);
-      font-size:28px;
-      line-height:1.1;
-    }
+  .topbar{
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:18px;
+    padding:16px 24px;
+    position:relative;
+  }
 
-    .brand p{
-      margin:8px 0 0;
-      color:#9db0c9;
-      font-size:14px;
-    }
+  .top-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    min-width:0;
+  }
+  .event-switch{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#eef3fb;
+    border:1px solid #d7e1ec;
+    border-radius:16px;
+    padding:10px 14px;
+    min-width:280px;
+  }
+  .event-switch select{
+    border:none;
+    background:transparent;
+    font:inherit;
+    color:var(--text);
+    width:100%;
+    outline:none;
+  }
+  .page-title{
+    padding-left:14px;
+    border-left:1px solid #d7e1ec;
+  }
+  .eyebrow{
+    font-size:12px;
+    color:var(--muted);
+  }
+  .page-title h2{
+    margin:0;
+    font-size:14px;
+  }
 
-    .nav{
-      padding:18px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      flex:1;
-    }
+  .top-right{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    position:relative;
+  }
+  .icon-btn,.avatar-trigger{
+    border:1px solid #d7e1ec;
+    background:#fff;
+    border-radius:16px;
+    min-height:46px;
+    padding:10px 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    color:var(--text);
+  }
+  .icon-btn{position:relative}
+  .badge-count{
+    position:absolute;
+    top:-6px;
+    right:-4px;
+    background:var(--danger);
+    color:#fff;
+    border-radius:999px;
+    min-width:20px;
+    height:20px;
+    padding:0 6px;
+    display:grid;
+    place-items:center;
+    font-size:11px;
+    font-weight:700;
+  }
+  .top-actions-dropdown,.avatar-menu{position:relative}
+  .dropdown-panel{
+    position:absolute;
+    right:0;
+    top:56px;
+    width:280px;
+    background:#fff;
+    border:1px solid #dbe4ee;
+    border-radius:18px;
+    box-shadow:0 18px 36px rgba(15,23,42,.1);
+    padding:10px;
+    z-index:20;
+  }
+  .dropdown-title{
+    padding:10px 12px;
+    font-size:12px;
+    text-transform:uppercase;
+    color:var(--muted);
+    letter-spacing:.08em;
+  }
+  .dropdown-item,.dropdown-button{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:12px;
+    border:none;
+    background:transparent;
+    border-radius:12px;
+    font:inherit;
+    color:var(--text);
+  }
+  .dropdown-item:hover,.dropdown-button:hover{
+    background:#f3f7fb;
+  }
+  .dropdown-meta{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  .dropdown-empty{
+    padding:12px;
+    color:var(--muted);
+  }
+  .avatar-wrap{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding-left:14px;
+    border-left:1px solid #d7e1ec;
+  }
+  .avatar{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    background:var(--teal);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+  }
 
-    .nav a,
-    .nav button{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:18px;
-      border-radius:18px;
-      background:transparent;
-      border:none;
-      color:#e2ebf7;
-      font:inherit;
-      cursor:pointer;
+  .content{
+    flex:1;
+    min-width:0;
+    padding:24px;
+  }
+
+  /* botão de menu: escondido no desktop */
+  .menu-toggle{
+    display:none;
+  }
+
+  /* ===== MOBILE ===== */
+  @media (max-width:1100px){
+    .app{grid-template-columns:1fr;}
+    .sidebar{display:none;}
+    .topbar{flex-direction:column;align-items:flex-start;}
+    .top-left,.top-right{
       width:100%;
-      text-align:left;
-      font-size:15px;
-    }
-
-    .nav a.active,
-    .nav a:hover,
-    .nav button:hover{
-      background:var(--nav-soft);
-      color:var(--teal-soft);
-    }
-
-    .main{
-      min-width:0;
-      display:flex;
       flex-direction:column;
-      min-height:100vh;
-      background:var(--surface);
+      align-items:flex-start;
     }
+    .event-switch{min-width:0;width:100%;}
+    .avatar-wrap{border-left:none;padding-left:0;}
+    .dropdown-panel{left:0;right:auto;width:min(92vw,320px);}
 
-    .topbar{
-      background:#fff;
-      border-bottom:1px solid var(--line);
-      display:flex;
-      justify-content:space-between;
+    .menu-toggle{
+      display:inline-flex;
       align-items:center;
-      gap:18px;
-      padding:16px 24px;
-    }
-
-    .top-left{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      min-width:0;
-    }
-
-    .event-switch{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:#eef3fb;
-      border:1px solid #d7e1ec;
-      border-radius:16px;
-      padding:10px 14px;
-      min-width:280px;
-    }
-
-    .event-switch select{
-      border:none;
-      background:transparent;
-      font:inherit;
-      color:var(--text);
-      width:100%;
-      outline:none;
-    }
-
-    .page-title{
-      padding-left:14px;
-      border-left:1px solid #d7e1ec;
-    }
-
-    .eyebrow{
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .page-title h2{
-      margin:0;
-      font-size:14px;
-    }
-
-    .top-right{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
-    .search{
-      background:#f3f7fb;
-      border:1px solid #d6dde7;
+      justify-content:center;
+      width:40px;
+      height:40px;
       border-radius:999px;
-      padding:12px 16px;
-      min-width:260px;
-    }
-
-    .search input{
       border:none;
-      background:transparent;
-      outline:none;
-      width:100%;
-      font:inherit;
-    }
-
-    .notif{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      color:var(--muted);
-    }
-
-    .avatar-wrap{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding-left:14px;
-      border-left:1px solid #d7e1ec;
-    }
-
-    .avatar{
-      width:42px;
-      height:42px;
-      border-radius:14px;
       background:var(--teal);
       color:#fff;
-      display:grid;
-      place-items:center;
-      font-weight:800;
+      font-size:20px;
+      margin-right:8px;
+      cursor:pointer;
     }
 
-    .content{
-      flex:1;
-      min-width:0;
-      padding:24px;
+    .sidebar-mobile{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.45);
+      display:none;
+      z-index:40;
     }
+    .sidebar-mobile.open{display:block;}
 
-    @media (max-width:1100px){
-      .app{
-        grid-template-columns:1fr;
-      }
-
-      .sidebar{
-        display:none;
-      }
-
-      .topbar{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .top-left,
-      .top-right{
-        width:100%;
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .event-switch,
-      .search{
-        width:100%;
-        min-width:0;
-      }
-
-      .avatar-wrap{
-        border-left:none;
-        padding-left:0;
-      }
+    .sidebar-mobile-inner{
+      width:260px;
+      max-width:80%;
+      height:100%;
+      background:var(--nav);
+      color:#dce7f7;
+      padding:18px 16px;
+      box-shadow:4px 0 24px rgba(15,23,42,.4);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
     }
-  </style>
+    .sidebar-mobile .nav{padding:0;}
+    .sidebar-mobile .brand{
+      padding:0 0 8px 0;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .menu-close{
+      align-self:flex-end;
+      background:none;
+      border:none;
+      color:#dce7f7;
+      font-size:26px;
+      cursor:pointer;
+    }
+  }
+</style>
 </head>
 <body>
   {% if request.user.is_authenticated and nav_context %}
     <div class="app">
+      <!-- COLUNA ESQUERDA: sidebar desktop -->
       <aside class="sidebar">
         <div class="brand">
           <h1>Eventos Flex</h1>
           <p>Painel de Operações</p>
         </div>
-
         <nav class="nav">
           <a href="{% url 'dashboard' %}{% if nav_context.active_event %}?event={{ nav_context.active_event.id }}{% endif %}" class="{% if nav_context.section == 'dashboard' %}active{% endif %}">▦ Dashboard</a>
-
           {% if nav_context.active_event %}
             <a href="{% url 'event_participants' nav_context.active_event.id %}" class="{% if nav_context.section == 'participants' %}active{% endif %}">◉ Participantes</a>
             <a href="{% url 'event_checkin' nav_context.active_event.id %}" class="{% if nav_context.section == 'checkin' %}active{% endif %}">⌁ Check-in</a>
-            <a href="{% url 'event_branding' nav_context.active_event.id %}" class="{% if nav_context.section == 'branding' %}active{% endif %}">◌ Branding</a>
+            {% if profile.role|default:'admin' == 'admin' %}
+              <a href="{% url 'event_branding' nav_context.active_event.id %}" class="{% if nav_context.section == 'branding' %}active{% endif %}">◌ Branding</a>
+            {% endif %}
           {% endif %}
-
-          <a href="{% url 'event_create' %}">＋ Novo evento</a>
-
+          {% if profile.role|default:'admin' == 'admin' %}
+            <a href="{% url 'event_create' %}">＋ Novo evento</a>
+            <a href="{% url 'users_admin' %}" class="{% if nav_context.section == 'users' %}active{% endif %}">⚙ Usuários</a>
+          {% endif %}
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">↩ Sair</button>
@@ -268,14 +329,18 @@
         </nav>
       </aside>
 
+      <!-- COLUNA DIREITA: topbar + conteúdo -->
       <section class="main">
         <header class="topbar">
+          <button class="menu-toggle" type="button" aria-label="Abrir menu" onclick="openMobileMenu()">☰</button>
+
           <div class="top-left">
             <div class="event-switch">
               <span>🗓</span>
               <select onchange="if(this.value){window.location=this.value;}">
                 {% for ev in nav_context.events %}
-                  <option value="{% if nav_context.section == 'participants' %}{% url 'event_participants' ev.id %}{% elif nav_context.section == 'checkin' %}{% url 'event_checkin' ev.id %}{% elif nav_context.section == 'branding' %}{% url 'event_branding' ev.id %}{% else %}{% url 'dashboard' %}?event={{ ev.id }}{% endif %}" {% if nav_context.active_event and ev.id == nav_context.active_event.id %}selected{% endif %}>
+                  <option value="{% if nav_context.section == 'participants' %}{% url 'event_participants' ev.id %}{% elif nav_context.section == 'checkin' %}{% url 'event_checkin' ev.id %}{% elif nav_context.section == 'branding' %}{% url 'event_branding' ev.id %}{% else %}{% url 'dashboard' %}?event={{ ev.id }}{% endif %}"
+                          {% if nav_context.active_event and ev.id == nav_context.active_event.id %}selected{% endif %}>
                     {{ ev.title }}
                   </option>
                 {% endfor %}
@@ -289,18 +354,42 @@
           </div>
 
           <div class="top-right">
-            <div class="search">
-              <input placeholder="Buscar dados, participantes ou sessões...">
+            <div class="top-actions-dropdown">
+              <button type="button" class="icon-btn" onclick="togglePanel('notifications-panel')">🔔
+                {% if nav_context.notifications %}<span class="badge-count">{{ nav_context.notifications|length }}</span>{% endif %}
+              </button>
+              <div id="notifications-panel" class="dropdown-panel" hidden>
+                <div class="dropdown-title">Notificações</div>
+                {% for item in nav_context.notifications %}
+                  <div class="dropdown-item">
+                    <strong>{{ item.label }}</strong>
+                    <div class="dropdown-meta">{{ item.time }}</div>
+                  </div>
+                {% empty %}
+                  <div class="dropdown-empty">Nenhuma notificação.</div>
+                {% endfor %}
+              </div>
             </div>
 
-            <div class="notif">🔔 <span>Notifications</span></div>
-
-            <div class="avatar-wrap">
-              <div style="text-align:right;">
-                <div style="font-size:12px;font-weight:800;">{{ request.user.get_full_name|default:request.user.username }}</div>
-                <div style="font-size:11px;color:var(--muted);text-transform:uppercase;">Event Director</div>
+            <div class="avatar-menu avatar-wrap">
+              <button type="button" class="avatar-trigger" onclick="togglePanel('user-panel')">
+                <div style="text-align:right;">
+                  <div style="font-size:12px;font-weight:800;">{{ request.user.get_full_name|default:request.user.username }}</div>
+                  <div style="font-size:11px;color:var(--muted);text-transform:uppercase;">{{ profile.get_role_display|default:'Administrador' }}</div>
+                </div>
+                <div class="avatar">{{ request.user.username|slice:':2'|upper }}</div>
+              </button>
+              <div id="user-panel" class="dropdown-panel" hidden>
+                <a href="{% url 'dashboard' %}" class="dropdown-item">Meu painel</a>
+                {% if profile.role|default:'admin' == 'admin' %}
+                  <a href="{% url 'event_create' %}" class="dropdown-item">Criar evento</a>
+                  <a href="{% url 'users_admin' %}" class="dropdown-item">Usuários e perfis</a>
+                {% endif %}
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-button">Sair</button>
+                </form>
               </div>
-              <div class="avatar">{{ request.user.username|slice:':2'|upper }}</div>
             </div>
           </div>
         </header>
@@ -310,10 +399,72 @@
         </main>
       </section>
     </div>
+
+    <!-- MENU MOBILE FORA DA GRID (não vira coluna) -->
+    <div class="sidebar-mobile" id="sidebarMobile">
+      <div class="sidebar-mobile-inner">
+        <button class="menu-close" type="button" aria-label="Fechar menu" onclick="closeMobileMenu()">×</button>
+        <div class="brand">
+          <h1>Eventos Flex</h1>
+          <p>Painel de Operações</p>
+        </div>
+        <nav class="nav">
+          <a href="{% url 'dashboard' %}{% if nav_context.active_event %}?event={{ nav_context.active_event.id }}{% endif %}" class="{% if nav_context.section == 'dashboard' %}active{% endif %}">▦ Dashboard</a>
+          {% if nav_context.active_event %}
+            <a href="{% url 'event_participants' nav_context.active_event.id %}" class="{% if nav_context.section == 'participants' %}active{% endif %}">◉ Participantes</a>
+            <a href="{% url 'event_checkin' nav_context.active_event.id %}" class="{% if nav_context.section == 'checkin' %}active{% endif %}">⌁ Check-in</a>
+            {% if profile.role|default:'admin' == 'admin' %}
+              <a href="{% url 'event_branding' nav_context.active_event.id %}" class="{% if nav_context.section == 'branding' %}active{% endif %}">◌ Branding</a>
+            {% endif %}
+          {% endif %}
+          {% if profile.role|default:'admin' == 'admin' %}
+            <a href="{% url 'event_create' %}">＋ Novo evento</a>
+            <a href="{% url 'users_admin' %}" class="{% if nav_context.section == 'users' %}active{% endif %}">⚙ Usuários</a>
+          {% endif %}
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">↩ Sair</button>
+          </form>
+        </nav>
+      </div>
+    </div>
   {% else %}
-    <main class="content">
-      {% block guest_content %}{% endblock %}
-    </main>
+    <main class="content">{% block guest_content %}{% endblock %}</main>
   {% endif %}
 </body>
+
+  <script>
+    function togglePanel(id) {
+  const panel = document.getElementById(id);
+  const shouldOpen = panel.hasAttribute('hidden');
+  document.querySelectorAll('.dropdown-panel').forEach(el => el.setAttribute('hidden', 'hidden'));
+  if (shouldOpen) panel.removeAttribute('hidden');
+}
+
+document.addEventListener('click', function (event) {
+  if (!event.target.closest('.top-actions-dropdown') && !event.target.closest('.avatar-menu')) {
+    document.querySelectorAll('.dropdown-panel').forEach(el => el.setAttribute('hidden', 'hidden'));
+  }
+});
+
+// MENU MOBILE
+function openMobileMenu() {
+  const sidebar = document.getElementById('sidebarMobile');
+  if (sidebar) sidebar.classList.add('open');
+}
+
+function closeMobileMenu() {
+  const sidebar = document.getElementById('sidebarMobile');
+  if (sidebar) sidebar.classList.remove('open');
+}
+
+document.addEventListener('click', function (event) {
+  const sidebar = document.getElementById('sidebarMobile');
+  if (!sidebar) return;
+  if (event.target === sidebar) {
+    closeMobileMenu();
+  }
+});
+</script>
+
 </html>

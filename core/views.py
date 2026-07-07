@@ -1,13 +1,17 @@
 from io import BytesIO
 import base64
 import csv
+import json
 import qrcode
 from openpyxl import Workbook
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from django.core.mail import EmailMultiAlternatives
+from django.db.models import Q, Count
+from django.db.models.functions import TruncDate
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
@@ -15,13 +19,18 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from email.utils import formataddr
-from .forms import EventForm, PublicRegistrationForm, RegistrationAdminForm, ParticipantForm
+from .forms import EventForm, PublicRegistrationForm, RegistrationAdminForm, ParticipantForm, OrganizerUserCreateForm, OrganizerUserEditForm
 from .models import Event, OrganizerProfile, Participant, Registration
 
 
 def get_organizer_profile(user):
     return OrganizerProfile.objects.select_related('tenant').filter(user=user).first()
 
+def user_is_admin(profile):
+    return bool(profile and getattr(profile, 'role', 'admin') == 'admin')
+
+def user_can_operate(profile):
+    return bool(profile and getattr(profile, 'role', 'admin') in ['admin', 'basic'])
 
 def registration_vcard(registration):
     p = registration.participant
@@ -125,6 +134,141 @@ def send_registration_confirmation(registration):
     )
     message.attach_alternative(html_body, 'text/html')
     message.send(fail_silently=False)
+@login_required
+def user_create_view(request):
+    profile = get_organizer_profile(request.user)
+    if not profile:
+        return HttpResponseForbidden('Usuário sem vínculo com organização.')
+    if not user_is_admin(profile):
+        return HttpResponseForbidden('Você não tem permissão para criar usuários.')
+
+    form = OrganizerUserCreateForm(request.POST or None, tenant=profile.tenant)
+
+    if request.method == 'POST' and form.is_valid():
+        user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            email=form.cleaned_data['email'],
+            password=form.cleaned_data['password'],
+            first_name=form.cleaned_data['first_name'],
+            last_name=form.cleaned_data['last_name'],
+        )
+        organizer = OrganizerProfile.objects.create(
+            user=user,
+            tenant=profile.tenant,
+            role=form.cleaned_data['role'],
+        )
+        organizer.allowed_events.set(form.cleaned_data['allowed_events'])
+        messages.success(request, 'Usuário criado com sucesso.')
+        return redirect('users_admin')
+
+    nav_context = {
+        'section': 'users',
+        'page_title': 'Novo usuário',
+        'active_event': Event.objects.filter(tenant=profile.tenant).order_by('-created_at').first(),
+        'events': Event.objects.filter(tenant=profile.tenant).order_by('-created_at'),
+        'notifications': build_notifications(profile, None),
+    }
+
+    return render(request, 'core/user_form.html', {
+        'profile': profile,
+        'form': form,
+        'nav_context': nav_context,
+    })
+
+@login_required
+def user_edit_view(request, organizer_id):
+    profile = get_organizer_profile(request.user)
+    if not profile:
+        return HttpResponseForbidden('Usuário sem vínculo com organização.')
+    if not user_is_admin(profile):
+        return HttpResponseForbidden('Você não tem permissão para editar usuários.')
+
+    organizer = get_object_or_404(
+        OrganizerProfile.objects.select_related('user', 'tenant'),
+        id=organizer_id,
+        tenant=profile.tenant,
+    )
+    user = organizer.user
+
+    if request.method == 'POST':
+        form = OrganizerUserEditForm(
+            request.POST,
+            tenant=profile.tenant,
+            instance=organizer,
+        )
+        if form.is_valid():
+            # atualiza dados do User
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.username = form.cleaned_data['username']
+            user.email = form.cleaned_data['email']
+            user.save()
+
+            # atualiza perfil organizador
+            organizer.role = form.cleaned_data['role']
+            organizer.allowed_events.set(form.cleaned_data['allowed_events'])
+            organizer.save()
+
+            messages.success(request, 'Usuário atualizado com sucesso.')
+            return redirect('users_admin')
+    else:
+        form = OrganizerUserEditForm(
+            tenant=profile.tenant,
+            instance=organizer,
+        )
+
+    nav_context = {
+        'section': 'users',
+        'page_title': 'Editar usuário',
+        'active_event': Event.objects.filter(tenant=profile.tenant).order_by('-created_at').first(),
+        'events': Event.objects.filter(tenant=profile.tenant).order_by('-created_at'),
+        'notifications': build_notifications(profile, None),
+    }
+
+    return render(request, 'core/user_form_edit.html', {
+        'profile': profile,
+        'form': form,
+        'organizer': organizer,
+        'nav_context': nav_context,
+    })
+
+
+def profile_allowed_events(profile):
+    if not profile:
+        return Event.objects.none()
+    if user_is_admin(profile):
+        return Event.objects.filter(tenant=profile.tenant).order_by('-created_at')
+
+    allowed = profile.allowed_events.filter(tenant=profile.tenant).order_by('-created_at')
+    if allowed.exists():
+        return allowed
+    return Event.objects.filter(tenant=profile.tenant).none()
+
+
+def user_can_access_event(profile, event):
+    if not profile or event.tenant_id != profile.tenant_id:
+        return False
+    if user_is_admin(profile):
+        return True
+    return profile.allowed_events.filter(id=event.id).exists()
+
+def build_notifications(profile, active_event=None):
+    notifications = []
+
+    if active_event:
+        total = active_event.registrations.count()
+        pendentes = active_event.registrations.filter(status='pendente').count()
+        checkins = active_event.registrations.filter(status='checkin').count()
+
+        notifications.append({'label': f'{total} inscritos no evento selecionado', 'time': 'Resumo'})
+        if pendentes:
+            notifications.append({'label': f'{pendentes} inscrições pendentes', 'time': 'Acompanhar'})
+        notifications.append({'label': f'{checkins} check-ins registrados', 'time': 'Credenciamento'})
+    else:
+        notifications.append({'label': 'Nenhum evento disponível para este usuário', 'time': 'Painel'})
+
+    return notifications
+
 
 def home_view(request):
     events = Event.objects.filter(public_active=True).order_by('-created_at')[:12]
@@ -135,34 +279,103 @@ def dashboard_view(request):
     profile = get_organizer_profile(request.user)
     if not profile:
         return HttpResponseForbidden('Usuário sem vínculo com organização.')
-    events = Event.objects.filter(tenant=profile.tenant).order_by('-created_at')
-    registrations = Registration.objects.filter(event__tenant=profile.tenant).select_related('participant', 'event').order_by('-created_at')
+
+    events = profile_allowed_events(profile)
+
+    registrations = (
+        Registration.objects
+        .filter(event__in=events)
+        .select_related('participant', 'event')
+        .order_by('-created_at')
+    )
+
+    # Evento ativo
     active_event = events.first()
     event_id = request.GET.get('event')
     if event_id:
         active_event = events.filter(id=event_id).first() or active_event
-    active_registrations = list(registrations.filter(event=active_event)[:20]) if active_event else []
+
+    if active_event:
+        active_registrations_qs = registrations.filter(event=active_event)
+        active_registrations = list(active_registrations_qs[:20])
+    else:
+        active_registrations_qs = Registration.objects.none()
+        active_registrations = []
+
+    # KPIs
     event_stats = {
-        'total': len(active_registrations) if active_event else 0,
-        'confirmados': sum(1 for r in active_registrations if r.status == 'confirmado'),
-        'pendentes': sum(1 for r in active_registrations if r.status == 'pendente'),
-        'cancelados': sum(1 for r in active_registrations if r.status == 'cancelado'),
+        'total': active_registrations_qs.count() if active_event else 0,
+        'confirmados': active_registrations_qs.filter(status='confirmado').count() if active_event else 0,
+        'pendentes': active_registrations_qs.filter(status='pendente').count() if active_event else 0,
+        'cancelados': active_registrations_qs.filter(status='cancelado').count() if active_event else 0,
+        'checkins': active_registrations_qs.filter(status='checkin').count() if active_event else 0,
     }
+
+    # Sessões dummy (por enquanto)
     sessions = [
-        {'label': 'Abertura oficial', 'time': '09:00 - 09:30', 'place': active_event.location if active_event and active_event.location else 'Auditório principal'},
+        {
+            'label': 'Abertura oficial',
+            'time': '09:00 - 09:30',
+            'place': active_event.location if active_event and active_event.location else 'Auditório principal',
+        },
         {'label': 'Painel de conteúdo', 'time': '10:00 - 11:00', 'place': 'Sala 1'},
         {'label': 'Networking / Expo', 'time': '12:00 - 13:30', 'place': 'Foyer'},
     ] if active_event else []
-    recent_registrations = list(registrations[:20])
-    nav_context = {'section': 'dashboard', 'page_title': 'Executive Overview', 'active_event': active_event, 'events': events}
-    return render(request, 'core/dashboard.html', {'profile': profile, 'events': events, 'registrations': recent_registrations, 'active_event': active_event, 'active_registrations': active_registrations, 'event_stats': event_stats, 'sessions': sessions, 'nav_context': nav_context})
 
+    recent_registrations = list(registrations[:20])
+
+    # Série diária para o gráfico
+    daily_chart = []
+    if active_event:
+        daily_rows = (
+            active_event.registrations
+            .annotate(day=TruncDate('created_at'))
+            .values('day')
+            .annotate(total=Count('id'))
+            .order_by('day')
+        )
+
+        daily_chart = [
+            {
+                'label': row['day'].strftime('%d/%m'),
+                'total': row['total'],
+            }
+            for row in daily_rows
+            if row['day']
+        ]
+
+    # JSON que o template vai embutir via json_script
+    daily_chart_json = daily_chart  # já é uma lista de dicts serializável
+
+    nav_context = {
+        'section': 'dashboard',
+        'page_title': 'Visão geral',
+        'active_event': active_event,
+        'events': events,
+        'notifications': build_notifications(profile, active_event),
+    }
+
+    return render(request, 'core/dashboard.html', {
+        'profile': profile,
+        'events': events,
+        'registrations': recent_registrations,
+        'active_event': active_event,
+        'active_registrations': active_registrations,
+        'event_stats': event_stats,
+        'sessions': sessions,
+        'daily_chart': daily_chart,
+        'daily_chart_json': daily_chart_json,
+        'nav_context': nav_context,
+    })
 
 @login_required
 def event_create_view(request):
     profile = get_organizer_profile(request.user)
     if not profile:
         return HttpResponseForbidden('Usuário sem vínculo com organização.')
+    if not user_is_admin(profile):
+        return HttpResponseForbidden('Você não tem permissão para criar eventos.')
+
     form = EventForm(request.POST or None, request.FILES or None)
     if request.method == 'POST' and form.is_valid():
         event = form.save(commit=False)
@@ -171,7 +384,6 @@ def event_create_view(request):
         messages.success(request, 'Evento criado com sucesso.')
         return redirect('event_detail', event_id=event.id)
     return render(request, 'core/event_form.html', {'form': form, 'profile': profile, 'mode': 'create'})
-
 
 @login_required
 def event_overview_view(request, event_id):
@@ -248,8 +460,11 @@ def event_participants_view(request, event_id):
     profile = get_organizer_profile(request.user)
     if not profile:
         return HttpResponseForbidden("Usuário sem vínculo com organização.")
+    if not user_can_operate(profile):
+        return HttpResponseForbidden('Você não tem permissão para acessar participantes.')
 
-    event = get_object_or_404(Event, id=event_id, tenant=profile.tenant)
+    allowed_events = profile_allowed_events(profile)
+    event = get_object_or_404(allowed_events, id=event_id)
 
     registrations = (
         event.registrations
@@ -257,17 +472,36 @@ def event_participants_view(request, event_id):
         .order_by("-created_at")
     )
 
+    search = request.GET.get('q', '').strip()
+    status = request.GET.get('status', '').strip()
+
+    if search:
+        registrations = registrations.filter(
+            Q(participant__name__icontains=search)
+            | Q(participant__email__icontains=search)
+            | Q(participant__company__icontains=search)
+            | Q(participant__phone__icontains=search)
+            | Q(participant__role__icontains=search)
+            | Q(participant__cpf__icontains=search)
+        )
+
+    if status:
+        registrations = registrations.filter(status=status)
+
+    base_registrations = event.registrations.select_related("participant", "event")
     stats = {
-        "total": registrations.count(),
-        "confirmados": registrations.filter(status="confirmado").count(),
-        "checkins": registrations.filter(status="confirmado").count(),
+        "total": base_registrations.count(),
+        "confirmados": base_registrations.filter(status="confirmado").count(),
+        "checkins": base_registrations.filter(status="checkin").count(),
+        "filtrados": registrations.count(),
     }
 
     nav_context = {
         "section": "participants",
-        "page_title": event.title,
+        "page_title": 'Lista de participantes',
         "active_event": event,
-        "events": Event.objects.filter(tenant=profile.tenant).order_by("-created_at"),
+        "events": allowed_events,
+        "notifications": build_notifications(profile, event),
     }
 
     return render(request, "core/event_participants.html", {
@@ -275,10 +509,17 @@ def event_participants_view(request, event_id):
         "event": event,
         "registrations": registrations,
         "stats": stats,
+        "search": search,
+        "status": status,
         "nav_context": nav_context,
+        "status_choices": [
+            ('', 'Todos'),
+            ('confirmado', 'Confirmado'),
+            ('pendente', 'Pendente'),
+            ('cancelado', 'Cancelado'),
+            ('checkin', 'Check-in'),
+        ],
     })
-
-
 
 @login_required
 def event_branding_view(request, event_id):
@@ -408,6 +649,73 @@ def print_badge_view(request, registration_id):
     qr_payload, qr_mode_label = registration_qr_payload(registration)
     qr_code = qr_data_uri(qr_payload)
     return render(request, 'core/print_badge.html', {'registration': registration, 'qr_code': qr_code, 'qr_mode_label': qr_mode_label})
+
+
+@login_required
+def print_badges_batch_view(request, event_id):
+    profile = get_organizer_profile(request.user)
+    if not profile:
+        return HttpResponseForbidden('Usuário sem vínculo com organização.')
+    if not user_can_operate(profile):
+        return HttpResponseForbidden('Você não tem permissão para imprimir etiquetas.')
+
+    event = get_object_or_404(Event, id=event_id, tenant=profile.tenant)
+    registration_ids = request.GET.getlist('registration')
+
+    registrations = event.registrations.select_related('participant', 'event').order_by('participant__name')
+    if registration_ids:
+        registrations = registrations.filter(id__in=registration_ids)
+
+    badges = []
+    for registration in registrations:
+        qr_payload, qr_mode_label = registration_qr_payload(registration)
+        badges.append({
+            'registration': registration,
+            'qr_code': qr_data_uri(qr_payload),
+            'qr_mode_label': qr_mode_label,
+        })
+
+    return render(request, 'core/print_badges_batch.html', {
+        'event': event,
+        'badges': badges,
+    })
+
+
+@login_required
+
+def users_admin_view(request):
+    profile = get_organizer_profile(request.user)
+    if not profile:
+        return HttpResponseForbidden('Usuário sem vínculo com organização.')
+    if not user_is_admin(profile):
+        return HttpResponseForbidden('Você não tem permissão para administrar usuários.')
+
+    users = OrganizerProfile.objects.select_related('user', 'tenant').filter(tenant=profile.tenant).order_by('user__first_name', 'user__username')
+    nav_context = {
+        'section': 'users',
+        'page_title': 'Usuários e perfis',
+        'active_event': Event.objects.filter(tenant=profile.tenant).order_by('-created_at').first(),
+        'events': Event.objects.filter(tenant=profile.tenant).order_by('-created_at'),
+        'topbar_search_action': request.path,
+        'topbar_search_placeholder': 'Buscar usuário...',
+        'topbar_search_value': request.GET.get('q', '').strip(),
+        'notifications': [],
+    }
+
+    query = request.GET.get('q', '').strip()
+    if query:
+        users = users.filter(
+            Q(user__username__icontains=query)
+            | Q(user__first_name__icontains=query)
+            | Q(user__last_name__icontains=query)
+            | Q(user__email__icontains=query)
+        )
+    return render(request, 'core/users_admin.html', {
+        'profile': profile,
+        'users': users,
+        'query': query,
+        'nav_context': nav_context,
+    })
 
 
 @property
@@ -570,3 +878,6 @@ def debug_media_view(request):
         f"MEDIA_URL={settings.MEDIA_URL}<br>"
         f"MEDIA_ROOT={settings.MEDIA_ROOT}"
     )   
+
+
+

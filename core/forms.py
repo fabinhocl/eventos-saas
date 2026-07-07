@@ -1,5 +1,90 @@
 from django import forms
-from .models import Event, Registration, Participant
+from django.contrib.auth.models import User
+from .models import Event, Registration, Participant, OrganizerProfile
+
+class OrganizerUserCreateForm(forms.Form):
+    first_name = forms.CharField(label='Nome', max_length=150)
+    last_name = forms.CharField(label='Sobrenome', max_length=150, required=False)
+    username = forms.CharField(label='Usuário', max_length=150)
+    email = forms.EmailField(label='E-mail')
+    password = forms.CharField(label='Senha inicial', widget=forms.PasswordInput)
+    role = forms.ChoiceField(label='Perfil', choices=OrganizerProfile.ROLE_CHOICES)
+    allowed_events = forms.ModelMultipleChoiceField(
+        label='Eventos liberados',
+        queryset=Event.objects.none(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    def __init__(self, *args, tenant=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if tenant:
+            self.fields['allowed_events'].queryset = Event.objects.filter(
+                tenant=tenant
+            ).order_by('-created_at')
+            
+    def clean_username(self):
+        username = self.cleaned_data['username'].strip()
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('Já existe um usuário com esse login.')
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip().lower()
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Já existe um usuário com esse e-mail.')
+        return email
+    
+
+class OrganizerUserEditForm(forms.Form):
+    first_name = forms.CharField(label='Nome', max_length=150)
+    last_name = forms.CharField(label='Sobrenome', max_length=150, required=False)
+    username = forms.CharField(label='Usuário', max_length=150)
+    email = forms.EmailField(label='E-mail')
+    role = forms.ChoiceField(label='Perfil', choices=OrganizerProfile.ROLE_CHOICES)
+    allowed_events = forms.ModelMultipleChoiceField(
+        label='Eventos liberados',
+        queryset=Event.objects.none(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    def __init__(self, *args, tenant=None, instance=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if tenant:
+            self.fields['allowed_events'].queryset = Event.objects.filter(
+                tenant=tenant
+            ).order_by('-created_at')
+
+        # Pré-preenche os dados a partir do OrganizerProfile e User
+        if instance is not None:
+            user = instance.user
+            self.initial.setdefault('first_name', user.first_name)
+            self.initial.setdefault('last_name', user.last_name)
+            self.initial.setdefault('username', user.username)
+            self.initial.setdefault('email', user.email)
+            self.initial.setdefault('role', instance.role)
+            self.initial.setdefault('allowed_events', instance.allowed_events.all())
+
+    def clean_username(self):
+        username = self.cleaned_data['username'].strip()
+        qs = User.objects.filter(username=username)
+        # permite o mesmo username do próprio usuário
+        if self.initial.get('username'):
+            qs = qs.exclude(username=self.initial['username'])
+        if qs.exists():
+            raise forms.ValidationError('Já existe um usuário com esse login.')
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip().lower()
+        qs = User.objects.filter(email=email)
+        if self.initial.get('email'):
+            qs = qs.exclude(email=self.initial['email'])
+        if qs.exists():
+            raise forms.ValidationError('Já existe um usuário com esse e-mail.')
+        return email
+
 
 class EventForm(forms.ModelForm):
     class Meta:

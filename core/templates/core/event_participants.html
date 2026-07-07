@@ -71,6 +71,51 @@
 
 <p class="results-line">Resultado atual: {{ stats.filtrados }} participante{{ stats.filtrados|pluralize }}. Total do evento: {{ stats.total }}.</p>
 
+
+  <section class="panel" style="margin-bottom:18px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;">
+    <div style="display:flex;flex-direction:column;">
+      <h3 style="margin:0;">Participantes</h3>
+      <div class="muted">
+        {{ page_obj.paginator.count }} inscritos no total
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:18px;">
+      <form method="get" style="display:flex;align-items:center;gap:8px;margin:0;">
+        {% if search %}
+          <input type="hidden" name="q" value="{{ search }}">
+        {% endif %}
+        {% if status %}
+          <input type="hidden" name="status" value="{{ status }}">
+        {% endif %}
+
+        <span class="muted">Inscritos por página</span>
+        <select id="per_page" name="per_page" onchange="this.form.submit()">
+          {% for size in per_page_options %}
+            <option value="{{ size }}" {% if per_page == size %}selected{% endif %}>
+              {{ size }}
+            </option>
+          {% endfor %}
+        </select>
+
+        {% if page_obj.number %}
+          <input type="hidden" name="page" value="{{ page_obj.number }}">
+        {% endif %}
+      </form>
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}&q={{ search }}&status={{ status }}" class="muted">← Anterior</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}&q={{ search }}&status={{ status }}" class="muted">Próxima →</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
 <form id="batch-print-form" method="get" action="{% url 'print_badges_batch' event.id %}">
   <div class="table-wrap">
     <div class="row head">

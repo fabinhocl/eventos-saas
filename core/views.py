@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from django.core.mail import EmailMultiAlternatives
+from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.db.models.functions import TruncDate
 from django.http import HttpResponse, HttpResponseForbidden
@@ -496,9 +497,24 @@ def event_participants_view(request, event_id):
         "filtrados": registrations.count(),
     }
 
+    # paginação
+    per_page_default = 25
+    try:
+        per_page = int(request.GET.get('per_page', per_page_default))
+    except (TypeError, ValueError):
+        per_page = per_page_default
+
+    if per_page not in (10, 25, 50, 100):
+        per_page = per_page_default
+
+    paginator = Paginator(registrations, per_page)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    per_page_options = [10, 25, 50, 100]
+
     nav_context = {
         "section": "participants",
-        "page_title": 'Lista de participantes',
+        "page_title": "Lista de participantes",
         "active_event": event,
         "events": allowed_events,
         "notifications": build_notifications(profile, event),
@@ -507,10 +523,13 @@ def event_participants_view(request, event_id):
     return render(request, "core/event_participants.html", {
         "profile": profile,
         "event": event,
-        "registrations": registrations,
         "stats": stats,
         "search": search,
         "status": status,
+        "registrations": page_obj.object_list,  # só os da página atual
+        "page_obj": page_obj,
+        "per_page": per_page,
+        "per_page_options": per_page_options,
         "nav_context": nav_context,
         "status_choices": [
             ('', 'Todos'),

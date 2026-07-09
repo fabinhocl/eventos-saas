@@ -3,7 +3,7 @@ import base64
 import csv
 import json
 import qrcode
-from openpyxl import Workbook
+from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,9 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
+from django.utils.timezone import localdate
 from email.utils import formataddr
+from openpyxl import Workbook
 from .forms import EventForm, PublicRegistrationForm, RegistrationAdminForm, ParticipantForm, OrganizerUserCreateForm, OrganizerUserEditForm
 from .models import Event, OrganizerProfile, Participant, Registration
 
@@ -476,6 +478,24 @@ def event_participants_view(request, event_id):
     search = request.GET.get('q', '').strip()
     status = request.GET.get('status', '').strip()
 
+    # datas de filtro (formato input type=date)
+    start_str = request.GET.get("start_date", "").strip()
+    end_str = request.GET.get("end_date", "").strip()
+
+    start_date = end_date = None
+    if start_str:
+        try:
+            start_date = datetime.strptime(start_str, "%Y-%m-%d").date()
+        except ValueError:
+            start_date = None
+
+    if end_str:
+        try:
+            end_date = datetime.strptime(end_str, "%Y-%m-%d").date()
+        except ValueError:
+            end_date = None
+
+    # filtros de busca
     if search:
         registrations = registrations.filter(
             Q(participant__name__icontains=search)
@@ -489,6 +509,14 @@ def event_participants_view(request, event_id):
     if status:
         registrations = registrations.filter(status=status)
 
+    # filtro de período sobre a data de inscrição
+    if start_date and end_date:
+        registrations = registrations.filter(created_at__date__range=[start_date, end_date])
+    elif start_date:
+        registrations = registrations.filter(created_at__date__gte=start_date)
+    elif end_date:
+        registrations = registrations.filter(created_at__date__lte=end_date)
+
     base_registrations = event.registrations.select_related("participant", "event")
     stats = {
         "total": base_registrations.count(),
@@ -497,7 +525,7 @@ def event_participants_view(request, event_id):
         "filtrados": registrations.count(),
     }
 
-    # paginação
+    # paginação (já está usando per_page)
     per_page_default = 25
     try:
         per_page = int(request.GET.get('per_page', per_page_default))
@@ -514,7 +542,7 @@ def event_participants_view(request, event_id):
 
     nav_context = {
         "section": "participants",
-        "page_title": "Lista de participantes",
+        "page_title": 'Lista de participantes',
         "active_event": event,
         "events": allowed_events,
         "notifications": build_notifications(profile, event),
@@ -523,13 +551,15 @@ def event_participants_view(request, event_id):
     return render(request, "core/event_participants.html", {
         "profile": profile,
         "event": event,
+        "registrations": page_obj.object_list,
         "stats": stats,
         "search": search,
         "status": status,
-        "registrations": page_obj.object_list,  # só os da página atual
         "page_obj": page_obj,
         "per_page": per_page,
         "per_page_options": per_page_options,
+        "start_date": start_str,
+        "end_date": end_str,
         "nav_context": nav_context,
         "status_choices": [
             ('', 'Todos'),
@@ -673,15 +703,60 @@ def print_badge_view(request, registration_id):
 @login_required
 def print_badges_batch_view(request, event_id):
     profile = get_organizer_profile(request.user)
-    if not profile:
-        return HttpResponseForbidden('Usuário sem vínculo com organização.')
-    if not user_can_operate(profile):
-        return HttpResponseForbidden('Você não tem permissão para imprimir etiquetas.')
+    if not profile or not user_can_operate(profile):
+        return HttpResponseForbidden("Você não tem permissão para imprimir etiquetas.")
 
-    event = get_object_or_404(Event, id=event_id, tenant=profile.tenant)
-    registration_ids = request.GET.getlist('registration')
+    allowed_events = profile_allowed_events(profile)
+    event = get_object_or_404(allowed_events, id=event_id)
 
-    registrations = event.registrations.select_related('participant', 'event').order_by('participant__name')
+    registrations = (
+        event.registrations
+        .select_related("participant", "event")
+        .order_by("created_at")
+    )
+
+    # mesmos filtros da lista
+    search = request.GET.get('q', '').strip()
+    status = request.GET.get('status', '').strip()
+    start_str = request.GET.get("start_date", "").strip()
+    end_str = request.GET.get("end_date", "").strip()
+
+    start_date = end_date = None
+    if start_str:
+        try:
+            start_date = datetime.strptime(start_str, "%Y-%m-%d").date()
+        except ValueError:
+            start_date = None
+
+    if end_str:
+        try:
+            end_date = datetime.strptime(end_str, "%Y-%m-%d").date()
+        except ValueError:
+            end_date = None
+
+    if search:
+        registrations = registrations.filter(
+            Q(participant__name__icontains=search)
+            | Q(participant__email__icontains=search)
+            | Q(participant__company__icontains=search)
+            | Q(participant__phone__icontains=search)
+            | Q(participant__role__icontains=search)
+            | Q(participant__cpf__icontains=search)
+        )
+
+    if status:
+        registrations = registrations.filter(status=status)
+
+    if start_date and end_date:
+        registrations = registrations.filter(created_at__date__range=[start_date, end_date])
+    elif start_date:
+        registrations = registrations.filter(created_at__date__gte=start_date)
+    elif end_date:
+        registrations = registrations.filter(created_at__date__lte=end_date)
+
+    # ids selecionados
+    registration_ids = request.GET.getlist("registration")
+
     if registration_ids:
         registrations = registrations.filter(id__in=registration_ids)
 
@@ -689,19 +764,20 @@ def print_badges_batch_view(request, event_id):
     for registration in registrations:
         qr_payload, qr_mode_label = registration_qr_payload(registration)
         badges.append({
-            'registration': registration,
-            'qr_code': qr_data_uri(qr_payload),
-            'qr_mode_label': qr_mode_label,
+            "registration": registration,
+            "qr_code": qr_data_uri(qr_payload),
+            "qr_mode_label": qr_mode_label,
         })
 
-    return render(request, 'core/print_badges_batch.html', {
-        'event': event,
-        'badges': badges,
+    return render(request, "core/print_badges_batch.html", {
+        "event": event,
+        "badges": badges,
+        "start_date": start_str,
+        "end_date": end_str,
     })
 
 
 @login_required
-
 def users_admin_view(request):
     profile = get_organizer_profile(request.user)
     if not profile:

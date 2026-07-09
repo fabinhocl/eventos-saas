@@ -10,7 +10,7 @@
   .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 18px;border-radius:16px;border:1px solid #dbe4ee;background:#fff;color:#506177;font-weight:700;text-decoration:none;cursor:pointer}
   .btn-primary{background:#0d8b7e;color:#fff;border-color:#0d8b7e}
   .filters,.table-wrap,.stats{background:#fff;border:1px solid #dbe4ee;border-radius:22px;box-shadow:0 10px 24px rgba(15,23,42,.04)}
-  .filters{padding:18px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+  .filters{padding:18px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:14px;margin-bottom:18px}
   .field label{display:block;font-size:12px;color:#75859b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
   .field input,.field select{width:100%;border:1px solid #d6dde7;border-radius:14px;padding:12px 14px;font:inherit;background:#fff}
   .table-wrap{overflow:hidden}
@@ -60,27 +60,27 @@
     </select>
   </div>
   <div class="field">
-    <label>Ação</label>
-    <button class="btn" type="submit">Aplicar filtros</button>
+    <label>Inscritos de</label>
+    <input type="date" name="start_date" value="{{ start_date|default_if_none:'' }}">
   </div>
   <div class="field">
-    <label>Evento</label>
-    <a class="btn" href="{% url 'dashboard' %}?event={{ event.id }}">Ver evento</a>
+    <label>até</label>
+    <input type="date" name="end_date" value="{{ end_date|default_if_none:'' }}">
+  </div>
+  <div class="field">
+    <label>Ação</label>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="btn" type="submit">Aplicar filtros</button>
+    </div>  
   </div>
 </form>
-
-<p class="results-line">Resultado atual: {{ stats.filtrados }} participante{{ stats.filtrados|pluralize }}. Total do evento: {{ stats.total }}.</p>
-
 
   <section class="panel" style="margin-bottom:18px;">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;">
     <div style="display:flex;flex-direction:column;">
       <h3 style="margin:0;">Participantes</h3>
-      <div class="muted">
-        {{ page_obj.paginator.count }} inscritos no total
-      </div>
     </div>
-
+    
     <div style="display:flex;align-items:center;gap:18px;">
       <form method="get" style="display:flex;align-items:center;gap:8px;margin:0;">
         {% if search %}
@@ -114,9 +114,24 @@
       </div>
     </div>
   </div>
+  <p class="results-line">Resultado atual: {{ stats.filtrados }} participante{{ stats.filtrados|pluralize }}. Total do evento: {{ stats.total }}.</p>
 </section>
 
 <form id="batch-print-form" method="get" action="{% url 'print_badges_batch' event.id %}">
+  {# mantém filtros aplicados #}
+  <input type="hidden" name="q" value="{{ search }}">
+  <input type="hidden" name="status" value="{{ status }}">
+  <input type="hidden" name="start_date" value="{{ start_date }}">
+  <input type="hidden" name="end_date" value="{{ end_date }}">
+
+  <div class="filters" style="margin-bottom:12px;grid-template-columns:repeat(3,1fr);">
+    <div class="field">
+      <label>Etiquetas</label>
+      <p class="muted" style="margin:0;">
+        Serão impressas apenas inscrições dentro do período selecionado.
+      </p>
+    </div>
+  </div>
   <div class="table-wrap">
     <div class="row head">
       <div class="check-col"><input type="checkbox" onclick="document.querySelectorAll('.badge-check').forEach(c => c.checked = this.checked)"></div>

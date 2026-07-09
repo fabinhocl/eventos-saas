@@ -23,7 +23,7 @@
     }
 
     .sheet {
-      width: 190mm;
+      width: 190mm; /* 2 x 90mm + 1 gap de 10mm */
       display: grid;
       grid-template-columns: 90mm 90mm;
       grid-auto-rows: 30mm;
@@ -36,8 +36,8 @@
     .badge {
       width: 90mm;
       height: 30mm;
-      border: none;
-      border-radius: 0;
+      border: 0.3mm solid #cfd8e3;
+      border-radius: 3mm;
       padding: 3mm 3.5mm;
       display: grid;
       grid-template-columns: 1fr 22mm;
@@ -104,29 +104,29 @@
 </head>
 <body>
   {% for badge in badges %}
-  {% if forloop.first or forloop.counter0|divisibleby:14 %}
-    <section class="sheet">
-  {% endif %}
-
-    <article class="badge">
-      <div class="badge-content">
-        <div class="badge-name">{{ badge.registration.participant.name }}</div>
-        <div class="badge-meta">{{ badge.registration.participant.company|default:'-' }}</div>
-        <div class="badge-meta">{{ badge.registration.event.title }}</div>
-        <div class="badge-meta">{{ badge.qr_mode_label }}</div>
-      </div>
-      <div class="badge-qr">
-        <img src="{{ badge.qr_code }}" alt="QR Code">
-      </div>
-    </article>
-
-  {% if forloop.counter|divisibleby:14 or forloop.last %}
-    </section>
-    {% if not forloop.last %}
-      <div class="page-break"></div>
+    {% if forloop.first or forloop.counter0|divisibleby:14 %}
+      <section class="sheet">
     {% endif %}
-  {% endif %}
-{% endfor %}
+
+      <article class="badge">
+        <div class="badge-content">
+          <div class="badge-name">{{ badge.registration.participant.name }}</div>
+          <div class="badge-meta">{{ badge.registration.participant.company|default:'-' }}</div>
+          <div class="badge-meta">{{ badge.registration.event.title }}</div>
+          <div class="badge-meta">{{ badge.qr_mode_label }}</div>
+        </div>
+        <div class="badge-qr">
+          <img src="{{ badge.qr_code }}" alt="QR Code">
+        </div>
+      </article>
+
+    {% if forloop.counter|divisibleby:14 or forloop.last %}
+      </section>
+      {% if not forloop.last %}
+        <div class="page-break"></div>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
 
   <script>
     window.print();

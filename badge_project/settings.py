@@ -14,9 +14,10 @@ ALLOWED_HOSTS = os.getenv(
     "eventosflex.infralyze.com.br,137.131.153.208,localhost,127.0.0.1"
 ).split(",")
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://eventosflex.infralyze.com.br",
-]
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://eventosflex.infralyze.com.br"
+).split(",")
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
